@@ -1,0 +1,22 @@
+{
+  "name": "web-music",
+  "authors": [
+    "UFV-CRP"
+  ],
+  "description": "Web system for the UFV/CRP Music School",
+  "main": "public/index.html",
+  "keywords": [
+    "web-music"
+    "material-ui",
+    "ufv-crp"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "build"
+  ],
+  "private": true
+}
