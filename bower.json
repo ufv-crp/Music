@@ -1,0 +1,23 @@
+{
+  "name": "web-music",
+  "authors": [
+    "Walter Henrique - https://github.com/Sphinxs",
+    "Igor Alvez - https://github.com/iguit0"
+  ],
+  "description": "Web system for the UFV / CRP Music School",
+  "main": "public/index.html",
+  "keywords": [
+    "music"
+    "material-ui",
+    "ufv-crp"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "build"
+  ],
+  "private": true
+}
