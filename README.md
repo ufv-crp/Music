@@ -1,8 +1,8 @@
-<h1 align="center">:musical_score: Web Music :musical_note:</h1>
+<h2 align="center">Web Music :musical_note:</h1>
 
-This project was inspired in [this template.](https://www.creative-tim.com/product/material-dashboard-react) :art:
+This project was inspired in the [Material Dashboard](https://www.creative-tim.com/product/material-dashboard-react) created by Creative Tim.
 
-## Table of Contents :pushpin:
+### Table of Contents :pushpin:
 
 * [Quick Start](#quick-start)
 * [Documentation](#documentation)
@@ -12,37 +12,35 @@ This project was inspired in [this template.](https://www.creative-tim.com/produ
 * [Useful Links](#useful-links)
 
 
-## Quick start :computer::wrench:
+### Quick start :wrench:
 
 ``` bash
-# clone the repository
+# Clone the repository
 $ git clone https://github.com/ufv-crp/web-music.git web-music
 $ cd web-music
 
-# install dependencies
+# Install the dependencies
 $ npm i
 
-# dev mode
+# Start the serve
 $ npm start
 
-# build for production
+# Generate a build
 $ npm build
 
-# test script
+# Run the tests
 $ npm test
 ```
 
-## Documentation :clipboard:
-The documentation for the template is hosted at this [website](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial).
+### Documentation :clipboard:
+The documentation for the template is hosted on [Creative Tim](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial) site.
 
 
-## File Structure :open_file_folder:
+### File Structure :open_file_folder:
 
-Within the download you'll find the following directories and files:
+Within the download you'll find the following file structure:
 
 ```
-material-dashboard-react
-.
 ├── CHANGELOG.md
 ├── ISSUE_TEMPLATE.md
 ├── LICENSE.md
@@ -140,14 +138,14 @@ material-dashboard-react
             └── UserProfile.jsx
 ```
 
-## Resources :package:
+### Resources :package:
 
 - [Material UI Kit React - For Front End Development](https://www.creative-tim.com/product/material-kit-react?ref=github-mdr-free)
 
-## Licensing :cop:
+### Licensing :cop:
 
-- [Copyright 2019 UFV-CRP](http://www.crp.ufv.br)
+- [UFV-CRP - Copyright 2019](http://www.crp.ufv.br)
 
-## Useful Links :link:
+### Useful Links :link:
 
 [UFV-CRP Website](http://www.crp.ufv.br)
