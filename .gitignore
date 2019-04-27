@@ -1,0 +1,50 @@
+# Compiled output
+/dist
+/tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like Istanbul
+coverage
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Misc
+.sass-cache
+connect.lock
+typings
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Optional Npm cache directory
+.npm
+
+# Optional Eslint cache
+.eslintcache
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Dotenv environment variables file
+.env
+
+# System Files
+.DS_Store
+Thumbs.db
