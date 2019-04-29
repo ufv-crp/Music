@@ -1,5 +1,7 @@
 <h2 align="center">Web Music :musical_note:</h1>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/751b7776075d4fd1bd9b1129c4df7762)](https://app.codacy.com/app/ufv-crp/web-music?utm_source=github.com&utm_medium=referral&utm_content=ufv-crp/web-music&utm_campaign=Badge_Grade_Settings)
+
 This project was inspired on [Material Dashboard](https://www.creative-tim.com/product/material-dashboard-react) created by Creative Tim.
 
 ### Table of Contents
@@ -11,7 +13,6 @@ This project was inspired on [Material Dashboard](https://www.creative-tim.com/p
 - [Resources](#resources)
 - [License](#license)
 - [Useful Links](#useful-links)
-
 
 ### Dependencies
 
