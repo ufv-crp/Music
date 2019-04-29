@@ -4,6 +4,8 @@ This project was inspired in the [Material Dashboard](https://www.creative-tim.c
 
 ### Table of Contents :pushpin:
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/751b7776075d4fd1bd9b1129c4df7762)](https://app.codacy.com/app/ufv-crp/web-music?utm_source=github.com&utm_medium=referral&utm_content=ufv-crp/web-music&utm_campaign=Badge_Grade_Settings)
+
 * [Quick Start](#quick-start)
 * [Documentation](#documentation)
 * [File Structure](#file-structure)
