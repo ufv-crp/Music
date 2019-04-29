@@ -1,13 +1,13 @@
 {
   "name": "web-music",
-  "version": "0.1.1",
-  "description": "Web system for the UFV/CRP Music School",
+  "version": "0.1.2",
+  "description": "Web system for the UFV - CRP Music School",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ufv-crp/web-music.git"
   },
   "keywords": [],
-  "author": "UFV-CRP (https://github.com/ufv-crp)",
+  "author": "Walter (https://github.com/Sphinxs) and Igor (https://github.com/iguit0)",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
