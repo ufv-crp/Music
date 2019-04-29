@@ -117,7 +117,7 @@ The template documentation is hosted on [Creative Tim](https://demos.creative-ti
 
 ### License
 
-[MIT License](LICENSE.md)
+[Apache License](LICENSE.md)
 
 ### Useful Links
 
