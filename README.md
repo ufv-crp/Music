@@ -36,6 +36,12 @@ Check the Docker status:
 $ sudo service docker status # start | stop
 ```
 
+If the Docker service is masked, try to unmask:
+
+```sh
+$ sudo systemctl unmask  docker.service
+```
+
 [Docker Cheat Sheet](https://github.com/wsargent/docker-cheat-sheet)
 
 - [Docker Compose](https://docs.docker.com/compose/install/)
