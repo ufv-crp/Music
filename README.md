@@ -101,7 +101,7 @@ $ git clone https://github.com/ufv-crp/web-music.git web-music --depth=1
 $ cd web-music
 
 # Install the dependencies
-$ yarn i
+$ yarn install
 
 # Start the serve
 $ yarn start
@@ -115,7 +115,7 @@ $ yarn test
 
 ### Documentation
 
-The template documentation is hosted on [Creative Tim](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial) site.
+The template documentation is hosted on [Creative Tim site.](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial)
 
 ### Resources
 
@@ -127,4 +127,4 @@ The template documentation is hosted on [Creative Tim](https://demos.creative-ti
 
 ### Useful Links
 
-[Federal University of Viçoca - Campus Rio Paranaíba](http://www.crp.ufv.br)
+[Federal University of Viçosa - Campus Rio Paranaíba](http://www.crp.ufv.br)
