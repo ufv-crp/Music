@@ -19,30 +19,30 @@ import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 // core components
-import Button from "components/CustomButtons/Button.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import Table from "components/Table/Table.jsx";
-import Tasks from "components/Tasks/Tasks.jsx";
-import CustomTabs from "components/CustomTabs/CustomTabs.jsx";
-import Danger from "components/Typography/Danger.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardAvatar from "components/Card/CardAvatar.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
+import Button from "../../components/CustomButtons/Button.jsx";
+import GridItem from "../../components/Grid/GridItem.jsx";
+import GridContainer from "../../components/Grid/GridContainer.jsx";
+import Table from "../../components/Table/Table.jsx";
+import Tasks from "../../components/Tasks/Tasks.jsx";
+import CustomTabs from "../../components/CustomTabs/CustomTabs.jsx";
+import Danger from "../../components/Typography/Danger.jsx";
+import Card from "../../components/Card/Card.jsx";
+import CardHeader from "../../components/Card/CardHeader.jsx";
+import CardAvatar from "../../components/Card/CardAvatar.jsx";
+import CardIcon from "../../components/Card/CardIcon.jsx";
+import CardBody from "../../components/Card/CardBody.jsx";
+import CardFooter from "../../components/Card/CardFooter.jsx";
+import SnackbarContent from "../../components/Snackbar/SnackbarContent.jsx";
 
 import {
   dailySalesChart,
   emailsSubscriptionChart,
   completedTasksChart
-} from "variables/charts.jsx";
+} from "../../variables/charts.jsx";
 
-import rtlStyle from "assets/jss/material-dashboard-react/views/rtlStyle.jsx";
+import rtlStyle from "../../assets/jss/material-dashboard-react/views/rtlStyle.jsx";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "../../assets/img/faces/marc.jpg";
 
 let bugs = [
   "طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن؟",

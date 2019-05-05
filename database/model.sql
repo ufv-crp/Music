@@ -1,5 +1,5 @@
--- Fri 26 Apr 2019 01:22:07 AM -03
--- Model: Music       Version: 1.0
+-- Mon 29 Apr 2019 12:56:03 PM -03
+-- Model: New Model    Version: 1.0
 
 -- -----------------------------------------------------
 -- Schema music
@@ -25,11 +25,13 @@ CREATE TABLE IF NOT EXISTS `music`.`user` (
   `birthDate` DATE NULL,
   `firstName` VARCHAR(45) NULL,
   `lastName` VARCHAR(45) NULL,
-  `createdAt` DATETIME NULL,
+  `createdAt` DATETIME NOT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `id_UNIQUE` (`idUser` ASC),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC))
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`contact`
@@ -39,8 +41,8 @@ DROP TABLE IF EXISTS `music`.`contact` ;
 CREATE TABLE IF NOT EXISTS `music`.`contact` (
   `idContact` INT NOT NULL AUTO_INCREMENT,
   `user_idUser` INT NOT NULL,
-  `email` VARCHAR(65) NOT NULL,
-  `phone` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(65) NULL,
+  `phone` VARCHAR(20) NULL,
   PRIMARY KEY (`idContact`),
   UNIQUE INDEX `idContact_UNIQUE` (`idContact` ASC),
   UNIQUE INDEX `idUser_UNIQUE` (`user_idUser` ASC),
@@ -51,24 +53,26 @@ CREATE TABLE IF NOT EXISTS `music`.`contact` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `music`.`avatar`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `music`.`avatar` ;
 
 CREATE TABLE IF NOT EXISTS `music`.`avatar` (
-  `image` BLOB NOT NULL,
+  `image` BLOB NULL,
   `idAvatar` INT NOT NULL AUTO_INCREMENT,
-  `user_userId` INT NOT NULL,
+  `user_idUser` INT NOT NULL,
   PRIMARY KEY (`idAvatar`),
   UNIQUE INDEX `id_UNIQUE` (`idAvatar` ASC),
-  UNIQUE INDEX `userId_UNIQUE` (`user_userId` ASC),
+  UNIQUE INDEX `userId_UNIQUE` (`user_idUser` ASC),
   CONSTRAINT `idUser1`
-    FOREIGN KEY (`user_userId`)
+    FOREIGN KEY (`user_idUser`)
     REFERENCES `music`.`user` (`idUser`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`address`
@@ -77,7 +81,7 @@ DROP TABLE IF EXISTS `music`.`address` ;
 
 CREATE TABLE IF NOT EXISTS `music`.`address` (
   `idAddress` INT NOT NULL AUTO_INCREMENT,
-  `user_userId` INT NOT NULL,
+  `user_idUser` INT NOT NULL,
   `street` VARCHAR(65) NULL,
   `number` INT NULL,
   `complement` VARCHAR(125) NULL,
@@ -86,13 +90,14 @@ CREATE TABLE IF NOT EXISTS `music`.`address` (
   `zipCode` VARCHAR(15) NULL,
   PRIMARY KEY (`idAddress`),
   UNIQUE INDEX `idAddress_UNIQUE` (`idAddress` ASC),
-  UNIQUE INDEX `userId_UNIQUE` USING BTREE (`user_userId` ASC),
+  UNIQUE INDEX `userId_UNIQUE` USING BTREE (`user_idUser` ASC),
   CONSTRAINT `fk_address_1`
-    FOREIGN KEY (`user_userId`)
+    FOREIGN KEY (`user_idUser`)
     REFERENCES `music`.`user` (`idUser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`course`
@@ -103,11 +108,12 @@ CREATE TABLE IF NOT EXISTS `music`.`course` (
   `idCourse` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `startDate` DATE NULL,
-  `endDate` DATE NULL,
+  `startDate` DATE NOT NULL,
+  `endDate` DATE NOT NULL,
   PRIMARY KEY (`idCourse`),
   UNIQUE INDEX `idCourse_UNIQUE` (`idCourse` ASC))
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`class`
@@ -130,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `music`.`class` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`user_has_course`
@@ -154,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `music`.`user_has_course` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `music`.`class`
 -- -----------------------------------------------------
@@ -176,6 +184,7 @@ CREATE TABLE IF NOT EXISTS `music`.`class` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `music`.`progress`
 -- -----------------------------------------------------
@@ -187,6 +196,7 @@ CREATE TABLE IF NOT EXISTS `music`.`progress` (
   `grade` INT NULL,
   PRIMARY KEY (`idProgress`))
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `music`.`class_has_user`
