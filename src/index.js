@@ -9,10 +9,14 @@ import RTL from "./layouts/RTL.jsx";
 
 import "./assets/css/material-dashboard-react.css?v=1.6.0";
 
+import { config } from "dotenv";
+
+config()
+
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
+<Router history={hist}>
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
