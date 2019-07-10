@@ -1,27 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
-// core components
-import Admin from "./layouts/Admin.jsx";
-import RTL from "./layouts/RTL.jsx";
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
+import "assets/scss/argon-dashboard-react.scss";
 
-import "./assets/css/material-dashboard-react.css?v=1.6.0";
-
-import { config } from "dotenv";
-
-config()
-
-const hist = createBrowserHistory();
+import AdminLayout from "layouts/Admin.jsx";
+import AuthLayout from "layouts/Auth.jsx";
 
 ReactDOM.render(
-<Router history={hist}>
+  <BrowserRouter>
     <Switch>
-      <Route path="/admin" component={Admin} />
-      <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/admin/dashboard" />
+      <Route path="/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/auth" render={props => <AuthLayout {...props} />} />
+      <Redirect from="/" to="/admin/index" />
     </Switch>
-  </Router>,
+  </BrowserRouter>,
   document.getElementById("root")
 );
