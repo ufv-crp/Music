@@ -1,28 +1,22 @@
-/* eslint-disable */
 import React from "react";
-import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
-// creates a beautiful scrollbar
-import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Route, Switch } from "react-router-dom";
+// reactstrap components
+import { Container } from "reactstrap";
 // core components
-import Navbar from "../components/Navbars/Navbar";
-import Footer from "../components/Footer/Footer.jsx";
-import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "../components/FixedPlugin/FixedPlugin.jsx";
+import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+import AdminFooter from "components/Footers/AdminFooter.jsx";
+import Sidebar from "components/Sidebar/Sidebar.jsx";
 
-import routes from "../routes.js";
+import routes from "routes.js";
 
-import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle";
-
-import image from "../assets/img/sidebar-2.jpg";
-import logo from "../assets/img/reactlogo.png";
-
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
+class Admin extends React.Component {
+  componentDidUpdate(e) {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    this.refs.mainContent.scrollTop = 0;
+  }
+  getRoutes = routes => {
+    return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -31,108 +25,48 @@ const switchRoutes = (
             key={key}
           />
         );
+      } else {
+        return null;
       }
-    })}
-  </Switch>
-);
-
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      image: image,
-      color: "blue",
-      hasImage: true,
-      fixedClasses: "dropdown show",
-      mobileOpen: false
-    };
-  }
-  handleImageClick = image => {
-    this.setState({ image: image });
+    });
   };
-  handleColorClick = color => {
-    this.setState({ color: color });
-  };
-  handleFixedClick = () => {
-    if (this.state.fixedClasses === "dropdown") {
-      this.setState({ fixedClasses: "dropdown show" });
-    } else {
-      this.setState({ fixedClasses: "dropdown" });
-    }
-  };
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-  getRoute() {
-    return this.props.location.pathname !== "/admin/maps";
-  }
-  resizeFunction = () => {
-    if (window.innerWidth >= 960) {
-      this.setState({ mobileOpen: false });
-    }
-  };
-  componentDidMount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      const ps = new PerfectScrollbar(this.refs.mainPanel);
-    }
-    window.addEventListener("resize", this.resizeFunction);
-  }
-  componentDidUpdate(e) {
-    if (e.history.location.pathname !== e.location.pathname) {
-      this.refs.mainPanel.scrollTop = 0;
-      if (this.state.mobileOpen) {
-        this.setState({ mobileOpen: false });
+  getBrandText = path => {
+    for (let i = 0; i < routes.length; i++) {
+      if (
+        this.props.location.pathname.indexOf(
+          routes[i].layout + routes[i].path
+        ) !== -1
+      ) {
+        return routes[i].name;
       }
     }
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resizeFunction);
-  }
+    return "Brand";
+  };
   render() {
-    const { classes, ...rest } = this.props;
     return (
-      <div className={classes.wrapper}>
+      <>
         <Sidebar
+          {...this.props}
           routes={routes}
-          logoText={process.env.REACT_APP_PROJECT_NAME}
-          logo={logo}
-          image={this.state.image}
-          handleDrawerToggle={this.handleDrawerToggle}
-          open={this.state.mobileOpen}
-          color={this.state.color}
-          {...rest}
+          logo={{
+            innerLink: "/admin/index",
+            imgSrc: require("assets/img/brand/argon-react.png"),
+            imgAlt: "..."
+          }}
         />
-        <div className={classes.mainPanel} ref="mainPanel">
-          <Navbar
-            routes={routes}
-            handleDrawerToggle={this.handleDrawerToggle}
-            {...rest}
+        <div className="main-content" ref="mainContent">
+          <AdminNavbar
+            {...this.props}
+            brandText={this.getBrandText(this.props.location.pathname)}
           />
-          {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-          {this.getRoute() ? (
-            <div className={classes.content}>
-              <div className={classes.container}>{switchRoutes}</div>
-            </div>
-          ) : (
-            <div className={classes.map}>{switchRoutes}</div>
-          )}
-          {this.getRoute() ? <Footer /> : null}
-          <FixedPlugin
-            handleImageClick={this.handleImageClick}
-            handleColorClick={this.handleColorClick}
-            bgColor={this.state["color"]}
-            bgImage={this.state["image"]}
-            handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses}
-          />
+          <Switch>{this.getRoutes(routes)}</Switch>
+          <Container fluid>
+            <AdminFooter />
+          </Container>
         </div>
-      </div>
+      </>
     );
   }
 }
 
-Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(dashboardStyle)(Dashboard);
+export default Admin;

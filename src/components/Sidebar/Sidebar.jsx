@@ -1,155 +1,278 @@
+/*eslint-disable*/
 import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Icon from "@material-ui/core/Icon";
-// core components
-import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
-import RTLNavbarLinks from "../Navbars/RTLNavbarLinks.jsx";
+import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+// nodejs library to set properties for components
+import { PropTypes } from "prop-types";
 
-import sidebarStyle from "../../assets/jss/material-dashboard-react/components/sidebarStyle";
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  Collapse,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  FormGroup,
+  Form,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Media,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
+  Container,
+  Row,
+  Col
+} from "reactstrap";
 
-const Sidebar = ({ ...props }) => {
-  // verifies if routeName is the one active (in browser input)
-  function activeRoute(routeName) {
-    return props.location.pathname.indexOf(routeName) > -1 ? true : false;
+var ps;
+
+class Sidebar extends React.Component {
+  state = {
+    collapseOpen: false
+  };
+  constructor(props) {
+    super(props);
+    this.activeRoute.bind(this);
   }
-  const { classes, color, logo, image, logoText, routes } = props;
-  var links = (
-    <List className={classes.list}>
-      {routes.map((prop, key) => {
-        var activePro = " ";
-        var listItemClasses;
-        if (prop.path === "/upgrade-to-pro") {
-          activePro = classes.activePro + " ";
-          listItemClasses = classNames({
-            [" " + classes[color]]: true
-          });
-        } else {
-          listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
-          });
-        }
-        const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
-        });
-        return (
+  // verifies if routeName is the one active (in browser input)
+  activeRoute(routeName) {
+    return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+  }
+  // toggles collapse between opened and closed (true/false)
+  toggleCollapse = () => {
+    this.setState({
+      collapseOpen: !this.state.collapseOpen
+    });
+  };
+  // closes the collapse
+  closeCollapse = () => {
+    this.setState({
+      collapseOpen: false
+    });
+  };
+  // creates the links that appear in the left menu / Sidebar
+  createLinks = routes => {
+    return routes.map((prop, key) => {
+      return (
+        <NavItem key={key}>
           <NavLink
             to={prop.layout + prop.path}
-            className={activePro + classes.item}
+            tag={NavLinkRRD}
+            onClick={this.closeCollapse}
             activeClassName="active"
-            key={key}
           >
-            <ListItem button className={classes.itemLink + listItemClasses}>
-              {typeof prop.icon === "string" ? (
-                <Icon
-                  className={classNames(classes.itemIcon, whiteFontClasses, {
-                    [classes.itemIconRTL]: props.rtlActive
-                  })}
-                >
-                  {prop.icon}
-                </Icon>
-              ) : (
-                  <prop.icon
-                    className={classNames(classes.itemIcon, whiteFontClasses, {
-                      [classes.itemIconRTL]: props.rtlActive
-                    })}
-                  />
-                )}
-              <ListItemText
-                primary={
-                  props.rtlActive ? prop.rtlName : prop.name
-                }
-                className={classNames(classes.itemText, whiteFontClasses, {
-                  [classes.itemTextRTL]: props.rtlActive
-                })}
-                disableTypography={true}
-              />
-            </ListItem>
+            <i className={prop.icon} />
+            {prop.name}
           </NavLink>
-        );
-      })}
-    </List>
-  );
-  var brand = (
-    <div className={classes.logo}>
-      <a
-        href="https://www.creative-tim.com"
-        className={classNames(classes.logoLink, {
-          [classes.logoLinkRTL]: props.rtlActive
-        })}
+        </NavItem>
+      );
+    });
+  };
+  render() {
+    const { bgColor, routes, logo } = this.props;
+    let navbarBrandProps;
+    if (logo && logo.innerLink) {
+      navbarBrandProps = {
+        to: logo.innerLink,
+        tag: Link
+      };
+    } else if (logo && logo.outterLink) {
+      navbarBrandProps = {
+        href: logo.outterLink,
+        target: "_blank"
+      };
+    }
+    return (
+      <Navbar
+        className="navbar-vertical fixed-left navbar-light bg-white"
+        expand="md"
+        id="sidenav-main"
       >
-        <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
-        </div>
-        {logoText}
-      </a>
-    </div>
-  );
-  return (
-    <div>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
-          open={props.open}
-          classes={{
-            paper: classNames(classes.drawerPaper, {
-              [classes.drawerPaperRTL]: props.rtlActive
-            })
-          }}
-          onClose={props.handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true // Better open performance on mobile.
-          }}
-        >
-          {brand}
-          <div className={classes.sidebarWrapper}>
-            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
-            {links}
-          </div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
+        <Container fluid>
+          {/* Toggler */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={this.toggleCollapse}
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          {/* Brand */}
+          {logo ? (
+            <NavbarBrand className="pt-0" {...navbarBrandProps}>
+              <img
+                alt={logo.imgAlt}
+                className="navbar-brand-img"
+                src={logo.imgSrc}
+              />
+            </NavbarBrand>
           ) : null}
-        </Drawer>
-      </Hidden>
-      <Hidden smDown implementation="css">
-        <Drawer
-          anchor={props.rtlActive ? "right" : "left"}
-          variant="permanent"
-          open
-          classes={{
-            paper: classNames(classes.drawerPaper, {
-              [classes.drawerPaperRTL]: props.rtlActive
-            })
-          }}
-        >
-          {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
-        </Drawer>
-      </Hidden>
-    </div>
-  );
+          {/* User */}
+          <Nav className="align-items-center d-md-none">
+            <UncontrolledDropdown nav>
+              <DropdownToggle nav className="nav-link-icon">
+                <i className="ni ni-bell-55" />
+              </DropdownToggle>
+              <DropdownMenu
+                aria-labelledby="navbar-default_dropdown_1"
+                className="dropdown-menu-arrow"
+                right
+              >
+                <DropdownItem>Action</DropdownItem>
+                <DropdownItem>Another action</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Something else here</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav>
+              <DropdownToggle nav>
+                <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="..."
+                      src={require("assets/img/theme/team-1-800x800.jpg")}
+                    />
+                  </span>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownItem className="noti-title" header tag="div">
+                  <h6 className="text-overflow m-0">Welcome!</h6>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Settings</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Activity</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-support-16" />
+                  <span>Support</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
+          {/* Collapse */}
+          <Collapse navbar isOpen={this.state.collapseOpen}>
+            {/* Collapse header */}
+            <div className="navbar-collapse-header d-md-none">
+              <Row>
+                {logo ? (
+                  <Col className="collapse-brand" xs="6">
+                    {logo.innerLink ? (
+                      <Link to={logo.innerLink}>
+                        <img alt={logo.imgAlt} src={logo.imgSrc} />
+                      </Link>
+                    ) : (
+                        <a href={logo.outterLink}>
+                          <img alt={logo.imgAlt} src={logo.imgSrc} />
+                        </a>
+                      )}
+                  </Col>
+                ) : null}
+                <Col className="collapse-close" xs="6">
+                  <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={this.toggleCollapse}
+                  >
+                    <span />
+                    <span />
+                  </button>
+                </Col>
+              </Row>
+            </div>
+            {/* Form */}
+            <Form className="mt-4 mb-3 d-md-none">
+              <InputGroup className="input-group-rounded input-group-merge">
+                <Input
+                  aria-label="Search"
+                  className="form-control-rounded form-control-prepended"
+                  placeholder="Search"
+                  type="search"
+                />
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <span className="fa fa-search" />
+                  </InputGroupText>
+                </InputGroupAddon>
+              </InputGroup>
+            </Form>
+            {/* Navigation */}
+            <Nav navbar>{this.createLinks(routes)}</Nav>
+            {/* Divider */}
+            <hr className="my-3" />
+            {/* Heading */}
+            <h6 className="navbar-heading text-muted">Documentation</h6>
+            {/* Navigation */}
+            <Nav className="mb-md-3" navbar>
+              <NavItem>
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/overview?ref=adr-admin-sidebar">
+                  <i className="ni ni-spaceship" />
+                  Getting started
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/colors?ref=adr-admin-sidebar">
+                  <i className="ni ni-palette" />
+                  Foundation
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/documentation/alerts?ref=adr-admin-sidebar">
+                  <i className="ni ni-ui-04" />
+                  Components
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
+    );
+  }
+}
+
+Sidebar.defaultProps = {
+  routes: [{}]
 };
 
 Sidebar.propTypes = {
-  classes: PropTypes.object.isRequired
+  // links that will be displayed inside the component
+  routes: PropTypes.arrayOf(PropTypes.object),
+  logo: PropTypes.shape({
+    // innerLink is for links that will direct the user within the app
+    // it will be rendered as <Link to="...">...</Link> tag
+    innerLink: PropTypes.string,
+    // outterLink is for links that will direct the user outside the app
+    // it will be rendered as simple <a href="...">...</a> tag
+    outterLink: PropTypes.string,
+    // the image src of the logo
+    imgSrc: PropTypes.string.isRequired,
+    // the alt for the img
+    imgAlt: PropTypes.string.isRequired
+  })
 };
 
-export default withStyles(sidebarStyle)(Sidebar);
+export default Sidebar;
