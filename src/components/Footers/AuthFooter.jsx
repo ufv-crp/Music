@@ -13,49 +13,56 @@ class Login extends React.Component {
             <Row className="align-items-center justify-content-xl-between">
               <Col xl="6">
                 <div className="copyright text-center text-xl-left text-muted">
-                  © 2018{" "}
+                  © {(new Date().getFullYear())}{" "}
                   <a
-                    className="font-weight-bold ml-1"
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    className="font-weight-bold ml-1 mr-1"
+                    href="https://github.com/iguit0"
+                    rel="noopener noreferrer"
                     target="_blank"
                   >
-                    Creative Tim
-                  </a>
+                    @iguit0
+              </a>
+                  &
+              <a
+                    className="font-weight-bold ml-1"
+                    href="https://github.com/Sphinxs"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    @Sphinxs
+              </a>
                 </div>
               </Col>
               <Col xl="6">
                 <Nav className="nav-footer justify-content-center justify-content-xl-end">
                   <NavItem>
                     <NavLink
-                      href="https://www.creative-tim.com?ref=adr-auth-footer"
+                      href="https://www.creative-tim.com?ref=adr-admin-footer"
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
-                      Creative Tim
-                    </NavLink>
+                      Sobre o Projeto
+                </NavLink>
                   </NavItem>
+
                   <NavItem>
                     <NavLink
-                      href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                      href="http://blog.creative-tim.com?ref=adr-admin-footer"
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
-                      About Us
-                    </NavLink>
+                      Suporte
+                </NavLink>
                   </NavItem>
+
                   <NavItem>
                     <NavLink
-                      href="http://blog.creative-tim.com?ref=adr-auth-footer"
+                      href="https://github.com/ufv-crp/web-music/blob/master/LICENSE.md"
+                      rel="noopener noreferrer"
                       target="_blank"
                     >
-                      Blog
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-auth-footer"
-                      target="_blank"
-                    >
-                      MIT License
-                    </NavLink>
+                      Licença
+                </NavLink>
                   </NavItem>
                 </Nav>
               </Col>

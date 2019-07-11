@@ -64,7 +64,7 @@ class AdminNavbar extends React.Component {
                     tag={Link}
                   >
                     <i className="ni ni-circle-08" />
-                    <span className="nav-link-inner--text">Register</span>
+                    <span className="nav-link-inner--text">Criar Conta</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -84,7 +84,7 @@ class AdminNavbar extends React.Component {
                     tag={Link}
                   >
                     <i className="ni ni-single-02" />
-                    <span className="nav-link-inner--text">Profile</span>
+                    <span className="nav-link-inner--text">Minha Conta</span>
                   </NavLink>
                 </NavItem>
               </Nav>

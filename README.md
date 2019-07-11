@@ -10,7 +10,6 @@ This project was built with [Argon Design System](https://demos.creative-tim.com
 - [Dependencies](#dependencies)
 - [Quick start](#quick-start)
 - [Documentation](#documentation)
-- [Resources](#resources)
 - [License](#license)
 - [Useful Links](#useful-links)
 
@@ -116,10 +115,6 @@ $ yarn test
 ### Documentation
 
 The template documentation is hosted on [Creative Tim site.](https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview)
-
-### Resources
-
-[Material UI Kit React](https://www.creative-tim.com/product/material-kit-react?ref=github-mdr-free)
 
 ### License
 

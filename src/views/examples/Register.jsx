@@ -1,27 +1,9 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -39,44 +21,9 @@ class Register extends React.Component {
       <>
         <Col lg="6" md="8">
           <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
-              <div className="text-muted text-center mt-2 mb-4">
-                <small>Sign up with</small>
-              </div>
-              <div className="text-center">
-                <Button
-                  className="btn-neutral btn-icon mr-4"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
-            </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>Or sign up with credentials</small>
+                <h2>Criar nova conta</h2>
               </div>
               <Form role="form">
                 <FormGroup>
@@ -86,7 +33,7 @@ class Register extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Name" type="text" />
+                    <Input placeholder="Nome" type="text" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -96,7 +43,7 @@ class Register extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" />
+                    <Input placeholder="E-mail" type="email" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -106,13 +53,13 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" />
+                    <Input placeholder="Senha" type="password" />
                   </InputGroup>
                 </FormGroup>
                 <div className="text-muted font-italic">
                   <small>
-                    password strength:{" "}
-                    <span className="text-success font-weight-700">strong</span>
+                    Força da senha:{" "}
+                    <span className="text-success font-weight-700">seguro</span>
                   </small>
                 </div>
                 <Row className="my-4">
@@ -128,9 +75,9 @@ class Register extends React.Component {
                         htmlFor="customCheckRegister"
                       >
                         <span className="text-muted">
-                          I agree with the{" "}
+                          Concordo com a{" "}
                           <a href="#pablo" onClick={e => e.preventDefault()}>
-                            Privacy Policy
+                            Política de Privacidade
                           </a>
                         </span>
                       </label>
@@ -139,7 +86,7 @@ class Register extends React.Component {
                 </Row>
                 <div className="text-center">
                   <Button className="mt-4" color="primary" type="button">
-                    Create account
+                    Criar Conta
                   </Button>
                 </div>
               </Form>
