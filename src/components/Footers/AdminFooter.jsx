@@ -11,14 +11,23 @@ class Footer extends React.Component {
         <Row className="align-items-center justify-content-xl-between">
           <Col xl="6">
             <div className="copyright text-center text-xl-left text-muted">
-              © 2018{" "}
+              © {(new Date().getFullYear())}{" "}
               <a
-                className="font-weight-bold ml-1"
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
+                className="font-weight-bold ml-1 mr-1"
+                href="https://github.com/iguit0"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Creative Tim
+                @iguit0
+              </a>
+              &
+              <a
+                className="font-weight-bold ml-1"
+                href="https://github.com/Sphinxs"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                @Sphinxs
               </a>
             </div>
           </Col>
@@ -31,17 +40,7 @@ class Footer extends React.Component {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Creative Tim
-                </NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink
-                  href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  About Us
+                  Sobre o Projeto
                 </NavLink>
               </NavItem>
 
@@ -51,17 +50,17 @@ class Footer extends React.Component {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Blog
+                  Suporte
                 </NavLink>
               </NavItem>
 
               <NavItem>
                 <NavLink
-                  href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
+                  href="https://github.com/ufv-crp/web-music/blob/master/LICENSE.md"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  MIT License
+                  Licença
                 </NavLink>
               </NavItem>
             </Nav>
