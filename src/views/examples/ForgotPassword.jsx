@@ -16,7 +16,7 @@ import {
   Col
 } from "reactstrap";
 
-class Login extends React.Component {
+class ForgotPassword extends React.Component {
   render() {
     return (
       <>
@@ -24,7 +24,7 @@ class Login extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-5">
-                <h2>Autenticação</h2>
+                <h2>Recuperar Senha</h2>
               </div>
               <Form role="form">
                 <FormGroup className="mb-3">
@@ -37,32 +37,9 @@ class Login extends React.Component {
                     <Input placeholder="E-mail" type="email" />
                   </InputGroup>
                 </FormGroup>
-                <FormGroup>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-lock-circle-open" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Senha" type="password" />
-                  </InputGroup>
-                </FormGroup>
-                <div className="custom-control custom-control-alternative custom-checkbox">
-                  <input
-                    className="custom-control-input"
-                    id=" customCheckLogin"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor=" customCheckLogin"
-                  >
-                    <span className="text-muted">Lembrar-me</span>
-                  </label>
-                </div>
                 <div className="text-center">
                   <Button className="my-4" color="primary" type="button">
-                    Entrar
+                    Enviar
                   </Button>
                 </div>
               </Form>
@@ -72,9 +49,9 @@ class Login extends React.Component {
             <Col xs="6">
               <Link
                 className="text-light"
-                to="/auth/forgot"
+                to="/auth/login"
               >
-                <small>Esqueceu a senha?</small>
+                <small>Fazer Login</small>
               </Link>
             </Col>
             <Col className="text-right" xs="6">
@@ -92,4 +69,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default ForgotPassword;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -30,10 +31,40 @@ class Register extends React.Component {
                   <InputGroup className="input-group-alternative mb-3">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className="ni ni-hat-3" />
+                        <i className="ni ni-circle-08" />
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input placeholder="Nome" type="text" />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-circle-08" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Sobrenome" type="text" />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-badge"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="CPF" type="text" />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-badge" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Matrícula" type="number" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -56,12 +87,16 @@ class Register extends React.Component {
                     <Input placeholder="Senha" type="password" />
                   </InputGroup>
                 </FormGroup>
-                <div className="text-muted font-italic">
-                  <small>
-                    Força da senha:{" "}
-                    <span className="text-success font-weight-700">seguro</span>
-                  </small>
-                </div>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-check-bold" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Confirmar Senha" type="password" />
+                  </InputGroup>
+                </FormGroup>
                 <Row className="my-4">
                   <Col xs="12">
                     <div className="custom-control custom-control-alternative custom-checkbox">
@@ -92,6 +127,24 @@ class Register extends React.Component {
               </Form>
             </CardBody>
           </Card>
+          <Row className="mt-3">
+            <Col xs="6">
+              <Link
+                className="text-light"
+                to="/auth/forgot"
+              >
+                <small>Esqueceu a senha?</small>
+              </Link>
+            </Col>
+            <Col className="text-right" xs="6">
+              <Link
+                className="text-light"
+                to="/auth/login"
+              >
+                <small>Fazer Login</small>
+              </Link>
+            </Col>
+          </Row>
         </Col>
       </>
     );
