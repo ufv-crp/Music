@@ -5,3 +5,9 @@
 @import "../core/forms/form";
 @import "../core/forms/form-validation";
 @import "../core/forms/input-group";
+
+.toggle-password {
+  color: $default;
+  font-size: 18px;
+  cursor: pointer;
+}

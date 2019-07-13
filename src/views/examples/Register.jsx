@@ -17,6 +17,72 @@ import {
 } from "reactstrap";
 
 class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: "password",
+      password: "",
+      confirmPassword: "",
+      passMatch: {
+        text: "",
+        status: 0
+      }
+    };
+    this.passwordMatcher = this.passwordMatcher.bind(this);
+    this.showHide = this.showHide.bind(this);
+  }
+
+  passwordMatcher2 = e => {
+    this.setState({ password: e.target.value });
+    if (this.state.confirmPassword === e.target.value) {
+      this.setState({
+        passMatch: {
+          text: "Senhas conferem!",
+          status: 1
+        }
+      });
+    } else {
+      this.setState({
+        passMatch: {
+          text: "Senhas não conferem!",
+          status: 2
+        }
+      });
+    }
+  }
+
+  passwordMatcher = e => {
+    this.setState({ confirmPassword: e.target.value });
+    if (this.state.password === e.target.value) {
+      this.setState({
+        passMatch: {
+          text: "Senhas conferem!",
+          status: 1
+        }
+      });
+    } else {
+      this.setState({
+        passMatch: {
+          text: "Senhas não conferem!",
+          status: 2
+        }
+      });
+    }
+  };
+
+  handleSubmit = () => {
+    // Form validation
+    // API Call
+  };
+
+  showHide(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      type: this.state.type === "input" ? "password" : "input"
+    });
+  }
+
   render() {
     return (
       <>
@@ -51,7 +117,7 @@ class Register extends React.Component {
                   <InputGroup className="input-group-alternative mb-3">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className="ni ni-badge"></i>
+                        <i className="ni ni-badge" />
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input placeholder="CPF" type="text" />
@@ -84,19 +150,59 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Senha" type="password" />
+                    <Input
+                      placeholder="Senha"
+                      type={this.state.type}
+                      value={this.state.password}
+                      onChange={this.passwordMatcher2}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText
+                        className="toggle-password"
+                        onClick={this.showHide}
+                      >
+                        {this.state.type === "input" ? (
+                          <i className="far fa-eye" />
+                        ) : (
+                          <i className="far fa-eye-slash" />
+                        )}
+                      </InputGroupText>
+                    </InputGroupAddon>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className="ni ni-check-bold" />
+                      {this.state.passMatch.status === 0 && (
+                      <i className="ni ni-check-bold" />
+                    )}
+                    {this.state.passMatch.status === 1 &&
+                     <i className="ni ni-check-bold text-success" />
+                    }
+                    {this.state.passMatch.status === 2 &&
+                     <i className="ni ni-check-bold text-danger" /> 
+                      }
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Confirmar Senha" type="password" />
+                    <Input
+                      placeholder="Confirmar Senha"
+                      type="password"
+                      value={this.state.confirmPassword}
+                      onChange={this.passwordMatcher}
+                    />
                   </InputGroup>
                 </FormGroup>
+                <div className="text-muted font-italic">
+                  <small>
+                    {this.state.passMatch.status === 1 &&
+                  <span className="text-success font-weight-700">{this.state.passMatch.text}</span>
+                    }
+                    {this.state.passMatch.status === 2 &&
+                  <span className="text-danger font-weight-700">{this.state.passMatch.text}</span>
+                  }
+                  </small>
+                </div>
                 <Row className="my-4">
                   <Col xs="12">
                     <div className="custom-control custom-control-alternative custom-checkbox">
@@ -111,7 +217,7 @@ class Register extends React.Component {
                       >
                         <span className="text-muted">
                           Concordo com a{" "}
-                          <a href="#pablo" onClick={e => e.preventDefault()}>
+                          <a className="text-default font-weight-bold" href="#test">
                             Política de Privacidade
                           </a>
                         </span>
@@ -120,7 +226,7 @@ class Register extends React.Component {
                   </Col>
                 </Row>
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
+                  <Button className="mt-4" color="default" type="button">
                     Criar Conta
                   </Button>
                 </div>
@@ -129,18 +235,12 @@ class Register extends React.Component {
           </Card>
           <Row className="mt-3">
             <Col xs="6">
-              <Link
-                className="text-light"
-                to="/auth/forgot"
-              >
+              <Link className="text-light" to="/auth/forgot">
                 <small>Esqueceu a senha?</small>
               </Link>
             </Col>
             <Col className="text-right" xs="6">
-              <Link
-                className="text-light"
-                to="/auth/login"
-              >
+              <Link className="text-light" to="/auth/login">
                 <small>Fazer Login</small>
               </Link>
             </Col>

@@ -17,6 +17,22 @@ import {
 } from "reactstrap";
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: 'password'
+    }
+    this.showHide = this.showHide.bind(this);
+  }
+
+  showHide(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      type: this.state.type === 'input' ? 'password' : 'input'
+    })  
+  }
+
   render() {
     return (
       <>
@@ -44,7 +60,10 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Senha" type="password" />
+                    <Input placeholder="Senha" type={this.state.type} />
+                    <InputGroupAddon addonType="append">
+                    <InputGroupText className="toggle-password" onClick={this.showHide}>{this.state.type === 'input' ? <i className="far fa-eye"/> : <i className="far fa-eye-slash" />}</InputGroupText>
+                    </InputGroupAddon>
                   </InputGroup>
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
