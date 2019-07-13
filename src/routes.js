@@ -5,6 +5,7 @@ import Register from "views/examples/Register.jsx";
 import Login from "views/examples/Login.jsx";
 import Tables from "views/examples/Tables.jsx";
 import Icons from "views/examples/Icons.jsx";
+import ForgotPassword from "./views/examples/ForgotPassword";
 
 var routes = [
   {
@@ -30,7 +31,7 @@ var routes = [
   },
   {
     path: "/user-profile",
-    name: "User Profile",
+    name: "Perfil",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin"
@@ -51,10 +52,17 @@ var routes = [
   },
   {
     path: "/register",
-    name: "Register",
+    name: "Registro",
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth"
-  }
+  },
+  {
+    path: "/forgot",
+    name: "ForgotPassword",
+    icon: "ni ni-key-25 text-info",
+    component: ForgotPassword,
+    layout: "/auth"
+  },
 ];
 export default routes;
