@@ -17,20 +17,68 @@ import {
 } from "reactstrap";
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: 'password'
-    }
-    this.showHide = this.showHide.bind(this);
+  state = {
+    type: 'password',
+    email: "", emailValid: false,
+    password: "", passwordValid: false,
+    formValid: false,
+    errorMsg: {}
   }
 
-  showHide(e){
+  showHide(e) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({
       type: this.state.type === 'input' ? 'password' : 'input'
-    })  
+    })
+  }
+
+  validateForm = () => {
+    const { emailValid, passwordValid } = this.state;
+    this.setState({
+      formValid: emailValid && passwordValid
+    })
+  }
+
+  updateEmail = (email) => {
+    this.setState({ email }, this.validateEmail)
+  }
+
+  validateEmail = () => {
+    const { email } = this.state;
+    let emailValid = true;
+    let errorMsg = { ...this.state.errorMsg }
+
+    // checks for format _@_._
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailValid = false;
+      errorMsg.email = 'Insira um e-mail válido!'
+    }
+
+    this.setState({ emailValid, errorMsg }, this.validateForm)
+  }
+
+  updatePassword = (password) => {
+    this.setState({ password }, this.validatePassword);
+  }
+
+  validatePassword = () => {
+    const { password } = this.state;
+    let passwordValid = true;
+    let errorMsg = { ...this.state.errorMsg }
+
+    // must be 6 characters
+
+    if (password.length < 6) {
+      passwordValid = false;
+      errorMsg.password = 'Senha deve conter pelo menos 6 caracteres';
+    }
+
+    this.setState({ passwordValid, errorMsg }, this.validateForm);
+  }
+
+  handleSubmit = () => {
+    alert(this.state.email + ' ' + this.state.password)
   }
 
   render() {
@@ -50,7 +98,7 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="E-mail" type="email" />
+                    <Input placeholder="E-mail" type="email" value={this.state.email} onChange={(e) => this.updateEmail(e.target.value)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -60,9 +108,9 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Senha" type={this.state.type} />
+                    <Input placeholder="Senha" type={this.state.type} value={this.state.password} onChange={(e) => this.updatePassword(e.target.value)} />
                     <InputGroupAddon addonType="append">
-                    <InputGroupText className="toggle-password" onClick={this.showHide}>{this.state.type === 'input' ? <i className="far fa-eye"/> : <i className="far fa-eye-slash" />}</InputGroupText>
+                      <InputGroupText className="toggle-password" onClick={e => this.showHide(e)}>{this.state.type === 'input' ? <i className="far fa-eye" /> : <i className="far fa-eye-slash" />}</InputGroupText>
                     </InputGroupAddon>
                   </InputGroup>
                 </FormGroup>
@@ -80,7 +128,7 @@ class Login extends React.Component {
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button disabled={!this.state.formValid} onClick={this.handleSubmit} className="my-4" color="default" type="button">
                     Entrar
                   </Button>
                 </div>
