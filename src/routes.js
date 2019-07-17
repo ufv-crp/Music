@@ -3,9 +3,10 @@ import Profile from "views/examples/Profile.jsx";
 import Maps from "views/examples/Maps.jsx";
 import Register from "views/examples/Register.jsx";
 import Login from "views/examples/Login.jsx";
-import Tables from "views/examples/Tables.jsx";
 import Icons from "views/examples/Icons.jsx";
 import ForgotPassword from "./views/examples/ForgotPassword";
+import Users from "views/examples/Users.jsx";
+import EditUser from "./views/examples/EditUser";
 
 var routes = [
   {
@@ -37,10 +38,17 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/usuario/editar",
+    name: "Editar Usuário",
+    icon: "ni ni-bullet-list-67 text-success",
+    component: EditUser,
+    layout: "/admin"
+  },
+  {
+    path: "/usuarios",
+    name: "Usuários",
     icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
+    component: Users,
     layout: "/admin"
   },
   {
@@ -63,6 +71,6 @@ var routes = [
     icon: "ni ni-key-25 text-info",
     component: ForgotPassword,
     layout: "/auth"
-  },
+  }
 ];
 export default routes;

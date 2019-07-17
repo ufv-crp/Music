@@ -1,7 +1,7 @@
 import React from "react";
 
 // reactstrap components
-import { Button, Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 class UserHeader extends React.Component {
   render() {
@@ -24,16 +24,7 @@ class UserHeader extends React.Component {
             <Row>
               <Col lg="7" md="10">
                 <h1 className="display-2 text-white">Jesse</h1>
-                <p className="text-white mt-0 mb-5">
-                  Está é a página do seu perfil. Você pode alterar suas informações pessoais quando quiser.
-                </p>
-                <Button
-                  color="info"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  Editar
-                </Button>
+                <p className="text-white mt-0 mb-5">Administrador</p>
               </Col>
             </Row>
           </Container>
