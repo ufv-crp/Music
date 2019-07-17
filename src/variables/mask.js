@@ -1,4 +1,5 @@
 // Brazilian CPF's Regex
+
 export const cpfMask = value => {
   return value
     .replace(/\D/g, "") // replaces any character that is not number for nothing
@@ -6,4 +7,10 @@ export const cpfMask = value => {
     .replace(/(\d{3})(\d)/, "$1.$2")
     .replace(/(\d{3})(\d{1,2})/, "$1-$2")
     .replace(/(-\d{2})\d+?$/, "$1"); // capture 2 numbers followed by a dash and do not let anything else be typed
+};
+
+// E-mail Regex
+
+export const emailMask = value => {
+  return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 };

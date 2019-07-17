@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { cpfMask } from "../../variables/mask";
+import { cpfMask, emailMask } from "../../variables/mask";
 
 // reactstrap components
 import {
@@ -141,7 +141,7 @@ class Register extends React.Component {
     let errorMsg = { ...this.state.errorMsg };
 
     // checks for format _@_._
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (emailMask(email)) {
       emailValid = false;
       errorMsg.email = "Insira um e-mail válido!";
     }

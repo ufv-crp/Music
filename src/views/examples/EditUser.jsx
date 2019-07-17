@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardBody,
   FormGroup,
+  Label,
   Form,
   Input,
   Container,
@@ -14,64 +15,22 @@ import {
   Col
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.jsx";
+import Header from "components/Headers/Header.jsx";
 
-class Profile extends React.Component {
+class EditUser extends React.Component {
   render() {
     return (
       <>
-        <UserHeader />
+        <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
-            <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
-              <Card className="card-profile shadow">
-                <Row className="justify-content-center">
-                  <Col className="order-lg-2" lg="3">
-                    <div className="card-profile-image">
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        <img
-                          alt="..."
-                          className="rounded-circle"
-                          src={require("assets/img/theme/team-3-800x800.jpg")}
-                        />
-                      </a>
-                    </div>
-                  </Col>
-                </Row>
-                {/* Card Right */}
-                <CardBody className="pt-5 pt-md-4 mt-5">
-                  <div className="text-center pt-4 mt-5">
-                    <h3>
-                      Jessica Jones
-                      <span className="font-weight-light">, 27</span>
-                    </h3>
-                    <div className="h5 font-weight-300">
-                      <i className="ni ni-badge mr-1" />
-                      9999
-                    </div>
-                    <div className="h5 font-weight-300">
-                      <i className="ni ni-pin-3 mr-1" />
-                      Rio Paranaíba, MG
-                    </div>
-                    <div className="h4 mt-4">
-                      <i className="ni ni-briefcase-24 mr-1" />
-                      Administrador
-                    </div>
-                    <div>
-                      <i className="ni ni-hat-3 mr-1" />
-                      Universidade Federal de Viçosa
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col className="order-xl-1" xl="8">
+            <Col className="order-xl-1" xl="12">
               <Card className="bg-secondary shadow">
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="12">
-                      <h3 className="mb-0">Minha Conta</h3>
+                      <h3 className="mb-0 text-uppercase">editar usuário</h3>
                     </Col>
                   </Row>
                 </CardHeader>
@@ -85,12 +44,12 @@ class Profile extends React.Component {
                       <Row>
                         <Col lg="6">
                           <FormGroup>
-                            <label
+                            <Label
                               className="form-control-label"
-                              htmlFor="input-first-name"
+                              for="input-first-name"
                             >
                               Nome
-                            </label>
+                            </Label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Lucky"
@@ -102,12 +61,12 @@ class Profile extends React.Component {
                         </Col>
                         <Col lg="6">
                           <FormGroup>
-                            <label
+                            <Label
+                              for="input-last-name"
                               className="form-control-label"
-                              htmlFor="input-last-name"
                             >
                               Sobrenome
-                            </label>
+                            </Label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Jesse"
@@ -121,12 +80,12 @@ class Profile extends React.Component {
                       <Row>
                         <Col lg="6">
                           <FormGroup>
-                            <label
+                            <Label
+                              for="input-email"
                               className="form-control-label"
-                              htmlFor="input-email"
                             >
                               E-mail
-                            </label>
+                            </Label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="email@exemplo.com"
@@ -138,20 +97,57 @@ class Profile extends React.Component {
                         </Col>
                         <Col lg="6">
                           <FormGroup>
-                            <label
+                            <Label
+                              for="input-cpf"
                               className="form-control-label"
-                              htmlFor="input-first-name"
                             >
                               CPF
-                            </label>
+                            </Label>
                             <Input
                               disabled
                               className="form-control-alternative"
                               defaultValue="999.999.999-99"
-                              id="input-first-name"
+                              id="input-cpf"
                               placeholder="CPF"
                               type="text"
                             />
+                          </FormGroup>
+                        </Col>
+                        <Col lg="6">
+                          <FormGroup>
+                            <Label
+                              for="input-matriculation"
+                              className="form-control-label"
+                            >
+                              Matrícula
+                            </Label>
+                            <Input
+                              className="form-control-alternative"
+                              defaultValue="9999"
+                              id="input-matriculation"
+                              placeholder="Matrícula"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col lg="6">
+                          <FormGroup>
+                            <Label
+                              for="select-scope"
+                              className="form-control-label"
+                            >
+                              Permissão
+                            </Label>
+                            <Input
+                              disabled
+                              type="select"
+                              name="select"
+                              id="select-scope"
+                            >
+                              <option>Administrador</option>
+                              <option>Aluno</option>
+                              <option>Professor</option>
+                            </Input>
                           </FormGroup>
                         </Col>
                       </Row>
@@ -164,14 +160,14 @@ class Profile extends React.Component {
                     </h6>
                     <div className="pl-lg-4">
                       <Row>
-                        <Col md="12">
+                        <Col md="8">
                           <FormGroup>
-                            <label
+                            <Label
                               className="form-control-label"
-                              htmlFor="input-address"
+                              for="input-address"
                             >
                               Endereço
-                            </label>
+                            </Label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Rua Cap. Franklin de Castro, 1832"
@@ -181,8 +177,42 @@ class Profile extends React.Component {
                             />
                           </FormGroup>
                         </Col>
+                        <Col lg="4">
+                          <FormGroup>
+                            <Label
+                              className="form-control-label"
+                              for="input-complement"
+                            >
+                              Complemento
+                            </Label>
+                            <Input
+                              className="form-control-alternative"
+                              defaultValue="Em frente ao Posto 2000"
+                              id="input-complement"
+                              placeholder="Complemento"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
                       </Row>
                       <Row>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-country"
+                            >
+                              CEP
+                            </label>
+                            <Input
+                              className="form-control-alternative"
+                              defaultValue="38810-000"
+                              id="input-postal-code"
+                              placeholder="CEP"
+                              type="number"
+                            />
+                          </FormGroup>
+                        </Col>
                         <Col lg="4">
                           <FormGroup>
                             <label
@@ -217,23 +247,6 @@ class Profile extends React.Component {
                             />
                           </FormGroup>
                         </Col>
-                        <Col lg="4">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-country"
-                            >
-                              CEP
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              defaultValue="38810-000"
-                              id="input-postal-code"
-                              placeholder="CEP"
-                              type="number"
-                            />
-                          </FormGroup>
-                        </Col>
                       </Row>
                       <Button
                         color="default"
@@ -254,4 +267,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default EditUser;
