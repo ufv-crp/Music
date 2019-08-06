@@ -1,33 +1,20 @@
-import Index from "views/Index.jsx";
+import React from "react";
+
 import Profile from "views/examples/Profile.jsx";
-import Maps from "views/examples/Maps.jsx";
 import Register from "views/examples/Register.jsx";
 import Login from "views/examples/Login.jsx";
-import Icons from "views/examples/Icons.jsx";
 import ForgotPassword from "./views/examples/ForgotPassword";
 import Users from "views/examples/Users.jsx";
 import EditUser from "./views/examples/EditUser";
+
+const Dashboard = React.lazy(() => import("views/Index.jsx"));
 
 var routes = [
   {
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
+    component: Dashboard,
     layout: "/admin"
   },
   {
