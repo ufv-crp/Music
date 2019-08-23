@@ -15,6 +15,7 @@ class Admin extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -48,10 +49,11 @@ class Admin extends React.Component {
         <Sidebar
           {...this.props}
           routes={routes}
+          bgColor="dark"
           logo={{
-            innerLink: "/admin/index",
-            imgSrc: require("assets/img/brand/argon-react.png"),
-            imgAlt: "..."
+            innerLink: "/admin/dashboard",
+            imgSrc: require("assets/img/brand/logo.png"),
+            imgAlt: process.env.REACT_APP_PROJECT_NAME
           }}
         />
         <div className="main-content" ref="mainContent">

@@ -7,15 +7,17 @@ import { Container, Row, Col } from "reactstrap";
 import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
 import AuthFooter from "components/Footers/AuthFooter.jsx";
 
-import routes from "routes.js";
+import routes from "routes";
 
 class Auth extends React.Component {
   componentDidMount() {
     document.body.classList.add("bg-default");
   }
+
   componentWillUnmount() {
     document.body.classList.remove("bg-default");
   }
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/auth") {
@@ -36,12 +38,14 @@ class Auth extends React.Component {
       <>
         <div className="main-content">
           <AuthNavbar />
-          <div className="header bg-gradient-info py-7 py-lg-8">
+          <div className="header bg-gradient-success py-7 py-lg-8">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
-                    <h1 className="text-white">Escola de Música</h1>
+                    <h1 className="text-white">
+                      {process.env.REACT_APP_PROJECT_NAME}
+                    </h1>
                     <p className="h2 text-dark">O Som do Cerrado</p>
                   </Col>
                 </Row>

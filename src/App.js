@@ -1,34 +1,41 @@
-import React, { Suspense } from "react";
+// React
+import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import Loadable from "react-loadable";
-import loading from "components/Loading/Loading.js";
+// Layouts
+import AdminLayout from "layouts/Admin";
+import AuthLayout from "layouts/Auth";
 
-const AdminLayout = Loadable({
-  loader: () => import("layouts/Admin.jsx"),
-  loading
-});
+// Styles
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
+import "assets/scss/argon-dashboard-react.scss";
 
-const AuthLayout = Loadable({
-  loader: () => import("layouts/Auth.jsx"),
-  loading
-});
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props => {
+        if (localStorage.getItem("token")) {
+          return <Component {...props} />;
+        } else {
+          return <Redirect to="/auth/login" />;
+        }
+      }}
+    />
+  );
+};
 
-class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <Suspense fallback={loading()}>
-          <Switch>
-            <Route path="/admin" render={props => <AdminLayout {...props} />} />
-            <Route path="/auth" render={props => <AuthLayout {...props} />} />
-
-            <Redirect from="/" to="/admin/index" />
-          </Switch>
-        </Suspense>
-      </BrowserRouter>
-    );
-  }
+function App() {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        <ProtectedRoute path="/admin" component={AdminLayout} />
+        <Redirect from="/" to="/admin/dashboard" />
+      </Switch>
+    </BrowserRouter>
+  );
 }
 
 export default App;

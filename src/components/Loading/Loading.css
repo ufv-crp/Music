@@ -1,6 +1,27 @@
 .wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: 6px solid #eee;
+  border-right-color: #f33;
+  border-radius: 50%;
+  transform: rotate(0deg);
+  animation: spinning 1s infinite linear;
+}
+
+@keyframes spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

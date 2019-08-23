@@ -15,10 +15,28 @@ import {
   Navbar,
   Nav,
   Container,
-  Media
+  Media,
+  Modal,
+  Button
 } from "reactstrap";
 
 class AdminNavbar extends React.Component {
+  state = {
+    defaultModal: false
+  };
+  toggleModal = state => {
+    this.setState({
+      [state]: !this.state[state]
+    });
+  };
+
+  handleLogout(e) {
+    e.preventDefault();
+    const { history } = this.props;
+    localStorage.removeItem(process.env.REACT_APP_TOKEN);
+    history.push("/auth/login");
+  }
+
   render() {
     return (
       <>
@@ -72,7 +90,10 @@ class AdminNavbar extends React.Component {
                     <span>Suporte</span>
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <DropdownItem
+                    style={{ cursor: "pointer" }}
+                    onClick={() => this.toggleModal("notificationModal")}
+                  >
                     <i className="ni ni-user-run" />
                     <span>Sair</span>
                   </DropdownItem>
@@ -81,6 +102,55 @@ class AdminNavbar extends React.Component {
             </Nav>
           </Container>
         </Navbar>
+        {/* Logout Modal*/}
+        <Modal
+          className="modal-dialog-centered modal-danger"
+          contentClassName="bg-gradient-info"
+          isOpen={this.state.notificationModal}
+          toggle={() => this.toggleModal("notificationModal")}
+        >
+          <div className="modal-header">
+            <h6 className="modal-title" id="modal-title-notification">
+              Logout
+            </h6>
+            <button
+              aria-label="Close"
+              className="close"
+              data-dismiss="modal"
+              type="button"
+              onClick={() => this.toggleModal("notificationModal")}
+            >
+              <span aria-hidden={true}>×</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="py-3 text-center">
+              <i className="ni ni-user-run ni-3x" />
+              <h4 className="heading mt-4">Já vai?</h4>
+              <p>Você realmente deseja sair?</p>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <Button
+              className="btn-white"
+              color="default"
+              type="button"
+              onClick={e => this.handleLogout(e)}
+            >
+              Sim, Sair
+            </Button>
+            <Button
+              className="text-white ml-auto"
+              color="link"
+              data-dismiss="modal"
+              type="button"
+              onClick={() => this.toggleModal("notificationModal")}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </Modal>
+        {/* End Logout Modal*/}
       </>
     );
   }

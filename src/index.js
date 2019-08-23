@@ -1,22 +1,13 @@
-import React from "react";
+// React
 import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
+import ApolloProvider from "./ApolloProvider";
 
-import "assets/vendor/nucleo/css/nucleo.css";
-import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
-import "assets/scss/argon-dashboard-react.scss";
+ReactDOM.render(ApolloProvider, document.getElementById("root"));
 
-import App from "./App";
-
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
-
-const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
-});
-
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById("root")
-);
+// Service Worker
+//
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

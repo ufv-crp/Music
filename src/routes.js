@@ -1,17 +1,13 @@
-import React from "react";
-
-import Profile from "views/examples/Profile.jsx";
-import Register from "views/examples/Register.jsx";
-import Login from "views/examples/Login.jsx";
-import ForgotPassword from "./views/examples/ForgotPassword";
-import Users from "views/examples/Users.jsx";
-import EditUser from "./views/examples/EditUser";
-
-const Dashboard = React.lazy(() => import("views/Index.jsx"));
+import Dashboard from "pages/Dashboard";
+import Profile from "pages/Profile";
+import Login from "pages/Login";
+import ForgotPassword from "pages/ForgotPassword";
+import EditUser from "pages/EditUser";
+import Users from "pages/Users";
 
 var routes = [
   {
-    path: "/index",
+    path: "/dashboard",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
@@ -43,13 +39,6 @@ var routes = [
     name: "Login",
     icon: "ni ni-key-25 text-info",
     component: Login,
-    layout: "/auth"
-  },
-  {
-    path: "/register",
-    name: "Registro",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
     layout: "/auth"
   },
   {
