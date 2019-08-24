@@ -52,7 +52,7 @@ class Admin extends React.Component {
           bgColor="dark"
           logo={{
             innerLink: "/admin/dashboard",
-            imgSrc: require("assets/img/brand/logo.png"),
+            imgSrc: require("assets/img/logo.png"),
             imgAlt: process.env.REACT_APP_PROJECT_NAME
           }}
         />

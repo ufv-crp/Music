@@ -10,10 +10,10 @@ import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
-const API_BASE_URL = "http://localhost:3000/graphql";
+//const API_BASE_URL = "http://localhost:3000/graphql";
 
 const httpLink = new HttpLink({
-  uri: API_BASE_URL,
+  uri: `${process.env.REACT_APP_API_BASE_URL}`,
   headers: {
     authorization: `Bearer ${process.env.REACT_APP_TOKEN}`
   }
