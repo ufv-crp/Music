@@ -20,22 +20,22 @@ const validToken = true;
 const App = () => (
   <BrowserRouter>
     <Switch>
-      {/* <Route path="/" component={() => <h1>Home</h1>} /> */}
-
-      <Route path="/auth" render={props => <Auth {...props} />} />
-
       {validToken ? (
         <Route path="/general" render={props => <General {...props} />} />
       ) : (
-        <Redirect to="/auth" />
+        <Redirect to="/auth/login" />
+      )}
+
+      {validToken ? (
+        <Redirect to="/general/dashboard" />
+      ) : (
+        <Route path="/auth" render={props => <Auth {...props} />} />
       )}
 
       <Route
         path="*"
         component={() => <h1>404 - Page not found or you don't have access</h1>}
       />
-
-      <Redirect to="/general" />
     </Switch>
   </BrowserRouter>
 );

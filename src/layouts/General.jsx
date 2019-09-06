@@ -1,7 +1,7 @@
 // React
 import React from "react";
 
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 // Reactstrap components
 import { Container } from "reactstrap";
@@ -28,14 +28,17 @@ class General extends React.Component {
   }
 
   getRoutes = routes => {
-    console.log(this.props.routes)
+    console.log(this.props.routes);
     return routes.map((route, key) => {
       if (route.scope) {
         console.log(`Route ${route.name} has scope`);
 
         if (token.scopes.includes(route.scope)) {
           console.log(
-            `Route ${route.name} has scope and the token grant access to this route (${route.layout + route.path})`
+            `Route ${
+              route.name
+            } has scope and the token grant access to this route (${route.layout +
+              route.path})`
           );
 
           return (
@@ -99,7 +102,11 @@ class General extends React.Component {
             // brandText={this.getBrandText(this.props.location.pathname)}
           />
 
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <Switch>
+            {this.getRoutes(routes)}
+
+            <Redirect to="/dashboard" />
+          </Switch>
 
           <Container fluid>
             <AdminFooter />
