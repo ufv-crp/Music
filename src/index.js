@@ -1,13 +1,17 @@
 // React
 import ReactDOM from "react-dom";
-import * as serviceWorker from "./serviceWorker";
+
+// Apollo
 import ApolloProvider from "./ApolloProvider";
 
-ReactDOM.render(ApolloProvider, document.getElementById("root"));
+// Service worker
+import * as serviceWorker from "./serviceWorker";
 
 // Service Worker
 //
 // If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// unregister() to register() below
 serviceWorker.register();
+
+// Renders the application already configured to graphql
+ReactDOM.render(ApolloProvider, document.getElementById("root"));

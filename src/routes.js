@@ -1,38 +1,49 @@
+// Dashboard
 import Dashboard from "pages/Dashboard";
-import Profile from "pages/Profile";
+
+// User
 import Login from "pages/Login";
+
+import Profile from "pages/Profile";
+
 import ForgotPassword from "pages/ForgotPassword";
+
 import EditUser from "pages/EditUser";
+
 import Users from "pages/Users";
 
-var routes = [
+let routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
-    layout: "/admin"
+    layout: "/general",
+    scope: ""
   },
   {
-    path: "/user-profile",
+    path: "/profile",
     name: "Perfil",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
-    layout: "/admin"
+    layout: "/general",
+    scope: ""
   },
   {
-    path: "/usuario/editar",
-    name: "Editar Usuário",
+    path: "/user/edit",
+    name: "Edit User",
     icon: "ni ni-bullet-list-67 text-success",
     component: EditUser,
-    layout: "/admin"
+    layout: "/general",
+    scope: "updateUser"
   },
   {
-    path: "/usuarios",
-    name: "Usuários",
+    path: "/users",
+    name: "Users",
     icon: "ni ni-bullet-list-67 text-red",
     component: Users,
-    layout: "/admin"
+    layout: "/general",
+    scope: ""
   },
   {
     path: "/login",
@@ -43,10 +54,12 @@ var routes = [
   },
   {
     path: "/forgot",
-    name: "ForgotPassword",
+    name: "Forgot Password",
     icon: "ni ni-key-25 text-info",
     component: ForgotPassword,
-    layout: "/auth"
+    layout: "/auth",
+    scope: ""
   }
 ];
+
 export default routes;

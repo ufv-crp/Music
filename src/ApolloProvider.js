@@ -1,17 +1,22 @@
 // React
 import React from "react";
+
 import App from "./App";
 
 // Apollo
-import { ApolloProvider } from "react-apollo";
-import { ApolloClient } from "apollo-client";
-import { ApolloLink } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
+
 import { onError } from "apollo-link-error";
+
+import { ApolloLink } from "apollo-link";
+
 import { InMemoryCache } from "apollo-cache-inmemory";
 
-//const API_BASE_URL = "http://localhost:3000/graphql";
+import { ApolloClient } from "apollo-client";
 
+import { ApolloProvider } from "react-apollo";
+
+// Manage network layer
 const httpLink = new HttpLink({
   uri: `${process.env.REACT_APP_API_BASE_URL}`,
   headers: {
@@ -19,6 +24,7 @@ const httpLink = new HttpLink({
   }
 });
 
+// Handle error
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) =>
@@ -33,7 +39,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
+// Network request middleware
 const link = ApolloLink.from([errorLink, httpLink]);
+
+// Data cache
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
