@@ -1,7 +1,7 @@
 // React
 import React from "react";
 
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 // Reactstrap components
 import { Container } from "reactstrap";
@@ -16,9 +16,22 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 // Routes
 import routes from "routes.js";
 
-const token = { scopes: ["createClass", "updateUser"] };
+const token = { scopes: ["updateUser"] };
 
 class General extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      filteredRoutes: []
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      filteredRoutes: this.getRoutes(routes)
+    });
+  }
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
 
@@ -28,44 +41,40 @@ class General extends React.Component {
   }
 
   getRoutes = routes => {
-    console.log(this.props.routes);
-    return routes.map((route, key) => {
-      if (route.scope) {
-        console.log(`Route ${route.name} has scope`);
-
+    return routes.filter(route => {
+      if (route.scope !== undefined) {
         if (token.scopes.includes(route.scope)) {
           console.log(
-            `Route ${
-              route.name
-            } has scope and the token grant access to this route (${route.layout +
-              route.path})`
+            `Route ${route.name} has scope and the token grant access`
           );
 
-          return (
-            <Route
-              path={route.layout + route.path}
-              component={route.component}
-              key={key}
-            />
-          );
+          return route;
         } else {
           console.log(
-            `Route ${route.name} has scope, but the token don't grant access to this route`
+            `Route ${route.name} has scope, but the token don't grant access`
           );
 
           return null;
         }
       } else {
-        console.log(`Route ${route.name} don't has scope`);
-
-        return (
-          <Route
-            path={route.layout + route.path}
-            component={route.component}
-            key={key}
-          />
+        console.log(
+          `Route ${route.name} don't has scope, but the acess is granted`
         );
+
+        return route;
       }
+    });
+  };
+
+  getRoutesComponents = routes => {
+    return routes.map((route, key) => {
+      return (
+        <Route
+          path={route.layout + route.path}
+          component={route.component}
+          key={key}
+        />
+      );
     });
   };
 
@@ -87,7 +96,7 @@ class General extends React.Component {
       <>
         <Sidebar
           {...this.props}
-          routes={routes}
+          routes={this.state.filteredRoutes}
           bgColor="dark"
           logo={{
             innerLink: "/admin/dashboard",
@@ -102,11 +111,7 @@ class General extends React.Component {
             // brandText={this.getBrandText(this.props.location.pathname)}
           />
 
-          <Switch>
-            {this.getRoutes(routes)}
-
-            <Redirect to="/dashboard" />
-          </Switch>
+          <Switch>{this.getRoutesComponents(this.state.filteredRoutes)}</Switch>
 
           <Container fluid>
             <AdminFooter />
