@@ -28,21 +28,19 @@ let routes = [
     name: "Login",
     icon: "ni ni-key-25 text-info",
     component: Login,
-    layout: "/auth",
-    ignore: true
+    layout: "/auth"
   },
   {
-    path: "/forgot",
+    path: "/forgot-password",
     name: "Forgot Password",
     icon: "ni ni-key-25 text-info",
     component: ForgotPassword,
-    layout: "/auth",
-    ignore: true
+    layout: "/auth"
   },
 
   {
     path: "/user/profile",
-    name: "Perfil",
+    name: "User Perfil",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/general",
@@ -50,7 +48,7 @@ let routes = [
   },
   {
     path: "/user/edit",
-    name: "Edit User",
+    name: "User Edit",
     icon: "ni ni-bullet-list-67 text-success",
     component: EditUser,
     layout: "/general",

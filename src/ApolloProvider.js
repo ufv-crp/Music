@@ -16,6 +16,9 @@ import { ApolloClient } from "apollo-client";
 
 import { ApolloProvider } from "react-apollo";
 
+// Authentication
+import { AuthProvider } from "./AuthProvider";
+
 // Manage network layer
 const httpLink = new HttpLink({
   uri: `${process.env.REACT_APP_API_BASE_URL}`,
@@ -51,7 +54,9 @@ const client = new ApolloClient({
 });
 
 export default (
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
+  <AuthProvider>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </AuthProvider>
 );

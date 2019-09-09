@@ -55,18 +55,17 @@ class Sidebar extends React.Component {
   };
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
-    return routes.map((prop, key) => {
-      if (prop.ignore) return;
+    return routes.map((route, key) => {
       return (
         <NavItem key={key}>
           <NavLink
-            to={prop.layout + prop.path}
+            to={route.layout + route.path}
             tag={NavLinkRRD}
             onClick={this.closeCollapse}
             activeClassName="active"
           >
-            <i className={prop.icon} />
-            {prop.name}
+            <i className={route.icon} />
+            {route.name}
           </NavLink>
         </NavItem>
       );
@@ -140,11 +139,11 @@ class Sidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Menu</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/general/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>Perfil</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/general/user-profile" tag={Link}>
                   <i className="ni ni-support-16" />
                   <span>Suporte</span>
                 </DropdownItem>

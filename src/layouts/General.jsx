@@ -1,22 +1,23 @@
 // React
-import React from "react";
+import React, { useContext } from "react";
 
 import { Switch, Route } from "react-router-dom";
 
 // Reactstrap components
 import { Container } from "reactstrap";
 
-// Core components
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+// Context
+import { AuthContext } from "../AuthProvider";
 
-import AdminFooter from "components/Footers/AdminFooter.jsx";
+// Core components
+import GeneralNavbar from "components/Navbars/GeneralNavbar.jsx";
+
+import GeneralFooter from "components/Footers/GeneralFooter.jsx";
 
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 
 // Routes
 import routes from "routes.js";
-
-const token = { scopes: ["updateUser"] };
 
 class General extends React.Component {
   constructor() {
@@ -32,6 +33,7 @@ class General extends React.Component {
       filteredRoutes: this.getRoutes(routes)
     });
   }
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
 
@@ -41,9 +43,13 @@ class General extends React.Component {
   }
 
   getRoutes = routes => {
+    const [authentication] = useContext(AuthContext);
+
     return routes.filter(route => {
+      if (route.layout !== "/general") return null;
+
       if (route.scope !== undefined) {
-        if (token.scopes.includes(route.scope)) {
+        if (authentication.token.scopes.includes(route.scope)) {
           console.log(
             `Route ${route.name} has scope and the token grant access`
           );
@@ -78,43 +84,30 @@ class General extends React.Component {
     });
   };
 
-  // getBrandText = path => {
-  //   for (let i = 0; i < routes.length; i++) {
-  //     if (
-  //       this.props.location.pathname.indexOf(
-  //         routes[i].layout + routes[i].path
-  //       ) !== -1
-  //     ) {
-  //       return routes[i].name;
-  //     }
-  //   }
-  //   return "Brand";
-  // };
-
   render() {
     return (
       <>
         <Sidebar
           {...this.props}
           routes={this.state.filteredRoutes}
-          bgColor="dark"
+          bgColor="white"
           logo={{
-            innerLink: "/admin/dashboard",
+            innerLink: "/general/dashboard",
             imgSrc: require("assets/img/logo.png"),
             imgAlt: process.env.REACT_APP_PROJECT_NAME
           }}
         />
 
         <div className="main-content" ref="mainContent">
-          <AdminNavbar
+          <GeneralNavbar
             {...this.props}
-            // brandText={this.getBrandText(this.props.location.pathname)}
+            // brandText={Role Name}
           />
 
           <Switch>{this.getRoutesComponents(this.state.filteredRoutes)}</Switch>
 
           <Container fluid>
-            <AdminFooter />
+            <GeneralFooter />
           </Container>
         </div>
       </>

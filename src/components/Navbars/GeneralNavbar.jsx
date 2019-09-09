@@ -20,7 +20,7 @@ import {
   Button
 } from "reactstrap";
 
-class AdminNavbar extends React.Component {
+class GeneralNavbar extends React.Component {
   state = {
     defaultModal: false
   };
@@ -78,11 +78,11 @@ class AdminNavbar extends React.Component {
                   <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">Menu</h6>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/general/user-profile" tag={Link}>
                     <i className="ni ni-single-02" />
                     <span>Perfil</span>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/general/user-profile" tag={Link}>
                     <i className="ni ni-support-16" />
                     <span>Suporte</span>
                   </DropdownItem>
@@ -153,4 +153,4 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+export default GeneralNavbar;

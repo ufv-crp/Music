@@ -113,7 +113,7 @@ class Login extends React.Component {
       if (login) {
         console.log(login);
         localStorage.setItem(process.env.REACT_APP_TOKEN, login.token);
-        history.push("/admin/dashboard");
+        history.push("/general/dashboard");
       }
     } catch (err) {
       // disparar toast
