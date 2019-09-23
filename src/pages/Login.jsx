@@ -1,7 +1,14 @@
-import React from "react";
+// React
+import React, { useContext } from "react";
+
 import { Link } from "react-router-dom";
 
-// reactstrap components
+import { emailMask } from "../utils/mask";
+
+// Context
+import { AuthContext } from "../AuthProvider";
+
+// Reactstrap components
 import {
   Button,
   Card,
@@ -16,7 +23,9 @@ import {
   Col
 } from "reactstrap";
 
+// Apollo
 import { ApolloConsumer } from "react-apollo";
+
 import gql from "graphql-tag";
 
 const LOGIN = gql`
@@ -34,6 +43,7 @@ const LOGIN = gql`
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       type: "password",
       email: "",
@@ -47,7 +57,9 @@ class Login extends React.Component {
 
   showHide(e) {
     e.preventDefault();
+
     e.stopPropagation();
+
     this.setState({
       type: this.state.type === "input" ? "password" : "input"
     });
@@ -55,6 +67,7 @@ class Login extends React.Component {
 
   validateForm = () => {
     const { emailValid, passwordValid } = this.state;
+
     this.setState({
       formValid: emailValid && passwordValid
     });
@@ -66,12 +79,15 @@ class Login extends React.Component {
 
   validateEmail = () => {
     const { email } = this.state;
+
     let emailValid = true;
+
     let errorMsg = { ...this.state.errorMsg };
 
-    // checks for format _@_._
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    // Checks for format _@_._
+    if (emailMask(email)) {
       emailValid = false;
+
       errorMsg.email = "Insira um e-mail válido!";
     }
 
@@ -84,13 +100,15 @@ class Login extends React.Component {
 
   validatePassword = () => {
     const { password } = this.state;
+
     let passwordValid = true;
+
     let errorMsg = { ...this.state.errorMsg };
 
-    // must be 6 characters
-
+    // Must be 6 characters
     if (password.length < 6) {
       passwordValid = false;
+
       errorMsg.password = "Senha deve conter pelo menos 6 caracteres";
     }
 
@@ -100,7 +118,9 @@ class Login extends React.Component {
   async handleSubmit(client) {
     try {
       const { email, password } = this.state;
+
       const { history } = this.props;
+
       const {
         data: { login }
       } = await client.query({
@@ -110,13 +130,16 @@ class Login extends React.Component {
           password: password
         }
       });
+
       if (login) {
         console.log(login);
-        localStorage.setItem(process.env.REACT_APP_TOKEN, login.token);
+
+        this.props.setAuthentication({ token: { ...login } });
+
         history.push("/general/dashboard");
       }
     } catch (err) {
-      // disparar toast
+      // Disparar toast
       console.log(err);
     }
   }
@@ -203,4 +226,16 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const LoginFunctional = props => {
+  const [authentication, setAuthentication] = useContext(AuthContext);
+
+  return (
+    <Login
+      {...props}
+      authentication={authentication}
+      setAuthentication={setAuthentication}
+    />
+  );
+};
+
+export default LoginFunctional;

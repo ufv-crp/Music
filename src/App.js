@@ -1,7 +1,7 @@
 // React
 import React, { useContext } from "react";
 
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 // Layouts
 import General from "layouts/General";
@@ -32,12 +32,9 @@ const App = () => {
           <Route path="/general" render={props => <General {...props} />} />
         )}
 
-        <Route
-          path="*"
-          component={() => (
-            <h1>404 - Page not found or you don't have access</h1>
-          )}
-        />
+        {!authentication.token && <Redirect to="/auth/login" />}
+
+        {authentication.token && <Redirect to="/general/dashboard" />}
       </Switch>
     </BrowserRouter>
   );
