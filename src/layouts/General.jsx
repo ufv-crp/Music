@@ -43,13 +43,11 @@ class General extends React.Component {
   }
 
   getRoutes = routes => {
-    const [authentication] = useContext(AuthContext);
-
     return routes.filter(route => {
       if (route.layout !== "/general") return null;
 
       if (route.scope !== undefined) {
-        if (authentication.token.scopes.includes(route.scope)) {
+        if (this.props.authentication.token.scopes.includes(route.scope)) {
           console.log(
             `Route ${route.name} has scope and the token grant access`
           );
@@ -115,4 +113,10 @@ class General extends React.Component {
   }
 }
 
-export default General;
+const GeneralFunctional = () => {
+  const [authentication] = useContext(AuthContext);
+
+  return(<General authentication={authentication}/>)
+}
+
+export default GeneralFunctional;

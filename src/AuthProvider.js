@@ -5,7 +5,7 @@ const AuthContext = createContext();
 // By default the token must be null
 const AuthProvider = props => {
   const [authentication, setAuthentication] = useState({
-    token: { scopes: ["updateUser"] }
+    token: false
   });
 
   return (
