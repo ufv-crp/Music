@@ -8,16 +8,9 @@ pids
 *.seed
 *.pid.lock
 
-# coverage directory used by tools like Istanbul
-coverage
-
 # editor
 .vs
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 # misc
 .sass-cache
@@ -35,14 +28,8 @@ yarn.lock
 # dependency
 node_modules/
 
-# eslint cache
-.eslintcache
-
 # yarn integrity file
 .yarn-integrity
 
 # dotenv environment variables
 # .env
-
-# markdown cache
-README.html

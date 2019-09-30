@@ -33,7 +33,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/theme/team-3-800x800.jpg")}
+                          src="http://via.placeholder.com/800x800"
                         />
                       </a>
                     </div>

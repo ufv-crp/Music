@@ -1,34 +1,43 @@
-import React, { Suspense } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+// React
+import React, { useContext } from "react";
 
-import Loadable from "react-loadable";
-import loading from "components/Loading/Loading.js";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
-const AdminLayout = Loadable({
-  loader: () => import("layouts/Admin.jsx"),
-  loading
-});
+// Layouts
+import General from "layouts/General";
 
-const AuthLayout = Loadable({
-  loader: () => import("layouts/Auth.jsx"),
-  loading
-});
+import Auth from "layouts/Auth";
 
-class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <Suspense fallback={loading()}>
-          <Switch>
-            <Route path="/admin" render={props => <AdminLayout {...props} />} />
-            <Route path="/auth" render={props => <AuthLayout {...props} />} />
+// Context
+import { AuthContext } from "./AuthProvider";
 
-            <Redirect from="/" to="/admin/index" />
-          </Switch>
-        </Suspense>
-      </BrowserRouter>
-    );
-  }
-}
+// Styles
+import "assets/vendor/nucleo/css/nucleo.css";
+
+import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
+
+import "assets/scss/argon-dashboard-react.scss";
+
+const App = () => {
+  const [authentication] = useContext(AuthContext);
+
+  return (
+    <BrowserRouter>
+      <Switch>
+        {!authentication.token && (
+          <Route path="/auth" render={props => <Auth {...props} />} />
+        )}
+
+        {authentication.token && (
+          <Route path="/general" render={props => <General {...props} />} />
+        )}
+
+        {!authentication.token && <Redirect to="/auth/login" />}
+
+        {authentication.token && <Redirect to="/general/dashboard" />}
+      </Switch>
+    </BrowserRouter>
+  );
+};
 
 export default App;

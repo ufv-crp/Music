@@ -6,17 +6,11 @@ import { PropTypes } from "prop-types";
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
   Collapse,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  FormGroup,
   Form,
   Input,
   InputGroupAddon,
@@ -28,8 +22,6 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col
@@ -63,17 +55,17 @@ class Sidebar extends React.Component {
   };
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
-    return routes.map((prop, key) => {
+    return routes.map((route, key) => {
       return (
         <NavItem key={key}>
           <NavLink
-            to={prop.layout + prop.path}
+            to={route.layout + route.path}
             tag={NavLinkRRD}
             onClick={this.closeCollapse}
             activeClassName="active"
           >
-            <i className={prop.icon} />
-            {prop.name}
+            <i className={route.icon} />
+            {route.name}
           </NavLink>
         </NavItem>
       );
@@ -95,7 +87,7 @@ class Sidebar extends React.Component {
     }
     return (
       <Navbar
-        className="navbar-vertical fixed-left navbar-light bg-white"
+        className={"navbar-vertical fixed-left navbar-light bg-" + bgColor}
         expand="md"
         id="sidenav-main"
       >
@@ -139,10 +131,7 @@ class Sidebar extends React.Component {
               <DropdownToggle nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("assets/img/theme/team-1-800x800.jpg")}
-                    />
+                    <img alt="..." src="http://via.placeholder.com/800x800" />
                   </span>
                 </Media>
               </DropdownToggle>
@@ -150,11 +139,11 @@ class Sidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Menu</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/general/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>Perfil</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/general/user-profile" tag={Link}>
                   <i className="ni ni-support-16" />
                   <span>Suporte</span>
                 </DropdownItem>

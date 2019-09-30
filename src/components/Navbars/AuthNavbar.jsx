@@ -23,7 +23,7 @@ class AdminNavbar extends React.Component {
         >
           <Container className="px-4">
             <NavbarBrand to="/" tag={Link}>
-              <img alt="..." src={require("assets/img/brand/logo.png")} />
+              <img alt="..." src={require("assets/img/logo.png")} />
             </NavbarBrand>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
@@ -33,10 +33,7 @@ class AdminNavbar extends React.Component {
                 <Row>
                   <Col className="collapse-brand" xs="6">
                     <Link to="/">
-                      <img
-                        alt="..."
-                        src={require("assets/img/brand/argon-react.png")}
-                      />
+                      <img alt="..." src={require("assets/img/logo.png")} />
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">
@@ -52,22 +49,6 @@ class AdminNavbar extends React.Component {
               </div>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink className="nav-link-icon" to="/" tag={Link}>
-                    <i className="ni ni-planet" />
-                    <span className="nav-link-inner--text">Dashboard</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link-icon"
-                    to="/auth/register"
-                    tag={Link}
-                  >
-                    <i className="ni ni-circle-08" />
-                    <span className="nav-link-inner--text">Criar Conta</span>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/auth/login"
@@ -80,11 +61,13 @@ class AdminNavbar extends React.Component {
                 <NavItem>
                   <NavLink
                     className="nav-link-icon"
-                    to="/admin/user-profile"
+                    to="/auth/forgot"
                     tag={Link}
                   >
-                    <i className="ni ni-single-02" />
-                    <span className="nav-link-inner--text">Minha Conta</span>
+                    <i className="ni ni-key-25" />
+                    <span className="nav-link-inner--text">
+                      Recuperar Senha
+                    </span>
                   </NavLink>
                 </NavItem>
               </Nav>

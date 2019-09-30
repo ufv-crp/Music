@@ -1,63 +1,71 @@
-import React from "react";
+// Dashboard
+import Dashboard from "pages/Dashboard";
 
-import Profile from "views/examples/Profile.jsx";
-import Register from "views/examples/Register.jsx";
-import Login from "views/examples/Login.jsx";
-import ForgotPassword from "./views/examples/ForgotPassword";
-import Users from "views/examples/Users.jsx";
-import EditUser from "./views/examples/EditUser";
+// Authentication
+import Login from "pages/Login";
 
-const Dashboard = React.lazy(() => import("views/Index.jsx"));
+import ForgotPassword from "pages/ForgotPassword";
 
-var routes = [
+// User
+import Profile from "pages/Profile";
+
+import EditUser from "pages/EditUser";
+
+import Users from "pages/Users";
+
+let routes = [
   {
-    path: "/index",
+    path: "/dashboard",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
-    layout: "/admin"
+    layout: "/general",
+    scope: "dashboard" // Created in the front-end
   },
-  {
-    path: "/user-profile",
-    name: "Perfil",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin"
-  },
-  {
-    path: "/usuario/editar",
-    name: "Editar Usuário",
-    icon: "ni ni-bullet-list-67 text-success",
-    component: EditUser,
-    layout: "/admin"
-  },
-  {
-    path: "/usuarios",
-    name: "Usuários",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Users,
-    layout: "/admin"
-  },
+
   {
     path: "/login",
     name: "Login",
     icon: "ni ni-key-25 text-info",
     component: Login,
-    layout: "/auth"
+    layout: "/auth",
+    scope: undefined
   },
   {
-    path: "/register",
-    name: "Registro",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth"
-  },
-  {
-    path: "/forgot",
-    name: "ForgotPassword",
+    path: "/forgot-password",
+    name: "Forgot Password",
     icon: "ni ni-key-25 text-info",
     component: ForgotPassword,
-    layout: "/auth"
+    layout: "/auth",
+    scope: undefined
+  },
+
+  {
+    // Edit it's own user
+    path: "/profile",
+    name: "User Perfil",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/general",
+    scope: "searchUser updateUser"
+  },
+  {
+    // Admin edit third party user
+    path: "/user/edit",
+    name: "User Edit",
+    icon: "ni ni-bullet-list-67 text-success",
+    component: EditUser,
+    layout: "/general",
+    scope: "listUsers updateUser"
+  },
+  {
+    path: "/user/list",
+    name: "List Users",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: Users,
+    layout: "/general",
+    scope: "listUsers"
   }
 ];
+
 export default routes;

@@ -1,22 +1,17 @@
-import React from "react";
+// React
 import ReactDOM from "react-dom";
 
-import "assets/vendor/nucleo/css/nucleo.css";
-import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
-import "assets/scss/argon-dashboard-react.scss";
+// Apollo
+import ApolloProvider from "./ApolloProvider";
 
-import App from "./App";
+// Service worker
+import * as serviceWorker from "./serviceWorker";
 
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
+// Service Worker
+//
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below
+serviceWorker.register();
 
-const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
-});
-
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById("root")
-);
+// Renders the application already configured to graphql
+ReactDOM.render(ApolloProvider, document.getElementById("root"));

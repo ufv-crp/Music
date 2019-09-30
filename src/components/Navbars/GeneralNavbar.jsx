@@ -15,10 +15,28 @@ import {
   Navbar,
   Nav,
   Container,
-  Media
+  Media,
+  Modal,
+  Button
 } from "reactstrap";
 
-class AdminNavbar extends React.Component {
+class GeneralNavbar extends React.Component {
+  state = {
+    defaultModal: false
+  };
+  toggleModal = state => {
+    this.setState({
+      [state]: !this.state[state]
+    });
+  };
+
+  handleLogout(e) {
+    e.preventDefault();
+    // const { history } = this.props;
+    localStorage.removeItem(process.env.REACT_APP_TOKEN);
+    this.props.history.push("/auth/login");
+  }
+
   render() {
     return (
       <>
@@ -47,10 +65,7 @@ class AdminNavbar extends React.Component {
                 <DropdownToggle className="pr-0" nav>
                   <Media className="align-items-center">
                     <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
-                      />
+                      <img alt="..." src="http://via.placeholder.com/800x800" />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
@@ -63,16 +78,19 @@ class AdminNavbar extends React.Component {
                   <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">Menu</h6>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/general/user-profile" tag={Link}>
                     <i className="ni ni-single-02" />
                     <span>Perfil</span>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/general/user-profile" tag={Link}>
                     <i className="ni ni-support-16" />
                     <span>Suporte</span>
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <DropdownItem
+                    style={{ cursor: "pointer" }}
+                    onClick={() => this.toggleModal("notificationModal")}
+                  >
                     <i className="ni ni-user-run" />
                     <span>Sair</span>
                   </DropdownItem>
@@ -81,9 +99,58 @@ class AdminNavbar extends React.Component {
             </Nav>
           </Container>
         </Navbar>
+        {/* Logout Modal*/}
+        <Modal
+          className="modal-dialog-centered modal-danger"
+          contentClassName="bg-gradient-info"
+          isOpen={this.state.notificationModal}
+          toggle={() => this.toggleModal("notificationModal")}
+        >
+          <div className="modal-header">
+            <h6 className="modal-title" id="modal-title-notification">
+              Logout
+            </h6>
+            <button
+              aria-label="Close"
+              className="close"
+              data-dismiss="modal"
+              type="button"
+              onClick={() => this.toggleModal("notificationModal")}
+            >
+              <span aria-hidden={true}>×</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="py-3 text-center">
+              <i className="ni ni-user-run ni-3x" />
+              <h4 className="heading mt-4">Já vai?</h4>
+              <p>Você realmente deseja sair?</p>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <Button
+              className="btn-white"
+              color="default"
+              type="button"
+              onClick={e => this.handleLogout(e)}
+            >
+              Sim, Sair
+            </Button>
+            <Button
+              className="text-white ml-auto"
+              color="link"
+              data-dismiss="modal"
+              type="button"
+              onClick={() => this.toggleModal("notificationModal")}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </Modal>
+        {/* End Logout Modal*/}
       </>
     );
   }
 }
 
-export default AdminNavbar;
+export default GeneralNavbar;

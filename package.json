@@ -1,6 +1,6 @@
 {
   "name": "web-music",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Web system for the UFV - CRP Music School",
   "main": "index.js",
   "repository": {
@@ -10,8 +10,9 @@
   "keywords": [
     "ufv",
     "ufv-crp",
-    "web-musica",
-    "escola-musica-ufv"
+    "music",
+    "web",
+    "manager"
   ],
   "author": "Walter (https://github.com/Sphinxs) and Igor (https://github.com/iguit0)",
   "license": "MIT",
@@ -38,10 +39,12 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "apollo-boost": "^0.4.3",
+    "@apollo/react-hooks": "^3.0.0",
+    "apollo-boost": "^0.4.4",
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
     "graphql": "^14.4.2",
+    "lodash": "^4.17.15",
     "moment": "2.24.0",
     "node-sass": "4.11.0",
     "nouislider": "13.1.1",
@@ -60,7 +63,6 @@
   "devDependencies": {
     "@types/googlemaps": "3.30.18",
     "@types/markerclustererplus": "2.1.33",
-    "@types/react": "16.8.7",
-    "typescript": "3.3.3333"
+    "@types/react": "16.8.7"
   }
 }
