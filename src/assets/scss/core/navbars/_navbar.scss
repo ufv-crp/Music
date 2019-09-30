@@ -29,7 +29,8 @@
     letter-spacing: 0.05px;
 
     img {
-      height: 90;
+      filter: brightness(0) invert(1);
+      height: 96px;
     }
   }
 

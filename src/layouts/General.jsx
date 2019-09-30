@@ -49,20 +49,20 @@ class General extends React.Component {
       if (route.scope !== undefined) {
         if (this.props.authentication.token.scopes.includes(route.scope)) {
           console.log(
-            `Route ${route.name} has scope and the token grant access`
+            `Route ${route.layout}/${route.name} has scope and the token grant access`
           );
 
           return route;
         } else {
           console.log(
-            `Route ${route.name} has scope, but the token don't grant access`
+            `Route ${route.layout}/${route.name} has scope, but the token don't grant access`
           );
 
           return null;
         }
       } else {
         console.log(
-          `Route ${route.name} don't has scope, but the acess is granted`
+          `Route ${route.layout}/${route.name} don't has scope, but the acess is granted`
         );
 
         return route;
@@ -88,7 +88,7 @@ class General extends React.Component {
         <Sidebar
           {...this.props}
           routes={this.state.filteredRoutes}
-          bgColor="white"
+          bgColor="black"
           logo={{
             innerLink: "/general/dashboard",
             imgSrc: require("assets/img/logo.png"),

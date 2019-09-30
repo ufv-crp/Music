@@ -87,7 +87,7 @@ class Sidebar extends React.Component {
     }
     return (
       <Navbar
-        className={"navbar-vertical fixed-left navbar-dark bg-" + bgColor}
+        className={"navbar-vertical fixed-left navbar-light bg-" + bgColor}
         expand="md"
         id="sidenav-main"
       >

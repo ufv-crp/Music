@@ -32,9 +32,9 @@ class GeneralNavbar extends React.Component {
 
   handleLogout(e) {
     e.preventDefault();
-    const { history } = this.props;
+    // const { history } = this.props;
     localStorage.removeItem(process.env.REACT_APP_TOKEN);
-    history.push("/auth/login");
+    this.props.history.push("/auth/login");
   }
 
   render() {
