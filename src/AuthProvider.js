@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
 
-import * as Cryptr from "cryptr";
+import Cryptr from "cryptr";
 
 const cryptr = new Cryptr('Secret!');
 
