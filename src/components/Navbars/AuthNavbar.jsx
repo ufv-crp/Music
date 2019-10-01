@@ -14,6 +14,13 @@ import {
 } from "reactstrap";
 
 class AdminNavbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltipOpen: false,
+    };
+  }
+
   render() {
     return (
       <>
@@ -28,7 +35,7 @@ class AdminNavbar extends React.Component {
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
             </button>
-            <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
+            <UncontrolledCollapse navbar toggler="navbar-collapse-main">
               <div className="navbar-collapse-header d-md-none">
                 <Row>
                   <Col className="collapse-brand" xs="6">
