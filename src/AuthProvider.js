@@ -1,6 +1,10 @@
 import React, { createContext, useReducer, useEffect } from "react";
 
-const initialState = { token: undefined }
+import * as Cryptr from "cryptr";
+
+const cryptr = new Cryptr('Secret!');
+
+const initialState = { token: null }
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
@@ -12,15 +16,15 @@ const reducer = (previousState, newState) => {
   return { ...previousState, ...newState };
 };
 
-const localState = JSON.parse(localStorage.getItem("authentication"));
+const localState = localStorage.getItem("authentication");
 
 const AuthContext = createContext();
 
 const AuthProvider = props => {
-  const [authentication, setAuthentication] = useReducer(reducer, localState || initialState);
+  const [authentication, setAuthentication] = useReducer(reducer, localState ? JSON.parse(cryptr.decrypt(localState)) : initialState);
   
   useEffect(() => {
-    localStorage.setItem("authentication", JSON.stringify(authentication));
+    localStorage.setItem("authentication", cryptr.encrypt(JSON.stringify(authentication)));
   }, [authentication]);
 
   return (

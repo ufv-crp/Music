@@ -132,8 +132,6 @@ class Login extends React.Component {
       });
 
       if (login) {
-        console.log(login);
-
         this.props.setAuthentication({ token: { ...login } });
 
         history.push("/general/dashboard");
