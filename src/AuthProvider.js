@@ -1,12 +1,27 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
+
+const initialState = { token: undefined }
+
+const reducer = (previousState, newState) => {
+  if (newState === null) {
+    localStorage.removeItem("authentication");
+
+    return initialState;
+  }
+
+  return { ...previousState, ...newState };
+};
+
+const localState = JSON.parse(localStorage.getItem("authentication"));
 
 const AuthContext = createContext();
 
-// By default the token must be null
 const AuthProvider = props => {
-  const [authentication, setAuthentication] = useState({
-    token: undefined
-  });
+  const [authentication, setAuthentication] = useReducer(reducer, localState || initialState);
+  
+  useEffect(() => {
+    localStorage.setItem("authentication", JSON.stringify(authentication));
+  }, [authentication]);
 
   return (
     <AuthContext.Provider value={[authentication, setAuthentication]}>
@@ -15,4 +30,4 @@ const AuthProvider = props => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthContext, AuthProvider }
