@@ -13,23 +13,129 @@ import {
   PaginationLink,
   Table,
   Container,
-  Row
+  Row,
+  Badge,
+  Form,
+  FormGroup,
+  Input
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.jsx";
 
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const LIST_USERS = gql`
+  query ListUsers {
+    listUsers(all: true) {
+      id
+      email
+      password
+      cpf
+      matriculation
+      firstName
+      secondName
+      createdAt
+      updatedAt
+      creator {
+        id
+        email
+        matriculation
+      }
+    }
+  }
+`;
+
 class Users extends React.Component {
   state = {
-    defaultModal: false
+    notificationModal: false,
+    userSelected: {}
   };
 
-  toggleModal = state => {
+  toggleModal = (state, data) => {
+    if (data) this.setState({ userSelected: data });
     this.setState({
       [state]: !this.state[state]
     });
   };
 
+  renderTableData() {
+    const { users } = this.props;
+    return users.map((user, index) => {
+      const { id, firstName, secondName, email, creator, matriculation } = user; // destructuring
+      return (
+        <tr key={id}>
+          <td className="mb-0 text-sm">
+            {firstName} {secondName}
+          </td>
+
+          <td className="mb-0 text-sm">{email}</td>
+          <td className="mb-0 text-sm">
+            {matriculation ? (
+              matriculation
+            ) : (
+              <Badge color="danger" pill>
+                não cadastrado
+              </Badge>
+            )}
+          </td>
+          <td className="mb-0 text-sm">{creator.email}</td>
+
+          <td className="text-center">
+            <Button
+              size="sm"
+              color="primary"
+              data-placement="top"
+              id="tooltip-info"
+            >
+              <i className="fas fa-info-circle" />
+            </Button>
+            <UncontrolledTooltip
+              delay={0}
+              placement="top"
+              target="tooltip-info"
+            >
+              Mais Info.
+            </UncontrolledTooltip>
+            <Button
+              size="sm"
+              color="default"
+              data-placement="top"
+              id="tooltip-edit"
+            >
+              <i className="fas fa-edit" />
+            </Button>
+            <UncontrolledTooltip
+              delay={0}
+              placement="top"
+              target="tooltip-edit"
+            >
+              Editar
+            </UncontrolledTooltip>
+            <Button
+              size="sm"
+              color="danger"
+              data-placement="top"
+              id="tooltip-delete"
+              onClick={() => this.toggleModal("notificationModal", user)}
+            >
+              <i className="fas fa-trash" />
+            </Button>
+            <UncontrolledTooltip
+              delay={0}
+              placement="top"
+              target="tooltip-delete"
+            >
+              Remover
+            </UncontrolledTooltip>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   render() {
+    const { users } = this.props;
     return (
       <>
         {<Header />}
@@ -40,7 +146,7 @@ class Users extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Usuários</h3>
+                  <h3 className="mb-0">Usuários ({users.length})</h3>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -48,78 +154,12 @@ class Users extends React.Component {
                       <th scope="col">Nome</th>
                       <th scope="col">E-mail</th>
                       <th scope="col">Matrícula</th>
-                      <th scope="col">Função</th>
                       <th scope="col">Registrado por</th>
                       <th scope="col" />
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">
-                        <span className="mb-0 text-sm">Nome</span>
-                      </th>
-                      <td>
-                        <span className="mb-0 text-sm">email@email.com</span>
-                      </td>
-                      <td>
-                        <span className="mb-0 text-sm">9999</span>
-                      </td>
-                      <td>
-                        <span className="mb-0 text-sm">Aluno</span>
-                      </td>
-                      <td>
-                        <span className="mb-0 text-sm">admin@admin.com</span>
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          size="sm"
-                          color="primary"
-                          data-placement="top"
-                          id="tooltip-info"
-                        >
-                          <i className="fas fa-info-circle" />
-                        </Button>
-                        <UncontrolledTooltip
-                          delay={0}
-                          placement="top"
-                          target="tooltip-info"
-                        >
-                          Mais Info.
-                        </UncontrolledTooltip>
-                        <Button
-                          size="sm"
-                          color="default"
-                          data-placement="top"
-                          id="tooltip-edit"
-                        >
-                          <i className="fas fa-edit" />
-                        </Button>
-                        <UncontrolledTooltip
-                          delay={0}
-                          placement="top"
-                          target="tooltip-edit"
-                        >
-                          Editar
-                        </UncontrolledTooltip>
-                        <Button
-                          size="sm"
-                          color="danger"
-                          data-placement="top"
-                          id="tooltip-delete"
-                          onClick={() => this.toggleModal("notificationModal")}
-                        >
-                          <i className="fas fa-trash" />
-                        </Button>
-                        <UncontrolledTooltip
-                          delay={0}
-                          placement="top"
-                          target="tooltip-delete"
-                        >
-                          Remover
-                        </UncontrolledTooltip>
-                      </td>
-                    </tr>
-                  </tbody>
+
+                  <tbody>{this.renderTableData()}</tbody>
                 </Table>
                 <CardFooter className="py-4">
                   <nav aria-label="...">
@@ -203,10 +243,7 @@ class Users extends React.Component {
                 <h4 className="heading mt-4">
                   Você está removendo um usuário!
                 </h4>
-                <p>
-                  A small river named Duden flows by their place and supplies it
-                  with the necessary regelialia.
-                </p>
+                <p>Usuário: {this.state.userSelected.firstName}</p>
               </div>
             </div>
             <div className="modal-footer">
@@ -224,11 +261,22 @@ class Users extends React.Component {
               </Button>
             </div>
           </Modal>
-          {/* ./Delete Modal */}
         </Container>
       </>
     );
   }
 }
 
-export default Users;
+const ListUsersQuery = () => {
+  return (
+    <Query query={LIST_USERS}>
+      {({ loading, error, data, client }) => {
+        if (loading) return "Carregando...";
+        if (error) return `Erro! ${error.message}`;
+        return <Users client={client} users={data.listUsers} />;
+      }}
+    </Query>
+  );
+};
+
+export default ListUsersQuery;
