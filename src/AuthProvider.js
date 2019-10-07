@@ -4,7 +4,7 @@ import Cryptr from "cryptr";
 
 const cryptr = new Cryptr('Secret!');
 
-const initialState = { token: null }
+const initialState = { data: null }
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
@@ -16,15 +16,24 @@ const reducer = (previousState, newState) => {
   return { ...previousState, ...newState };
 };
 
-const localState = localStorage.getItem("authentication");
+const getLocalAuthentication = () => {
+  const localState = localStorage.getItem("authentication");
+
+  return localState ? JSON.parse(cryptr.decrypt(localState)) : initialState
+}
+
+const setLocalAuthentication = (data) => {
+  localStorage.setItem("authentication", cryptr.encrypt(JSON.stringify(data)));
+}
 
 const AuthContext = createContext();
 
 const AuthProvider = props => {
-  const [authentication, setAuthentication] = useReducer(reducer, localState ? JSON.parse(cryptr.decrypt(localState)) : initialState);
+  const [authentication, setAuthentication] = useReducer(reducer, getLocalAuthentication());
   
+  // Process each time the render is done
   useEffect(() => {
-    localStorage.setItem("authentication", cryptr.encrypt(JSON.stringify(authentication)));
+    setLocalAuthentication(authentication)
   }, [authentication]);
 
   return (
@@ -34,4 +43,4 @@ const AuthProvider = props => {
   );
 };
 
-export { AuthContext, AuthProvider }
+export { AuthContext, AuthProvider, getLocalAuthentication, setLocalAuthentication }

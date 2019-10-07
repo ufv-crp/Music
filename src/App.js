@@ -24,17 +24,17 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {!authentication.token && (
+        {!authentication.data && (
           <Route path="/auth" render={props => <Auth {...props} />} />
         )}
 
-        {authentication.token && (
+        {authentication.data && (
           <Route path="/general" render={props => <General {...props} />} />
         )}
 
-        {!authentication.token && <Redirect to="/auth/login" />}
+        {!authentication.data && <Redirect to="/auth/login" />}
 
-        {authentication.token && <Redirect to="/general/dashboard" />}
+        {authentication.data && <Redirect to="/general/dashboard" />}
       </Switch>
     </BrowserRouter>
   );
