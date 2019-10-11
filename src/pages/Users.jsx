@@ -14,10 +14,7 @@ import {
   Table,
   Container,
   Row,
-  Badge,
-  Form,
-  FormGroup,
-  Input
+  Badge
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.jsx";
