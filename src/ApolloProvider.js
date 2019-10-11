@@ -23,7 +23,7 @@ const getTokenData = () => {
   const localState = getLocalAuthentication()
 
   if(localState.data)
-    return getLocalAuthentication().data.token
+    return localState.data.token
   
   return ""
 }
