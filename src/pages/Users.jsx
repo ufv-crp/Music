@@ -187,7 +187,7 @@ class Users extends React.Component {
                           href="#pablo"
                           onClick={e => e.preventDefault()}
                         >
-                          2 <span className="sr-only">(current)</span>
+                          2 <span className="sr-only">current</span>
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
