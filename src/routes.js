@@ -13,6 +13,8 @@ import EditUser from "pages/EditUser";
 
 import Users from "pages/Users";
 
+import Courses from "pages/Courses";
+
 let routes = [
   {
     path: "/dashboard",
@@ -61,10 +63,18 @@ let routes = [
   {
     path: "/user/list",
     name: "List Users",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "fa fa-users text-red",
     component: Users,
     layout: "/general",
     scope: "listUsers"
+  },
+  {
+    path: "/courses/list",
+    name: "List Courses",
+    icon: "ni ni-books text-black",
+    component: Courses,
+    layout: "/general",
+    scope: "listCourses"
   }
 ];
 
