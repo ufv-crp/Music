@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -20,6 +20,9 @@ import {
   Button
 } from "reactstrap";
 
+// Authentication
+import { setLocalAuthentication } from "../../AuthProvider";
+
 class GeneralNavbar extends React.Component {
   state = {
     defaultModal: false
@@ -32,9 +35,12 @@ class GeneralNavbar extends React.Component {
 
   handleLogout(e) {
     e.preventDefault();
-    // const { history } = this.props;
-    localStorage.removeItem(process.env.REACT_APP_TOKEN);
-    this.props.history.push("/auth/login");
+    
+    setLocalAuthentication(null)
+
+    const { history } = this.props;
+
+    history.push("/auth/login");
   }
 
   render() {
@@ -153,4 +159,4 @@ class GeneralNavbar extends React.Component {
   }
 }
 
-export default GeneralNavbar;
+export default withRouter(GeneralNavbar);

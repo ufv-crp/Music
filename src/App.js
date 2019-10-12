@@ -24,17 +24,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {!authentication.data && (
-          <Route path="/auth" render={props => <Auth {...props} />} />
-        )}
+        {!authentication && !authentication.data && <Redirect to="/auth/login" />}
+        
+        <Route path="/auth" render={props => <Auth {...props} />} />
 
         {authentication.data && (
           <Route path="/general" render={props => <General {...props} />} />
         )}
 
-        {!authentication.data && <Redirect to="/auth/login" />}
-
-        {authentication.data && <Redirect to="/general/dashboard" />}
+        {authentication && authentication.data && <Redirect to="/general/dashboard" />}
       </Switch>
     </BrowserRouter>
   );
