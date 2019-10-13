@@ -22,7 +22,7 @@ import { AuthProvider, getLocalAuthentication } from "./AuthProvider";
 const getTokenData = () => {
   const localState = getLocalAuthentication()
 
-  if(localState.data)
+  if(localState && localState.data)
     return localState.data.token
   
   return ""
