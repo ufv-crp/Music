@@ -18,6 +18,26 @@ import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 
 import "assets/scss/argon-dashboard-react.scss";
 
+const checkTokenExpiration = (authentication) => {
+  if (!authentication.data)
+    return null
+  
+  const expireAt = new Date(authentication.data.expireAt)
+
+  const now = new Date()
+
+  if(now >= expireAt)
+    return (
+      <Redirect to={{
+          pathname: '/auth/login',
+          state: { message: 'Token expired', expireAt: expireAt.toDateString()}
+        }}
+      />
+    )
+
+  return null
+}
+
 const App = () => {
   const [authentication] = useContext(AuthContext);
 
@@ -25,6 +45,8 @@ const App = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/auth" render={props => <Auth {...props} />} />
+
+        { checkTokenExpiration(authentication) }
 
         {!authentication.data && <Redirect to="/auth/login" />}
 

@@ -16,12 +16,16 @@ const reducer = (previousState, newState) => {
   return { ...previousState, ...newState };
 };
 
+// This method is used to non functional component, if the component
+// is functional use the authorization
 const getLocalAuthentication = () => {
   const localState = localStorage.getItem("authentication");
 
   return localState ? JSON.parse(cryptr.decrypt(localState)) : initialState
 }
 
+// This method is used to non functional component, if the component
+// is functional use the setAuthentication
 const setLocalAuthentication = (data) => {
   localStorage.setItem("authentication", cryptr.encrypt(JSON.stringify(data)));
 }

@@ -132,7 +132,13 @@ class Login extends React.Component {
       });
 
       if (login) {
-        this.props.setAuthentication({ data: { ...login } });
+        let date = new Date()
+
+        const issuedAt = date.getTime()
+
+        const expireAt = date.setTime(issuedAt + (login.tokenExpiration * 60 * 60 * 1000))
+
+        this.props.setAuthentication({ data: { ...login, issuedAt, expireAt } });
 
         history.push("/general/dashboard");
       }
@@ -210,11 +216,17 @@ class Login extends React.Component {
                 </CardBody>
               </Card>
               <Row className="mt-3">
-                <Col xs="12">
+                <Col xs="5">
                   <Link className="text-light" to="/auth/forgot">
                     <small>Esqueceu a senha?</small>
                   </Link>
                 </Col>
+
+                {this.props.location.state && (
+                  <Col xs="7">
+                      <small className="text-danger">{this.props.location.state.message} {this.props.location.state.expireAt}</small>
+                  </Col>
+                )}
               </Row>
             </Col>
           </>
