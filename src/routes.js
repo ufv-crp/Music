@@ -22,7 +22,7 @@ let routes = [
     icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
     layout: "/general",
-    scope: "dashboard" // Created in the front-end
+    scope: ["dashboard"] // Created in the front-end
   },
 
   {
@@ -31,7 +31,7 @@ let routes = [
     icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
-    scope: undefined
+    scope: null
   },
   {
     path: "/forgot-password",
@@ -39,7 +39,7 @@ let routes = [
     icon: "ni ni-key-25 text-info",
     component: ForgotPassword,
     layout: "/auth",
-    scope: undefined
+    scope: null
   },
 
   {
@@ -49,7 +49,7 @@ let routes = [
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/general",
-    scope: "searchUser updateUser"
+    scope: ["searchUser", "updateUser"]
   },
   {
     // Admin edit third party user
@@ -58,7 +58,7 @@ let routes = [
     icon: "ni ni-bullet-list-67 text-success",
     component: EditUser,
     layout: "/general",
-    scope: "listUsers updateUser"
+    scope: ["listUsers", "updateUser"]
   },
   {
     path: "/user/list",
@@ -66,7 +66,7 @@ let routes = [
     icon: "fa fa-users text-red",
     component: Users,
     layout: "/general",
-    scope: "listUsers"
+    scope: ["listUsers"]
   },
   {
     path: "/courses/list",
@@ -74,7 +74,7 @@ let routes = [
     icon: "ni ni-books text-black",
     component: Courses,
     layout: "/general",
-    scope: "listCourses"
+    scope: ["listCourses"]
   }
 ];
 

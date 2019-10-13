@@ -46,27 +46,17 @@ class General extends React.Component {
     return routes.filter(route => {
       if (route.layout !== "/general") return null;
 
-      if (route.scope !== undefined) {
-        if (this.props.authentication.data.scopes.includes(route.scope)) {
-          // console.log(
-          //   `Route ${route.layout}/${route.name} has scope and the token grant access`
-          // );
-
-          return route;
-        } else {
-          // console.log(
-          //   `Route ${route.layout}/${route.name} has scope, but the token don't grant access`
-          // );
-
-          return null;
+      if(route.scope !== null || route.scope !== undefined){
+        for(let scope of route.scope) {
+          if(!this.props.authentication.data.scopes.includes(scope)){
+            // The token don't has at least one of the required scopes
+            // to the current route
+            return null;
+          }
         }
-      } else {
-        // console.log(
-        //   `Route ${route.layout}/${route.name} don't has scope, but the acess is granted`
-        // );
-
-        return route;
       }
+      
+      return route;
     });
   };
 
