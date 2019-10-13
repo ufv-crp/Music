@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 
 // Authentication
-import { setLocalAuthentication } from "../../AuthProvider";
+import { setLocalAuthentication, initialState } from "../../AuthProvider";
 
 class GeneralNavbar extends React.Component {
   state = {
@@ -36,7 +36,7 @@ class GeneralNavbar extends React.Component {
   handleLogout(e) {
     e.preventDefault();
     
-    setLocalAuthentication(null)
+    setLocalAuthentication(initialState)
 
     const { history } = this.props;
 

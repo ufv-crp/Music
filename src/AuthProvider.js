@@ -43,4 +43,4 @@ const AuthProvider = props => {
   );
 };
 
-export { AuthContext, AuthProvider, getLocalAuthentication, setLocalAuthentication }
+export { AuthContext, AuthProvider, getLocalAuthentication, setLocalAuthentication, initialState }
