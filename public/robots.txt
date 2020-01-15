@@ -1,0 +1,4 @@
+#
+# For more robots see: https://www.robotstxt.org/robotstxt.html
+#
+User-agent: *
