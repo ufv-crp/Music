@@ -4,4 +4,4 @@ const createAuthenticatedClient = ({ token }) => {
   return createClient({ headers: { Authorization: token } });
 };
 
-export { createAuthenticatedClient }
+export { createAuthenticatedClient };

@@ -1,3 +1,7 @@
+import React from "react";
+
+import { Redirect } from "react-router-dom";
+
 import { request } from "graphql-request";
 
 import { routes, createRoutesComponents, filterRoutes } from "./routes";
@@ -9,9 +13,12 @@ const authenticate = async ({ email, password }) => {
 		query Login($email: String!, $password: String!) {
 			login(email: $email, password: $password){
 				userId
-				token
-				tokenExpiration
-				scopes
+        token
+        issuedAt
+        expireAt
+        tokenExpiration
+        scopes
+        firstName
 			}
 	  }
 	`;
@@ -26,15 +33,40 @@ const authenticate = async ({ email, password }) => {
   }
 };
 
-const authenticationMiddleware = () => {
-  const localStateAuthentication = getLocalStorageItem({
+const stateAuthentication = () => {
+  return getLocalStorageItem({
     key: "authentication",
     initialState
   }).data;
+};
+
+const checkTokenExpiration = ({ expireAt }) => {
+  const dateTimeNow = new Date();
+
+  const dateTimeTokenExpire = new Date(expireAt);
+
+  const tokenState = {
+    dateTimeNow,
+    dateTimeTokenExpire,
+    expired: dateTimeNow >= dateTimeTokenExpire
+  };
+
+  return tokenState;
+};
+
+const checkTokenExpirationWrapper = () => {
+  const localStateAuthentication = stateAuthentication();
+
+  return checkTokenExpiration({ expireAt: localStateAuthentication.expireAt });
+};
+
+const authenticationMiddleware = () => {
+  const localStateAuthentication = stateAuthentication();
 
   if (
     Object.entries(localStateAuthentication).length &&
-    localStateAuthentication.hasOwnProperty("scopes")
+    localStateAuthentication.hasOwnProperty("scopes") &&
+    localStateAuthentication.hasOwnProperty("expireAt")
   ) {
     const filteredRoutesPublicPrivate = filterRoutes({
       routes,
@@ -53,4 +85,16 @@ const authenticationMiddleware = () => {
   }
 };
 
-export { authenticate, authenticationMiddleware };
+const redirectWrapper = ({ expired, pathname, state }) => {
+  if (expired) return <Redirect to={{ pathname: pathname, state: state }} />;
+
+  return null;
+};
+
+export {
+  authenticate,
+  authenticationMiddleware,
+  checkTokenExpiration,
+  checkTokenExpirationWrapper,
+  redirectWrapper
+};
