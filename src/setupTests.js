@@ -3,11 +3,10 @@
 // Allows you to do things like:
 //
 // const { getByText } = render(<Application />);
-// 
+//
 // const linkElement = getByText(/Application/i);
 //
 // expect(linkElement).toBeInTheDocument();
 //
 // Learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom/extend-expect';import Application from './Application';
-
+import "@testing-library/jest-dom/extend-expect";
