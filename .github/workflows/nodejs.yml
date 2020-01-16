@@ -1,0 +1,28 @@
+name: Node Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Npm install and test
+        run: |
+          npm install
+          npm test
+        env:
+          CI: true
+      - name: Delete merged branch
+        uses: SvanBoxel/delete-merged-branch@v1.3.3
+      - name: Label approved pull requests
+        uses: pullreminders/label-when-approved-action@1.0.5
