@@ -24,10 +24,10 @@ const filterRoutes = ({ routes, scopes }) => {
   });
 };
 
-const createRoutesComponents = ({ routes, scopes }) => {
+const createRoutesComponents = ({ routes }) => {
   return routes.map((route, index) => {
     return <Route path={route.path} render={route.render} key={index} />;
   });
 };
 
-export { routes, createRoutesComponents, filterRoutes };
+export { routes, filterRoutes, createRoutesComponents };

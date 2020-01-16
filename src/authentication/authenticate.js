@@ -1,6 +1,10 @@
 import { request } from "graphql-request";
 
-const authenticate = async (email, password) => {
+import { routes, createRoutesComponents, filterRoutes } from "./routes";
+
+import { getLocalStorageItem, initialState } from "../states";
+
+const authenticate = async ({ email, password }) => {
   const query = `
 		query Login($email: String!, $password: String!) {
 			login(email: $email, password: $password){
@@ -9,7 +13,7 @@ const authenticate = async (email, password) => {
 				tokenExpiration
 				scopes
 			}
-	  	}
+	  }
 	`;
 
   try {
@@ -22,4 +26,31 @@ const authenticate = async (email, password) => {
   }
 };
 
-export { authenticate };
+const authenticationMiddleware = () => {
+  const localStateAuthentication = getLocalStorageItem({
+    key: "authentication",
+    initialState
+  }).data;
+
+  if (
+    Object.entries(localStateAuthentication).length &&
+    localStateAuthentication.hasOwnProperty("scopes")
+  ) {
+    const filteredRoutesPublicPrivate = filterRoutes({
+      routes,
+      scopes: localStateAuthentication.scopes
+    });
+
+    return createRoutesComponents({
+      routes: filteredRoutesPublicPrivate
+    });
+  } else {
+    const filteredRoutesPublic = filterRoutes({ routes, scopes: [] });
+
+    return createRoutesComponents({
+      routes: filteredRoutesPublic
+    });
+  }
+};
+
+export { authenticate, authenticationMiddleware };

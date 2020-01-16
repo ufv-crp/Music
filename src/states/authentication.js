@@ -8,11 +8,11 @@ import {
 
 const localStorageAuthenticationKey = "authentication";
 
-const initialState = { data: {a:1} };
+const initialState = { data: {} };
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
-    removeLocalStorageItem(localStorageAuthenticationKey);
+    removeLocalStorageItem({ key: localStorageAuthenticationKey });
 
     return initialState;
   }
@@ -25,11 +25,14 @@ const AuthenticationContext = createContext();
 const AuthenticationProvider = properties => {
   const [authentication, setAuthentication] = useReducer(
     reducer,
-    getLocalStorageItem(localStorageAuthenticationKey, initialState)
+    getLocalStorageItem({ key: localStorageAuthenticationKey, initialState })
   );
-  
+
   useEffect(() => {
-    setLocalStorageItem(localStorageAuthenticationKey, authentication);
+    setLocalStorageItem({
+      key: localStorageAuthenticationKey,
+      data: authentication
+    });
   }, [authentication]);
 
   return (
@@ -39,8 +42,4 @@ const AuthenticationProvider = properties => {
   );
 };
 
-export {
-  AuthenticationContext,
-  AuthenticationProvider,
-  initialState
-};
+export { AuthenticationContext, AuthenticationProvider, initialState };

@@ -5,8 +5,8 @@ import {
 } from "./authentication";
 
 import {
-  setLocalStorageItem,
   getLocalStorageItem,
+  setLocalStorageItem,
   removeLocalStorageItem
 } from "./utils";
 
@@ -14,7 +14,7 @@ export {
   AuthenticationContext,
   AuthenticationProvider,
   initialState,
-  setLocalStorageItem,
   getLocalStorageItem,
+  setLocalStorageItem,
   removeLocalStorageItem
 };

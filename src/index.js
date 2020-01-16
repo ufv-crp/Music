@@ -4,9 +4,9 @@ import ReactDOM from "react-dom";
 
 import Application from "./application";
 
-import * as serviceWorker from "./serviceWorker";
-
 import { AuthenticationProvider } from "./states";
+
+import * as serviceWorker from "./serviceWorker";
 
 import dotenv from "dotenv";
 

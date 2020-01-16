@@ -1,13 +1,14 @@
-import { authenticate } from "./authenticate";
+import { authenticate, authenticationMiddleware } from "./authenticate";
 
 import { createAuthenticatedClient } from "./client";
 
-import { routes, createRoutesComponents, filterRoutes } from "./routes";
+import { routes, filterRoutes, createRoutesComponents } from "./routes";
 
 export {
   authenticate,
+  authenticationMiddleware,
   createAuthenticatedClient,
   routes,
-  createRoutesComponents,
-  filterRoutes
+  filterRoutes,
+  createRoutesComponents
 };
