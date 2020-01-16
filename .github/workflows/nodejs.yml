@@ -1,6 +1,6 @@
 name: Node Continuous Integration
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
