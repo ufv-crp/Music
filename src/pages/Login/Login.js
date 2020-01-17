@@ -72,7 +72,6 @@ export default function Login({ history }) {
                 label="Email"
                 variant="outlined"
                 margin="normal"
-                required
                 fullWidth
                 component={TextField}
               />
@@ -85,7 +84,6 @@ export default function Login({ history }) {
                   name="password"
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   component={TextField}
                 />

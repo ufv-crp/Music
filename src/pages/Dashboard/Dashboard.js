@@ -22,6 +22,8 @@ import {
 
 import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
 
+import {Sidebar} from '../../components/Sidebar'
+
 export default function Dashboard({ history }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
@@ -85,7 +87,7 @@ export default function Dashboard({ history }) {
           </IconButton>
         </div>
         <Divider />
-        <List>routes</List>
+        <List>{Sidebar}</List>
 
         {/* <Divider /> */}
         {/* <List>{secondaryListItems}</List> */}
