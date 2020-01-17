@@ -1,6 +1,6 @@
 name: Node Continuous Integration
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -22,7 +22,3 @@ jobs:
           npm test
         env:
           CI: true
-      - name: Delete merged branch
-        uses: SvanBoxel/delete-merged-branch@v1.3.3
-      - name: Label approved pull requests
-        uses: pullreminders/label-when-approved-action@1.0.5
