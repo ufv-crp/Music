@@ -2,8 +2,6 @@ import React from "react";
 
 import useStyles from "./styles";
 
-import { Link } from "react-router-dom";
-
 import { Formik, Field, Form } from "formik";
 
 import { TextField } from "formik-material-ui";
@@ -23,6 +21,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 export default function Login({ history }) {
+  const [forgotPass, setForgotPass] = React.useState(true);
   const classes = useStyles();
 
   return (
@@ -33,7 +32,7 @@ export default function Login({ history }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Login
+          {forgotPass ? "Login" : "Recover your account"}
         </Typography>
         <Formik
           initialValues={{
@@ -49,6 +48,9 @@ export default function Login({ history }) {
               !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
             ) {
               errors.email = "Invalid email address";
+            }
+            if (!values.password) {
+              errors.password = "Required";
             }
             return errors;
           }}
@@ -74,96 +76,63 @@ export default function Login({ history }) {
                 fullWidth
                 component={TextField}
               />
+
               <br />
-              <Field
-                type="password"
-                label="Password"
-                name="password"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                component={TextField}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+              {forgotPass && (
+                <Field
+                  type="password"
+                  label="Password"
+                  name="password"
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  component={TextField}
+                />
+              )}
+              {forgotPass && (
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+              )}
               {props.isSubmitting && <LinearProgress />}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                disabled={props.isSubmitting}
-                onClick={props.submitForm}
-              >
-                Sign In
-              </Button>
+              {forgotPass && (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  disabled={props.isSubmitting}
+                  onClick={props.submitForm}
+                >
+                  Sign In
+                </Button>
+              )}
+              {!forgotPass && (
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  disabled={props.isSubmitting}
+                  onClick={props.submitForm}
+                >
+                  Send Password
+                </Button>
+              )}
               <Grid container>
                 <Grid item xs>
-                  <Link to="/" variant="body2">
-                    Forgot password?
-                  </Link>
+                  <Button onClick={() => setForgotPass(!forgotPass)}>
+                    {forgotPass ? "Forgot Password?" : "Back to Login"}
+                  </Button>
                 </Grid>
               </Grid>
             </Form>
           )}
         </Formik>
-        {/*<form className={classes.form} onSubmit={login} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            value={email}
-            label="Email"
-            onChange={e => setEmail(e.target.value)}
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="senha"
-            value={senha}
-            label="Senha"
-            onChange={e => setSenha(e.target.value)}
-            type="password"
-            id="senha"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          {/* <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid> 
-        </form>*/}
       </div>
     </Container>
   );
