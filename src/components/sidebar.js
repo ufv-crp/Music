@@ -4,7 +4,7 @@ import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
 import { Dashboard as DashboardIcon } from "@material-ui/icons";
 
-export const Sidebar = (
+const Sidebar = (
   <div>
     <ListItem button>
       <ListItemIcon>
@@ -14,3 +14,5 @@ export const Sidebar = (
     </ListItem>
   </div>
 );
+
+export  { Sidebar };

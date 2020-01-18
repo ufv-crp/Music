@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 
@@ -20,24 +20,38 @@ import {
   Paper
 } from "@material-ui/core";
 
+import { useHistory } from "react-router-dom";
+
 import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
 
-import {Sidebar} from '../../components/Sidebar'
+import { Sidebar } from "../../components/sidebar";
 
-export default function Dashboard({ history }) {
+import { AuthenticationContext } from "../../states";
+
+const Dashboard = () => {
+  // eslint-disable-next-line
+  const [authentication, setAuthentication] = useContext(AuthenticationContext);
+
+  let history = useHistory();
+
   const classes = useStyles();
+
   const [open, setOpen] = React.useState(true);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   function logout() {
-    localStorage.clear();
-    history.replace("/");
+    setAuthentication(null);
+
+    history.replace("/login");
   }
 
   return (
@@ -189,4 +203,6 @@ export default function Dashboard({ history }) {
       </main>
     </div>
   );
-}
+};
+
+export default Dashboard;
