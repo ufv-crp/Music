@@ -2,7 +2,6 @@ import {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  checkTokenExpirationWrapper,
   redirectWrapper
 } from "./authenticate";
 
@@ -14,7 +13,6 @@ export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  checkTokenExpirationWrapper,
   redirectWrapper,
   createAuthenticatedClient,
   routes,

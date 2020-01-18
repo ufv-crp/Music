@@ -1,29 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { AuthenticationContext } from "./states";
 
 import {
   authenticationMiddleware,
-  checkTokenExpirationWrapper,
+  checkTokenExpiration,
   redirectWrapper
 } from "./authentication";
 
 const Application = () => {
-  const localStateTokenExpiration = checkTokenExpirationWrapper();
+  const [authentication] = useContext(AuthenticationContext);
+
+  const localStateTokenExpiration = checkTokenExpiration({
+    expireAt: authentication.expireAt
+  });
 
   return (
     <Router>
-      <Link to="/dashboard">Dashboard</Link>
-
-      <Link to="/login">Login</Link>
-
       <Switch>
-        {authenticationMiddleware()}
+        {authenticationMiddleware({ authentication })}
 
         {redirectWrapper({
+          invalid: localStateTokenExpiration.invalid,
           expired: localStateTokenExpiration.expired,
           pathname: "/login",
-          state: { expired: localStateTokenExpiration.expired }
+          state: {
+            expired: localStateTokenExpiration.expired,
+            invalid: localStateTokenExpiration.invalid
+          }
         })}
 
         <Route render={() => <p>404 Page not found</p>} />

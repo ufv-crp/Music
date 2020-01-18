@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 
 import useStyles from "./styles";
 
@@ -20,20 +20,36 @@ import {
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-export default function Login({ history }) {
-  const [forgotPass, setForgotPass] = React.useState(true);
+import { useHistory } from "react-router-dom";
+
+import { authenticate } from "../../authentication";
+
+import { AuthenticationContext } from "../../states";
+
+const Login = () => {
+  const [authentication, setAuthentication] = useContext(AuthenticationContext);
+
+  let history = useHistory();
+
+  if (authentication.token) history.replace("/dashboard");
+
+  const [forgotPassword, setForgotPassword] = useState(true);
+
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+
         <Typography component="h1" variant="h5">
-          {forgotPass ? "Login" : "Recover your account"}
+          {forgotPassword ? "Login" : "Recover your account"}
         </Typography>
+
         <Formik
           initialValues={{
             email: "",
@@ -55,13 +71,17 @@ export default function Login({ history }) {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            localStorage.setItem("login", true);
-            history.push("/dashboard");
-            // GraphQL LOGIN query goes here
-            setTimeout(() => {
-              setSubmitting(false);
-              alert(JSON.stringify(values, null, 2));
-            }, 500);
+            authenticate({ email: values.email, password: values.password })
+              .then(response => {
+                setAuthentication({ ...response.login });
+
+                history.replace("/dashboard");
+              })
+              .catch(error => {
+                console.log(error);
+              });
+            
+            setSubmitting(false);
           }}
         >
           {props => (
@@ -77,7 +97,7 @@ export default function Login({ history }) {
               />
 
               <br />
-              {forgotPass && (
+              {forgotPassword && (
                 <Field
                   type="password"
                   label="Password"
@@ -88,14 +108,14 @@ export default function Login({ history }) {
                   component={TextField}
                 />
               )}
-              {forgotPass && (
+              {forgotPassword && (
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 />
               )}
               {props.isSubmitting && <LinearProgress />}
-              {forgotPass && (
+              {forgotPassword && (
                 <Button
                   type="submit"
                   fullWidth
@@ -108,7 +128,7 @@ export default function Login({ history }) {
                   Sign In
                 </Button>
               )}
-              {!forgotPass && (
+              {!forgotPassword && (
                 <Button
                   type="submit"
                   fullWidth
@@ -123,8 +143,8 @@ export default function Login({ history }) {
               )}
               <Grid container>
                 <Grid item xs>
-                  <Button onClick={() => setForgotPass(!forgotPass)}>
-                    {forgotPass ? "Forgot Password?" : "Back to Login"}
+                  <Button onClick={() => setForgotPassword(!forgotPassword)}>
+                    {forgotPassword ? "Forgot Password?" : "Back to Login"}
                   </Button>
                 </Grid>
               </Grid>
@@ -134,4 +154,6 @@ export default function Login({ history }) {
       </div>
     </Container>
   );
-}
+};
+
+export default Login;

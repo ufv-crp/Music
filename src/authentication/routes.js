@@ -2,15 +2,21 @@ import React from "react";
 
 import { Route } from "react-router-dom";
 
+import { Dashboard, Login } from "../pages";
+
 const routes = [
   {
+    title: "Login",
+    description: "Page used to login users",
     path: "/login",
-    render: () => <p>Login</p>,
+    render: () => <Login />,
     scopes: null
   },
   {
+    title: "Dashboard",
+    description: "Page used to show general information about users",
     path: "/dashboard",
-    render: () => <p>Dashboard</p>,
+    render: () => <Dashboard />,
     scopes: ["dashboard"]
   }
 ];

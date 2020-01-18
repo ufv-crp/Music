@@ -8,7 +8,7 @@ import {
 
 const localStorageAuthenticationKey = "authentication";
 
-const initialState = { data: {} };
+const initialState = { scopes: [] };
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
@@ -20,7 +20,7 @@ const reducer = (previousState, newState) => {
   return { ...previousState, ...newState };
 };
 
-const AuthenticationContext = createContext();
+const AuthenticationContext = createContext(initialState);
 
 const AuthenticationProvider = properties => {
   const [authentication, setAuthentication] = useReducer(
