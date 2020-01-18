@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 
 import clsx from "clsx";
 
-import { Route } from "react-router-dom";
-
 import useStyles from "./styles";
 
 import {
@@ -16,8 +14,6 @@ import {
   Divider,
   IconButton,
   Container,
-  Grid,
-  Paper
 } from "@material-ui/core";
 
 import { useHistory } from "react-router-dom";
@@ -45,8 +41,6 @@ const Dashboard = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   function logout() {
     setAuthentication(null);
@@ -103,103 +97,12 @@ const Dashboard = () => {
         <Divider />
         <List>{Sidebar}</List>
 
-        {/* <Divider /> */}
-        {/* <List>{secondaryListItems}</List> */}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          {/* Dashboard */}
-          <Route
-            exact
-            path="/dashboard"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={8} lg={9}>
-                    <Paper className={fixedHeightPaper}>example</Paper>
-                  </Grid>
-                  {/* division */}
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper className={fixedHeightPaper}>example</Paper>
-                  </Grid>
-                  {/* division */}
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>example</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
-          {/*  dashboard categories */}
-          <Route
-            exact
-            path="/dashboard/categorie"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>list</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
-          {/* create edit categories */}
-          <Route
-            path="/dashboard/edit/categorie/:id"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>list</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
-          {/* dashboard create categories */}
-          <Route
-            path="/dashboard/create/categorie"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>list</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
-          {/* dashboard create product */}
-          <Route
-            path="/dashboard/create/product/:id"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>list</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
-          {/* dashboard edit product */}
-
-          <Route
-            path="/dashboard/edit/product/:id"
-            render={props => {
-              return (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>list</Paper>
-                  </Grid>
-                </Grid>
-              );
-            }}
-          />
+          Body
         </Container>
-        {/* <MadeWithLove /> */}
       </main>
     </div>
   );
