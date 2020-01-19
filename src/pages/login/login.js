@@ -11,9 +11,7 @@ import {
   CssBaseline,
   Button,
   LinearProgress,
-  Checkbox,
   Container,
-  FormControlLabel,
   Typography,
   Grid
 } from "@material-ui/core";
@@ -90,8 +88,7 @@ const FormikSign = ({ classes, setAuthentication, properties }) => (
   <Formik
     initialValues={{
       email: "",
-      password: "",
-      rememberMe: false
+      password: ""
     }}
     validate={values => {
       const errors = {};
@@ -151,11 +148,6 @@ const FormikSign = ({ classes, setAuthentication, properties }) => (
           margin="normal"
           fullWidth
           component={TextField}
-        />
-
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
         />
 
         {props.isSubmitting && <LinearProgress />}
