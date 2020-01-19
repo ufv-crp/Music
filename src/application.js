@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { AuthenticationContext } from "./states";
 
 import {
   authenticationMiddleware,
   checkTokenExpiration,
-  redirectWrapper
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound
 } from "./authentication";
 
 const Application = () => {
@@ -21,8 +22,7 @@ const Application = () => {
     <Router>
       <Switch>
         {authenticationMiddleware({ authentication })}
-
-        {redirectWrapper({
+        {redirectWrapperNotLogged({
           invalid: localStateTokenExpiration.invalid,
           expired: localStateTokenExpiration.expired,
           pathname: "/login",
@@ -31,8 +31,12 @@ const Application = () => {
             invalid: localStateTokenExpiration.invalid
           }
         })}
-
-        <Route render={() => <p>404 Page not found</p>} />
+        
+        {redirectWrapperNotFound({
+          pathname: "/dashboard",
+          state: {}
+        })}
+        />
       </Switch>
     </Router>
   );

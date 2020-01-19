@@ -52,16 +52,21 @@ const authenticationMiddleware = ({ authentication }) => {
   });
 };
 
-const redirectWrapper = ({ expired, invalid, pathname, state }) => {
+const redirectWrapperNotLogged = ({ expired, invalid, pathname, state }) => {
   if (expired || invalid)
     return <Redirect to={{ pathname: pathname, state: state }} />;
 
   return null;
 };
 
+const redirectWrapperNotFound = ({ pathname, state }) => {
+  return <Redirect to={{ pathname: pathname, state: state }} />;
+};
+
 export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  redirectWrapper
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound
 };
