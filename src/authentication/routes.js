@@ -2,13 +2,25 @@ import React from "react";
 
 import { Route } from "react-router-dom";
 
-import { Login, Users } from "../pages";
+import {
+  Dashboard,
+  Login,
+  Users,
+  Scopes,
+  Courses,
+  Classes,
+  Progresses
+} from "../pages";
 
 import General from "../layouts/general/general";
 
 import {
   Dashboard as DashboardIcon,
-  People as PeopleIcon
+  People as PeopleIcon,
+  LockOpen as LockOpenIcon,
+  SortByAlpha as SortByAlphaIcon,
+  School as SchoolIcon,
+  DonutLarge as DonutLargeIcon
 } from "@material-ui/icons";
 
 import { ListItem, ListItemIcon, ListItemText, Link } from "@material-ui/core";
@@ -17,7 +29,7 @@ const routes = [
   {
     title: "Login",
     path: "/login",
-    render: () => <Login />,
+    component: <Login />,
     scopes: null,
     sidebar: false,
     icon: null
@@ -25,18 +37,102 @@ const routes = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    render: () => <General />,
+    component: <Dashboard />,
     scopes: ["dashboard"],
     sidebar: true,
-    icon: <DashboardIcon />
+    icon: <DashboardIcon />,
+    layout: General
   },
   {
     title: "Users",
     path: "/users",
-    render: () => <Users />,
-    scopes: ["searchUser"], // TO DO: include all scopes to manage users (and scopes)
+    component: <Users />,
+    scopes: [
+      "searchUser",
+      "createUser",
+      "removeUser",
+      "updateUser",
+      "listUsers",
+      "listContacts",
+      "createContact",
+      "removeContact",
+      "updateContact",
+      "listAddresses",
+      "createAddress",
+      "removeAddress",
+      "updateAddress"
+    ],
     sidebar: true,
-    icon: <PeopleIcon />
+    icon: <PeopleIcon />,
+    layout: General
+  },
+  {
+    title: "Scopes",
+    path: "/scopes",
+    component: <Scopes />,
+    scopes: [
+      "searchScope",
+      "createScope",
+      "removeScope",
+      "updateScope",
+      "listScopes",
+      "createUserScope",
+      "createUserScopeBulk",
+      "removeUserScope",
+      "listUserScopes"
+    ],
+    sidebar: true,
+    icon: <LockOpenIcon />,
+    layout: General
+  },
+  {
+    title: "Courses",
+    path: "/courses",
+    component: <Courses />,
+    scopes: [
+      "searchCourses",
+      "listCourses",
+      "createCourse",
+      "removeCourse",
+      "updateCourse",
+      "listCourseUsers",
+      "createCourseUser",
+      "removeCourseUser"
+    ],
+    sidebar: true,
+    icon: <SortByAlphaIcon />,
+    layout: General
+  },
+  {
+    title: "Classes",
+    path: "/classes",
+    component: <Classes />,
+    scopes: [
+      "createClass",
+      "removeClass",
+      "updateClass",
+      "listClasses",
+      "listClassUsers",
+      "createClassUser",
+      "removeClassUser"
+    ],
+    sidebar: true,
+    icon: <SchoolIcon />,
+    layout: General
+  },
+  {
+    title: "Progresses",
+    path: "/progresses",
+    component: <Progresses />,
+    scopes: [
+      "listProgresses",
+      "createProgress",
+      "removeProgress",
+      "updateProgress"
+    ],
+    sidebar: true,
+    icon: <DonutLargeIcon />,
+    layout: General
   }
 ];
 
@@ -51,7 +147,15 @@ const filterRoutes = ({ routes, scopes }) => {
 
 const createRoutesComponents = ({ routes }) => {
   return routes.map((route, index) => {
-    return <Route path={route.path} render={route.render} key={index} />;
+    return (
+      <Route
+        path={route.path}
+        render={() => (
+          <route.layout>{route.component}</route.layout>
+        )}
+        key={index}
+      />
+    );
   });
 };
 
