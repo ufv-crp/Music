@@ -8,7 +8,7 @@ import { useTheme } from "@material-ui/styles";
 
 import { useMediaQuery } from "@material-ui/core";
 
-import { Header, Sidebar, Footer } from "./components";
+import { Header, Sidebar, Footer } from "../../components";
 
 const General = props => {
   const { children } = props;

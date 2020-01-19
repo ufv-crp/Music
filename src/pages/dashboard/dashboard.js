@@ -22,7 +22,7 @@ import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
 
 import { AuthenticationContext } from "../../states";
 
-import { SidebarRoutes } from  "../../layouts/general/components/sidebar/components" 
+import { SidebarRoutes } from  "../../components/sidebar" 
 
 const Dashboard = () => {
   // eslint-disable-next-line

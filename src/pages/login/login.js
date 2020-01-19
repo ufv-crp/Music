@@ -150,6 +150,8 @@ const FormikSign = ({ classes, setAuthentication, properties }) => (
           component={TextField}
         />
 
+        <br />
+
         {props.isSubmitting && <LinearProgress />}
 
         <Button
@@ -190,8 +192,7 @@ const Login = properties => {
 
         {forgotPassword && FormikForgotPassword({ classes })}
 
-        {forgotPassword === false &&
-          FormikSign({ classes, setAuthentication, properties })}
+        {forgotPassword === false && FormikSign({ classes, setAuthentication, properties })}
 
         <Grid container>
           <Grid item xs>

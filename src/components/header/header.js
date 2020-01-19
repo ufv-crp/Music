@@ -8,9 +8,9 @@ import useStyles from "./styles";
 
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from "@material-ui/core";
 
-import { useHistory } from "react-router-dom";
+import { AuthenticationContext } from "../../states";
 
-import { AuthenticationContext } from "../../../../states";
+import { createHashHistory } from 'history'
 
 import {
   Menu as MenuIcon,
@@ -23,8 +23,6 @@ const Header = props => {
 
   const { setAuthentication } = useContext(AuthenticationContext);
 
-  let history = useHistory();
-
   const classes = useStyles();
 
   const [notifications] = useState([]);
@@ -32,16 +30,20 @@ const Header = props => {
   function logout() {
     setAuthentication(null);
 
-    history.replace("/login");
+    const history = createHashHistory()
+
+    history.push("/login");
   }
 
   return (
     <AppBar {...rest} className={clsx(classes.root, className)}>
       <Toolbar>
         <RouterLink to="/">
-          <img alt="Logo" src="/images/logos/logo.header.png" width="150px"/>
+          <img alt="Logo" src="/images/logos/logo.header.png" width="150px" />
         </RouterLink>
+
         <div className={classes.flexGrow} />
+
         <Hidden mdDown>
           <IconButton color="inherit">
             <Badge
@@ -52,6 +54,7 @@ const Header = props => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          
           <IconButton
             className={classes.signOutButton}
             color="inherit"
@@ -60,6 +63,7 @@ const Header = props => {
             <InputIcon />
           </IconButton>
         </Hidden>
+        
         <Hidden lgUp>
           <IconButton color="inherit" onClick={onSidebarOpen}>
             <MenuIcon />
