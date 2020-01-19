@@ -13,14 +13,12 @@ import {
   Typography,
   Divider,
   IconButton,
-  Container,
+  Container
 } from "@material-ui/core";
 
 import { useHistory } from "react-router-dom";
 
 import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
-
-import { Sidebar } from "../../components/sidebar";
 
 import { AuthenticationContext } from "../../states";
 
@@ -95,8 +93,7 @@ const Dashboard = () => {
           </IconButton>
         </div>
         <Divider />
-        <List><Sidebar/></List>
-
+        <List>Sidebar</List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

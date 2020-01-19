@@ -2,4 +2,6 @@ import Dashboard from "./dashboard/dashboard";
 
 import Login from "./login/login";
 
-export { Dashboard, Login };
+import Users from "./users/users";
+
+export { Dashboard, Login, Users };

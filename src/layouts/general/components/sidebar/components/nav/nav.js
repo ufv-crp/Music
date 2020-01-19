@@ -4,11 +4,11 @@ import {
   routes,
   filterRoutes,
   createRoutesComponentsSidebar
-} from "../authentication/routes.js";
+} from "../../../../../../authentication/routes";
 
-import { AuthenticationContext } from "../states";
+import { AuthenticationContext } from "../../../../../../states";
 
-const Sidebar = () => {
+const SidebarRoutes = () => {
   const [authentication] = useContext(AuthenticationContext);
 
   return (
@@ -20,4 +20,4 @@ const Sidebar = () => {
   );
 };
 
-export { Sidebar };
+export default SidebarRoutes;

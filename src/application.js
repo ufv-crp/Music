@@ -1,5 +1,9 @@
 import React, { useContext } from "react";
 
+import { ThemeProvider } from "@material-ui/styles";
+
+import theme from "./theme";
+
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { AuthenticationContext } from "./states";
@@ -19,26 +23,27 @@ const Application = () => {
   });
 
   return (
-    <Router>
-      <Switch>
-        {authenticationMiddleware({ authentication })}
-        {redirectWrapperNotLogged({
-          invalid: localStateTokenExpiration.invalid,
-          expired: localStateTokenExpiration.expired,
-          pathname: "/login",
-          state: {
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          {authenticationMiddleware({ authentication })}
+          {redirectWrapperNotLogged({
+            invalid: localStateTokenExpiration.invalid,
             expired: localStateTokenExpiration.expired,
-            invalid: localStateTokenExpiration.invalid
-          }
-        })}
-        
-        {redirectWrapperNotFound({
-          pathname: "/dashboard",
-          state: {}
-        })}
-        />
-      </Switch>
-    </Router>
+            pathname: "/login",
+            state: {
+              expired: localStateTokenExpiration.expired,
+              invalid: localStateTokenExpiration.invalid
+            }
+          })}
+          {redirectWrapperNotFound({
+            pathname: "/dashboard",
+            state: {}
+          })}
+          />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 };
 
