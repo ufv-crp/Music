@@ -6,7 +6,7 @@ import { Dashboard, Login } from "../pages";
 
 import { Dashboard as DashboardIcon } from "@material-ui/icons";
 
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { ListItem, ListItemIcon, ListItemText, Link } from "@material-ui/core";
 
 const routes = [
   {
@@ -50,7 +50,9 @@ const createRoutesComponentsSidebar = ({ routes }) => {
       return (
         <ListItem key={index} button>
           {route.icon && <ListItemIcon>{route.icon}</ListItemIcon>}
-          <ListItemText primary={route.title} />
+          <Link href={route.path} color="textPrimary" underline="none">
+            <ListItemText primary={route.title} />
+          </Link>
         </ListItem>
       );
 
