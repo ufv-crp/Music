@@ -20,8 +20,6 @@ import { useHistory } from "react-router-dom";
 
 import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
 
-import { Sidebar } from "../../components/sidebar";
-
 import { AuthenticationContext } from "../../states";
 
 const Dashboard = () => {
