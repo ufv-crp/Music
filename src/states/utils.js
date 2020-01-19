@@ -3,9 +3,9 @@ import Cryptr from "cryptr";
 const cryptr = new Cryptr(process.env.REACT_APP_SECRET_STORE);
 
 const getLocalStorageItem = ({ key, initialState }) => {
-  const localState = localStorage.getItem(key);
+  const item = localStorage.getItem(key);
 
-  return localState ? JSON.parse(cryptr.decrypt(localState)) : initialState;
+  return item ? JSON.parse(cryptr.decrypt(item)) : initialState;
 };
 
 const setLocalStorageItem = ({ key, data }) => {
