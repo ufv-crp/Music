@@ -4,6 +4,12 @@ import { render } from "@testing-library/react";
 
 import Application from "./application";
 
+import { AuthenticationProvider } from "./states";
+
 test("renders application", () => {
-  render(<Application />);
+  render(
+    <AuthenticationProvider>
+      <Application />
+    </AuthenticationProvider>
+  );
 });
