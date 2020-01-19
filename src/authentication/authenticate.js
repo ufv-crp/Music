@@ -27,7 +27,7 @@ const authenticate = async ({ email, password }) => {
       password
     });
   } catch (error) {
-    return error;
+    return JSON.stringify(error);
   }
 };
 
@@ -63,10 +63,27 @@ const redirectWrapperNotFound = ({ pathname, state }) => {
   return <Redirect to={{ pathname: pathname, state: state }} />;
 };
 
+const resetPassword = async ({ email }) => {
+  const query = `
+    mutation ResetUserPassword($email: String!) {
+      resetUserPassword(email: $email)
+    }
+  `;
+
+  try {
+    return await request(process.env.REACT_APP_GRAPHQL_URL, query, {
+      email
+    });
+  } catch (error) {
+    return JSON.stringify(error);
+  }
+};
+
 export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
   redirectWrapperNotLogged,
-  redirectWrapperNotFound
+  redirectWrapperNotFound,
+  resetPassword
 };

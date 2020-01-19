@@ -3,7 +3,8 @@ import {
   authenticationMiddleware,
   checkTokenExpiration,
   redirectWrapperNotLogged,
-  redirectWrapperNotFound
+  redirectWrapperNotFound,
+  resetPassword
 } from "./authenticate";
 
 import { createAuthenticatedClient } from "./client";
@@ -16,6 +17,7 @@ export {
   checkTokenExpiration,
   redirectWrapperNotLogged,
   redirectWrapperNotFound,
+  resetPassword,
   createAuthenticatedClient,
   routes,
   filterRoutes,

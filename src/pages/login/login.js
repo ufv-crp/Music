@@ -22,11 +22,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import { withRouter } from "react-router-dom";
 
-import { authenticate } from "../../authentication";
+import { authenticate, resetPassword } from "../../authentication";
 
 import { AuthenticationContext } from "../../states";
-
-import { request } from "graphql-request";
 
 const Login = properies => {
   const { setAuthentication } = useContext(AuthenticationContext);
@@ -67,16 +65,8 @@ const Login = properies => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               setSubmitting(true);
 
-              const query = `
-                mutation ResetUserPassword($email: String!) {
-                  resetUserPassword(email: $email)
-                }
-              `;
-
               try {
-                await request(process.env.REACT_APP_GRAPHQL_URL, query, {
-                  email: values.email
-                });
+                resetPassword({ email: values.email });
 
                 resetForm();
               } catch (error) {
