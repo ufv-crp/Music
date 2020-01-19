@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import {
   routes,
   filterRoutes,
-  createRoutesComponentsSidebar
+  createRoutesSidebarLinks
 } from "../../../../../../authentication/routes";
 
 import { AuthenticationContext } from "../../../../../../states";
@@ -13,7 +13,7 @@ const SidebarRoutes = () => {
 
   return (
     <div>
-      {createRoutesComponentsSidebar({
+      {createRoutesSidebarLinks({
         routes: filterRoutes({ routes, scopes: authentication.scopes })
       })}
     </div>

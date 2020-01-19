@@ -16,7 +16,6 @@ import { ListItem, ListItemIcon, ListItemText, Link } from "@material-ui/core";
 const routes = [
   {
     title: "Login",
-    description: "Page used to login users",
     path: "/login",
     render: () => <Login />,
     scopes: null,
@@ -25,8 +24,6 @@ const routes = [
   },
   {
     title: "Dashboard",
-    description:
-      "Artificial scope created in front-end to grant access to the dashboard",
     path: "/dashboard",
     render: () => <General />,
     scopes: ["dashboard"],
@@ -35,7 +32,6 @@ const routes = [
   },
   {
     title: "Users",
-    description: "Page used to show general information about users",
     path: "/users",
     render: () => <Users />,
     scopes: ["searchUser"], // TO DO: include all scopes to manage users (and scopes)
@@ -59,11 +55,16 @@ const createRoutesComponents = ({ routes }) => {
   });
 };
 
-const createRoutesComponentsSidebar = ({ routes }) => {
+const createRoutesSidebarLinks = ({ routes }) => {
   return routes.map((route, index) => {
     if (route.sidebar)
       return (
-        <Link href={route.path} color="textPrimary" underline="none" key={index}>
+        <Link
+          href={route.path}
+          color="textPrimary"
+          underline="none"
+          key={index}
+        >
           <ListItem button>
             {route.icon && <ListItemIcon>{route.icon}</ListItemIcon>}
 
@@ -80,5 +81,5 @@ export {
   routes,
   filterRoutes,
   createRoutesComponents,
-  createRoutesComponentsSidebar
+  createRoutesSidebarLinks
 };
