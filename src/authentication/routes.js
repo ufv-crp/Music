@@ -63,8 +63,8 @@ const createRoutesComponentsSidebar = ({ routes }) => {
   return routes.map((route, index) => {
     if (route.sidebar)
       return (
-        <Link href={route.path} color="textPrimary" underline="none">
-          <ListItem key={index} button>
+        <Link href={route.path} color="textPrimary" underline="none" key={index}>
+          <ListItem button>
             {route.icon && <ListItemIcon>{route.icon}</ListItemIcon>}
 
             <ListItemText primary={route.title} />
