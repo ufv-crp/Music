@@ -1,4 +1,4 @@
-import MuiButton from "./MuiButton";
+import MuiButton from "./muiButton";
 
 export default {
   MuiButton
