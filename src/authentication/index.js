@@ -2,22 +2,25 @@ import {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  checkTokenExpirationWrapper,
-  redirectWrapper
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound,
+  resetPassword
 } from "./authenticate";
 
 import { createAuthenticatedClient } from "./client";
 
-import { routes, filterRoutes, createRoutesComponents } from "./routes";
+import { routes, filterRoutes, createRoutesComponents, createRoutesComponentsSidebar } from "./routes";
 
 export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  checkTokenExpirationWrapper,
-  redirectWrapper,
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound,
+  resetPassword,
   createAuthenticatedClient,
   routes,
   filterRoutes,
-  createRoutesComponents
+  createRoutesComponents,
+  createRoutesComponentsSidebar
 };

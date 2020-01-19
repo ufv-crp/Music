@@ -1,34 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/styles";
+
+import theme from "./theme";
+
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+
+import { AuthenticationContext } from "./states";
 
 import {
   authenticationMiddleware,
-  checkTokenExpirationWrapper,
-  redirectWrapper
+  checkTokenExpiration,
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound
 } from "./authentication";
 
 const Application = () => {
-  const localStateTokenExpiration = checkTokenExpirationWrapper();
+  const { authentication } = useContext(AuthenticationContext);
+
+  const localStateTokenExpiration = checkTokenExpiration({
+    expireAt: authentication.expireAt
+  });
 
   return (
-    <Router>
-      <Link to="/dashboard">Dashboard</Link>
-
-      <Link to="/login">Login</Link>
-
-      <Switch>
-        {authenticationMiddleware()}
-
-        {redirectWrapper({
-          expired: localStateTokenExpiration.expired,
-          pathname: "/login",
-          state: { expired: localStateTokenExpiration.expired }
-        })}
-
-        <Route render={() => <p>404 Page not found</p>} />
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          {authenticationMiddleware({ authentication })}
+          
+          {redirectWrapperNotLogged({
+            invalid: localStateTokenExpiration.invalid,
+            expired: localStateTokenExpiration.expired,
+            pathname: "/login",
+            state: {
+              expired: localStateTokenExpiration.expired,
+              invalid: localStateTokenExpiration.invalid
+            }
+          })}
+          {redirectWrapperNotFound({
+            pathname: "/dashboard",
+            state: {}
+          })}
+          />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 };
 

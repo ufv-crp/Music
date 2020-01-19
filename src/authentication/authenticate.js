@@ -6,8 +6,6 @@ import { request } from "graphql-request";
 
 import { routes, createRoutesComponents, filterRoutes } from "./routes";
 
-import { getLocalStorageItem, initialState } from "../states";
-
 const authenticate = async ({ email, password }) => {
   const query = `
 		query Login($email: String!, $password: String!) {
@@ -29,72 +27,63 @@ const authenticate = async ({ email, password }) => {
       password
     });
   } catch (error) {
-    return error;
+    return JSON.stringify(error);
   }
 };
 
-const stateAuthentication = () => {
-  return getLocalStorageItem({
-    key: "authentication",
-    initialState
-  }).data;
-};
-
 const checkTokenExpiration = ({ expireAt }) => {
+  if (expireAt === undefined) return { invalid: true };
+
   const dateTimeNow = new Date();
 
   const dateTimeTokenExpire = new Date(expireAt);
 
-  const tokenState = {
-    dateTimeNow,
-    dateTimeTokenExpire,
-    expired: dateTimeNow >= dateTimeTokenExpire
-  };
-
-  return tokenState;
+  return { expired: dateTimeNow >= dateTimeTokenExpire };
 };
 
-const checkTokenExpirationWrapper = () => {
-  const localStateAuthentication = stateAuthentication();
+const authenticationMiddleware = ({ authentication }) => {
+  const filteredRoutes = filterRoutes({
+    routes,
+    scopes: authentication.scopes
+  });
 
-  return checkTokenExpiration({ expireAt: localStateAuthentication.expireAt });
+  return createRoutesComponents({
+    routes: filteredRoutes
+  });
 };
 
-const authenticationMiddleware = () => {
-  const localStateAuthentication = stateAuthentication();
-
-  if (
-    Object.entries(localStateAuthentication).length &&
-    localStateAuthentication.hasOwnProperty("scopes") &&
-    localStateAuthentication.hasOwnProperty("expireAt")
-  ) {
-    const filteredRoutesPublicPrivate = filterRoutes({
-      routes,
-      scopes: localStateAuthentication.scopes
-    });
-
-    return createRoutesComponents({
-      routes: filteredRoutesPublicPrivate
-    });
-  } else {
-    const filteredRoutesPublic = filterRoutes({ routes, scopes: [] });
-
-    return createRoutesComponents({
-      routes: filteredRoutesPublic
-    });
-  }
-};
-
-const redirectWrapper = ({ expired, pathname, state }) => {
-  if (expired) return <Redirect to={{ pathname: pathname, state: state }} />;
+const redirectWrapperNotLogged = ({ expired, invalid, pathname, state }) => {
+  if (expired || invalid)
+    return <Redirect to={{ pathname: pathname, state: state }} />;
 
   return null;
+};
+
+const redirectWrapperNotFound = ({ pathname, state }) => {
+  return <Redirect to={{ pathname: pathname, state: state }} />;
+};
+
+const resetPassword = async ({ email }) => {
+  const query = `
+    mutation ResetUserPassword($email: String!) {
+      resetUserPassword(email: $email)
+    }
+  `;
+
+  try {
+    return await request(process.env.REACT_APP_GRAPHQL_URL, query, {
+      email
+    });
+  } catch (error) {
+    return JSON.stringify(error);
+  }
 };
 
 export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
-  checkTokenExpirationWrapper,
-  redirectWrapper
+  redirectWrapperNotLogged,
+  redirectWrapperNotFound,
+  resetPassword
 };
