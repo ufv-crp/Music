@@ -1,19 +1,23 @@
-import Cryptr from "cryptr";
+import * as SecureLS from "secure-ls";
 
-const cryptr = new Cryptr(process.env.REACT_APP_SECRET_STORE);
+let ls = new SecureLS({
+  encodingType: "aes",
+  isCompression: true,
+  encryptionSecret: process.env.REACT_APP_SECRET_STORE
+});
 
 const getLocalStorageItem = ({ key, initialState }) => {
-  const item = localStorage.getItem(key);
+  const item = ls.get(key);
 
-  return item ? JSON.parse(cryptr.decrypt(item)) : initialState;
+  return item ? item : initialState;
 };
 
 const setLocalStorageItem = ({ key, data }) => {
-  localStorage.setItem(key, cryptr.encrypt(JSON.stringify(data)));
+  ls.set(key, data);
 };
 
 const removeLocalStorageItem = ({ key }) => {
-  localStorage.removeItem(key);
+  ls.remove(key);
 };
 
 export { getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem };
