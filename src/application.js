@@ -4,6 +4,8 @@ import { ThemeProvider } from "@material-ui/styles";
 
 import theme from "./theme";
 
+import "./assets/index.scss";
+
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { AuthenticationContext } from "./states";

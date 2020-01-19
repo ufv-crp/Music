@@ -12,4 +12,15 @@ import Classes from "./classes/classes";
 
 import Progresses from "./progresses/progresses";
 
-export { Dashboard, Login, Users, Scopes, Courses, Classes, Progresses };
+import Account from "./account/account";
+
+export {
+  Dashboard,
+  Login,
+  Users,
+  Scopes,
+  Courses,
+  Classes,
+  Progresses,
+  Account
+};

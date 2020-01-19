@@ -9,7 +9,8 @@ import {
   Scopes,
   Courses,
   Classes,
-  Progresses
+  Progresses,
+  Account
 } from "../pages";
 
 import General from "../layouts/general/general";
@@ -20,7 +21,8 @@ import {
   LockOpen as LockOpenIcon,
   SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
-  DonutLarge as DonutLargeIcon
+  DonutLarge as DonutLargeIcon,
+  AccountCircle as AccountCircleIcon
 } from "@material-ui/icons";
 
 import { ListItem, ListItemIcon, ListItemText, Link } from "@material-ui/core";
@@ -41,6 +43,15 @@ const routes = [
     scopes: ["dashboard"],
     sidebar: true,
     icon: <DashboardIcon />,
+    layout: General
+  },
+  {
+    title: "Account",
+    path: "/account",
+    component: <Account />,
+    scopes: ["searchUser", "updateUser"],
+    sidebar: true,
+    icon: <AccountCircleIcon />,
     layout: General
   },
   {
