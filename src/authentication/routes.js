@@ -46,7 +46,6 @@ const routes = [
   {
     title: "Users",
     path: "/users",
-<<<<<<< HEAD
     component: <Users />,
     scopes: [
       "searchUser",
@@ -130,19 +129,6 @@ const routes = [
       "createProgress",
       "removeProgress",
       "updateProgress"
-=======
-    render: () => <Users />,
-    scopes: [
-      "listUsers",
-      "searchUser",
-      "createUser",
-      "updateUser",
-      "removeUser",
-      "listScopes",
-      "createScope",
-      "updateScope",
-      "removeScope"
->>>>>>> 7f424259655efcc92c835addd3cbaaf910476ebe
     ],
     sidebar: true,
     icon: <DonutLargeIcon />,
@@ -164,9 +150,11 @@ const createRoutesComponents = ({ routes }) => {
     return (
       <Route
         path={route.path}
-        render={() => (
-          <route.layout>{route.component}</route.layout>
-        )}
+        render={() => {
+          if (route.layout)
+            return <route.layout>{route.component}</route.layout>;
+          else return route.component;
+        }}
         key={index}
       />
     );
