@@ -4,4 +4,6 @@ import Profile from "./profile/profile";
 
 import SidebarRoutes from "./nav/nav";
 
-export { Sidebar, Profile, SidebarRoutes };
+import Logout from "./logout/logout";
+
+export { Sidebar, Profile, SidebarRoutes, Logout };

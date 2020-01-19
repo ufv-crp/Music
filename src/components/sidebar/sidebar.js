@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import { Divider, Drawer } from "@material-ui/core";
 
-import { Profile, SidebarRoutes } from "./index";
+import { Profile, SidebarRoutes, Logout } from "./index";
 
 import useStyles from "./styles";
 
@@ -27,6 +27,10 @@ const Sidebar = props => {
         <Divider className={classes.divider} />
 
         <SidebarRoutes className={classes.nav} />
+
+        <Divider className={classes.divider} />
+
+        <Logout />
       </div>
     </Drawer>
   );

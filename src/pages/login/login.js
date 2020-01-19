@@ -87,8 +87,8 @@ const FormikForgotPassword = ({ classes }) => (
 const FormikSign = ({ classes, setAuthentication, properties }) => (
   <Formik
     initialValues={{
-      email: "",
-      password: ""
+      email: "admin@gmail.com",
+      password: "123456"
     }}
     validate={values => {
       const errors = {};
@@ -192,7 +192,8 @@ const Login = properties => {
 
         {forgotPassword && FormikForgotPassword({ classes })}
 
-        {forgotPassword === false && FormikSign({ classes, setAuthentication, properties })}
+        {forgotPassword === false &&
+          FormikSign({ classes, setAuthentication, properties })}
 
         <Grid container>
           <Grid item xs>
