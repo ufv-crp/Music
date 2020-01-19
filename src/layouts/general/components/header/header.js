@@ -39,7 +39,7 @@ const Header = props => {
     <AppBar {...rest} className={clsx(classes.root, className)}>
       <Toolbar>
         <RouterLink to="/">
-          <img alt="Logo" src="/images/logos/logo.header.svg" />
+          <img alt="Logo" src="/images/logos/logo.header.png" width="150px"/>
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden mdDown>
