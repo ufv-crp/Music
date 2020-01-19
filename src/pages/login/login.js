@@ -84,7 +84,7 @@ const FormikForgotPassword = ({ classes }) => (
   </Formik>
 );
 
-const FormikSign = ({ classes, setAuthentication, properties }) => (
+const FormikSign = ({ classes, setAuthentication, props }) => (
   <Formik
     initialValues={{
       email: "admin@gmail.com",
@@ -123,7 +123,7 @@ const FormikSign = ({ classes, setAuthentication, properties }) => (
         console.log(error);
       }
 
-      properties.history.push("/dashboard");
+      props.history.push("/dashboard");
     }}
   >
     {props => (
@@ -170,7 +170,7 @@ const FormikSign = ({ classes, setAuthentication, properties }) => (
   </Formik>
 );
 
-const Login = properties => {
+const Login = props => {
   const { setAuthentication } = useContext(AuthenticationContext);
 
   const [forgotPassword, setForgotPassword] = useState(false);
@@ -193,7 +193,7 @@ const Login = properties => {
         {forgotPassword && FormikForgotPassword({ classes })}
 
         {forgotPassword === false &&
-          FormikSign({ classes, setAuthentication, properties })}
+          FormikSign({ classes, setAuthentication, props })}
 
         <Grid container>
           <Grid item xs>
