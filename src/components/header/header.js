@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, forwardRef } from "react";
 
 import clsx from "clsx";
 
@@ -36,7 +36,7 @@ const Header = props => {
 
   const { setAuthentication } = useContext(AuthenticationContext);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,7 +46,7 @@ const Header = props => {
     setOpen(false);
   };
 
-  const Transition = React.forwardRef((props, ref) {
+  const Transition = forwardRef((props, ref) => {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 

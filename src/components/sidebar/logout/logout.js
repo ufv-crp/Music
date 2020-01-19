@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, forwardRef } from "react";
 
 import {
   Dialog,
@@ -22,7 +22,7 @@ import { AuthenticationContext } from "../../../states";
 const Logout = () => {
   const { setAuthentication } = useContext(AuthenticationContext);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,7 +32,7 @@ const Logout = () => {
     setOpen(false);
   };
 
-  const Transition = React.forwardRef(function Transition(props, ref) {
+  const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
