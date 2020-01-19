@@ -34,7 +34,17 @@ const routes = [
     title: "Users",
     path: "/users",
     render: () => <Users />,
-    scopes: ["searchUser"], // TO DO: include all scopes to manage users (and scopes)
+    scopes: [
+      "listUsers",
+      "searchUser",
+      "createUser",
+      "updateUser",
+      "removeUser",
+      "listScopes",
+      "createScope",
+      "updateScope",
+      "removeScope"
+    ],
     sidebar: true,
     icon: <PeopleIcon />
   }
