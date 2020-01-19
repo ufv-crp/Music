@@ -24,13 +24,15 @@ const Profile = props => {
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        to="/account"
+        to="/users"
       >
         {user.name[0]}
       </Avatar>
+
       <Typography className={classes.name} variant="h4">
         {user.name}
       </Typography>
+      
       <Typography variant="body2">{user.bio}</Typography>
     </div>
   );
