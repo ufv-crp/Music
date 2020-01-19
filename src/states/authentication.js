@@ -22,7 +22,7 @@ const reducer = (previousState, newState) => {
 
 const AuthenticationContext = createContext(initialState);
 
-const AuthenticationProvider = properties => {
+const AuthenticationProvider = ({ children }) => {
   const [authentication, setAuthentication] = useReducer(
     reducer,
     getLocalStorageItem({ key: localStorageAuthenticationKey, initialState })
@@ -37,7 +37,7 @@ const AuthenticationProvider = properties => {
 
   return (
     <AuthenticationContext.Provider value={[authentication, setAuthentication]}>
-      {properties.children}
+      {children}
     </AuthenticationContext.Provider>
   );
 };

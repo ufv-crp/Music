@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  routes,
+  filterRoutes,
+  createRoutesComponentsSidebar
+} from "../authentication/routes.js";
 
-import { Dashboard as DashboardIcon } from "@material-ui/icons";
+import { AuthenticationContext } from "../states";
 
-const Sidebar = (
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
-  </div>
-);
+const Sidebar = () => {
+  const [authentication] = useContext(AuthenticationContext);
 
-export  { Sidebar };
+  return (
+    <div>
+      {createRoutesComponentsSidebar({
+        routes: filterRoutes({ routes, scopes: authentication.scopes })
+      })}
+    </div>
+  );
+};
+
+export { Sidebar };

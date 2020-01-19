@@ -7,7 +7,7 @@ import {
 
 import { createAuthenticatedClient } from "./client";
 
-import { routes, filterRoutes, createRoutesComponents } from "./routes";
+import { routes, filterRoutes, createRoutesComponents, createRoutesComponentsSidebar } from "./routes";
 
 export {
   authenticate,
@@ -17,5 +17,6 @@ export {
   createAuthenticatedClient,
   routes,
   filterRoutes,
-  createRoutesComponents
+  createRoutesComponents,
+  createRoutesComponentsSidebar
 };

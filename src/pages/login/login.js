@@ -78,7 +78,7 @@ const Login = () => {
               `;
 
               try {
-                const response = await request(
+                await request(
                   process.env.REACT_APP_GRAPHQL_URL,
                   query,
                   {

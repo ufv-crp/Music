@@ -95,7 +95,7 @@ const Dashboard = () => {
           </IconButton>
         </div>
         <Divider />
-        <List>{Sidebar}</List>
+        <List><Sidebar/></List>
 
       </Drawer>
       <main className={classes.content}>
