@@ -8,7 +8,7 @@ import {
 
 import { AuthenticationContext } from "../../../../../../states";
 
-const Sidebar = () => {
+const SidebarRoutes = () => {
   const { authentication } = useContext(AuthenticationContext);
 
   return (

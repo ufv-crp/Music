@@ -22,6 +22,8 @@ import { Menu, ChevronLeft, ExitToApp } from "@material-ui/icons";
 
 import { AuthenticationContext } from "../../states";
 
+import { SidebarRoutes } from  "../../layouts/general/components/sidebar/components" 
+
 const Dashboard = () => {
   // eslint-disable-next-line
   const { setAuthentication } = useContext(AuthenticationContext);
@@ -94,7 +96,7 @@ const Dashboard = () => {
         </div>
         <Divider />
         <List>
-          <Sidebar />
+          <SidebarRoutes />
         </List>
       </Drawer>
       <main className={classes.content}>
