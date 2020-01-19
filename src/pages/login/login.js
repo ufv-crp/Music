@@ -193,7 +193,7 @@ const Login = properties => {
         </Avatar>
 
         <Typography component="h1" variant="h5">
-          {forgotPassword ? "Login" : "Recover your account"}
+          {forgotPassword ? "Recover your account" : "Login"}
         </Typography>
 
         {forgotPassword && FormikForgotPassword({ classes })}

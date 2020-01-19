@@ -21,7 +21,7 @@ import {
 const Header = props => {
   const { className, onSidebarOpen, ...rest } = props;
 
-  const [authentication, setAuthentication] = useContext(AuthenticationContext);
+  const { setAuthentication } = useContext(AuthenticationContext);
 
   let history = useHistory();
 
