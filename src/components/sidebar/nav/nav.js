@@ -4,9 +4,9 @@ import {
   routes,
   filterRoutes,
   createRoutesSidebarLinks
-} from "../../../../../../authentication/routes";
+} from "../../../authentication";
 
-import { AuthenticationContext } from "../../../../../../states";
+import { AuthenticationContext } from "../../../states";
 
 const SidebarRoutes = () => {
   const { authentication } = useContext(AuthenticationContext);

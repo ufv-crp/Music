@@ -87,8 +87,8 @@ const FormikForgotPassword = ({ classes }) => (
 const FormikSign = ({ classes, setAuthentication, props }) => (
   <Formik
     initialValues={{
-      email: "",
-      password: ""
+      email: "admin@gmail.com",
+      password: "123456"
     }}
     validate={values => {
       const errors = {};
@@ -149,6 +149,8 @@ const FormikSign = ({ classes, setAuthentication, props }) => (
           fullWidth
           component={TextField}
         />
+
+        <br />
 
         {props.isSubmitting && <LinearProgress />}
 
