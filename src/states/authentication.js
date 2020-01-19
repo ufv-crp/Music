@@ -36,7 +36,9 @@ const AuthenticationProvider = ({ children }) => {
   }, [authentication]);
 
   return (
-    <AuthenticationContext.Provider value={[authentication, setAuthentication]}>
+    <AuthenticationContext.Provider
+      value={{ authentication, setAuthentication }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

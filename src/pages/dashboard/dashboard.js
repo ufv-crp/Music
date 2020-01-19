@@ -13,7 +13,7 @@ import {
   Typography,
   Divider,
   IconButton,
-  Container,
+  Container
 } from "@material-ui/core";
 
 import { useHistory } from "react-router-dom";
@@ -26,7 +26,7 @@ import { AuthenticationContext } from "../../states";
 
 const Dashboard = () => {
   // eslint-disable-next-line
-  const [authentication, setAuthentication] = useContext(AuthenticationContext);
+  const { setAuthentication } = useContext(AuthenticationContext);
 
   let history = useHistory();
 
@@ -95,8 +95,9 @@ const Dashboard = () => {
           </IconButton>
         </div>
         <Divider />
-        <List><Sidebar/></List>
-
+        <List>
+          <Sidebar />
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

@@ -20,7 +20,7 @@ import {
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { authenticate } from "../../authentication";
 
@@ -28,12 +28,8 @@ import { AuthenticationContext } from "../../states";
 
 import { request } from "graphql-request";
 
-const Login = () => {
-  const [authentication, setAuthentication] = useContext(AuthenticationContext);
-
-  let history = useHistory();
-
-  if (authentication.token) history.replace("/dashboard");
+const Login = properies => {
+  const { setAuthentication } = useContext(AuthenticationContext);
 
   const [forgotPassword, setForgotPassword] = useState(false);
 
@@ -69,7 +65,7 @@ const Login = () => {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              setSubmitting(false);
+              setSubmitting(true);
 
               const query = `
                 mutation ResetUserPassword($email: String!) {
@@ -78,13 +74,9 @@ const Login = () => {
               `;
 
               try {
-                await request(
-                  process.env.REACT_APP_GRAPHQL_URL,
-                  query,
-                  {
-                    email: values.email
-                  }
-                );
+                await request(process.env.REACT_APP_GRAPHQL_URL, query, {
+                  email: values.email
+                });
 
                 resetForm();
               } catch (error) {
@@ -148,10 +140,9 @@ const Login = () => {
 
               return errors;
             }}
-            onSubmit={async (
-              values,
-              { setSubmitting, setStatus, resetForm }
-            ) => {
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              setSubmitting(true);
+
               try {
                 const response = await authenticate({
                   email: values.email,
@@ -160,14 +151,12 @@ const Login = () => {
 
                 setAuthentication({ ...response.login });
 
-                history.replace("/dashboard");
-
                 resetForm();
               } catch (error) {
                 console.log(error);
               }
 
-              setSubmitting(false);
+              properies.history.push("/dashboard");
             }}
           >
             {props => (
@@ -229,4 +218,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

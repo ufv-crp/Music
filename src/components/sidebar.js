@@ -9,7 +9,7 @@ import {
 import { AuthenticationContext } from "../states";
 
 const Sidebar = () => {
-  const [authentication] = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext);
 
   return (
     <div>

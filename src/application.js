@@ -12,7 +12,7 @@ import {
 } from "./authentication";
 
 const Application = () => {
-  const [authentication] = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext);
 
   const localStateTokenExpiration = checkTokenExpiration({
     expireAt: authentication.expireAt
@@ -22,6 +22,7 @@ const Application = () => {
     <Router>
       <Switch>
         {authenticationMiddleware({ authentication })}
+        
         {redirectWrapperNotLogged({
           invalid: localStateTokenExpiration.invalid,
           expired: localStateTokenExpiration.expired,
