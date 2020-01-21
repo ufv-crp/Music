@@ -41,15 +41,18 @@ const General = props => {
       })}
     >
       <Header onSidebarOpen={handleSidebarOpen} />
+
       <Sidebar
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
         variant={isDesktop ? "persistent" : "temporary"}
       />
+
       <main className={classes.content}>
         {children}
-        <Footer />
       </main>
+
+      <Footer />
     </div>
   );
 };

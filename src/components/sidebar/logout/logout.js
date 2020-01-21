@@ -50,8 +50,10 @@ const Logout = () => {
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
+        
         <ListItemText primary="Logout" />
       </ListItem>
+      
       {open && (
         <Dialog
           fullWidth
@@ -62,15 +64,18 @@ const Logout = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
+         
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Are you sure you want to logout?
             </DialogContentText>
           </DialogContent>
+
           <DialogActions>
             <Button onClick={handleClose} variant="contained" color="secondary">
               Cancel
             </Button>
+            
             <Button onClick={logout} color="primary" autoFocus>
               Yes
             </Button>

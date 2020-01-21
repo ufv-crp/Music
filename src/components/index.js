@@ -4,4 +4,6 @@ import Sidebar from "./sidebar/sidebar";
 
 import Footer from "./footer/footer";
 
-export { Header, Sidebar, Footer };
+import { AccountDetails, AccountProfile } from "./account";
+
+export { Header, Sidebar, Footer, AccountDetails, AccountProfile };

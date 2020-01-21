@@ -67,7 +67,7 @@ const Header = props => {
       <AppBar {...rest} className={clsx(classes.root, className)}>
         <Toolbar>
           <RouterLink to="/">
-            <img alt="Logo" src="/images/logos/logo.header.png" width="150px" />
+            <img alt="Logo" src="/images/logos/logo.header.png" width="125px" />
           </RouterLink>
 
           <div className={classes.flexGrow} />
@@ -99,6 +99,7 @@ const Header = props => {
           </Hidden>
         </Toolbar>
       </AppBar>
+      
       {open && (
         <Dialog
           fullWidth
@@ -109,15 +110,18 @@ const Header = props => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
+          
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Are you sure you want to logout?
             </DialogContentText>
           </DialogContent>
+
           <DialogActions>
             <Button onClick={handleClose} variant="contained" color="secondary">
               Cancel
             </Button>
+            
             <Button onClick={logout} color="primary" autoFocus>
               Yes
             </Button>
