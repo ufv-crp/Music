@@ -8,7 +8,7 @@ import {
 
 const localStorageAuthenticationKey = "authentication";
 
-const initialState = { scopes: [] };
+const initialState = { scopes: [], token: "" };
 
 const reducer = (previousState, newState) => {
   if (newState === null) {

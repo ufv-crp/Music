@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
 
-const createClient = ({ url = false, headers }) => {
-  return new GraphQLClient(url | process.env.REACT_APP_GRAPHQL_URL, {
+const createClient = ({ headers }) => {
+  return new GraphQLClient(process.env.REACT_APP_GRAPHQL_URL, {
     headers
   });
 };
