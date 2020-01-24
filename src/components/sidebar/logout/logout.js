@@ -1,4 +1,4 @@
-import React, { useContext, forwardRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 
 import {
   Dialog,
@@ -15,13 +15,9 @@ import {
 
 import { ExitToApp } from "@material-ui/icons";
 
-import { createHashHistory } from "history";
-
-import { AuthenticationContext } from "../../../states";
+import { logout } from "./"
 
 const Logout = () => {
-  const { setAuthentication } = useContext(AuthenticationContext);
-
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -35,14 +31,6 @@ const Logout = () => {
   const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
-
-  function logout() {
-    setAuthentication(null);
-
-    const history = createHashHistory();
-
-    history.push("/login");
-  }
 
   return (
     <>
