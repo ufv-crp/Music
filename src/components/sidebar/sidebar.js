@@ -20,7 +20,7 @@ const Sidebar = ({ open, variant, onClose, user, className, ...rest }) => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile userInfo={user} />
+        <Profile user={user} />
 
         <Divider className={classes.divider} />
 

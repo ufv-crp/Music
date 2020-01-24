@@ -1,13 +1,13 @@
 import {
   AuthenticationContext,
   AuthenticationProvider,
-  initialState
+  initialStateAuthentication
 } from "./authentication";
 
 import {
   UserContext,
   UserProvider,
-  initialUserState
+  initialStateUser
 } from "./user";
 
 import {
@@ -19,10 +19,10 @@ import {
 export {
   UserContext,
   UserProvider,
-  initialUserState,
+  initialStateUser,
   AuthenticationContext,
   AuthenticationProvider,
-  initialState,
+  initialStateAuthentication,
   getLocalStorageItem,
   setLocalStorageItem,
   removeLocalStorageItem

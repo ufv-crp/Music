@@ -8,8 +8,8 @@ import useStyles from "./styles";
 
 import { Avatar, Typography } from "@material-ui/core";
 
-const Profile = ({ className, userInfo, ...rest }) => {
-  const { firstName, secondName, email, matriculation } = userInfo;
+const Profile = ({ className, user, ...rest }) => {
+  const { firstName, secondName, email, matriculation } = user;
 
   const classes = useStyles();
 
@@ -26,10 +26,12 @@ const Profile = ({ className, userInfo, ...rest }) => {
 
       <Typography className={classes.name} variant="h5">
         {!!firstName && firstName}
+
         {!!secondName && secondName}
       </Typography>
 
       <Typography variant="body2">{!!email && email}</Typography>
+
       <Typography variant="body2">
         {!!matriculation && matriculation}
       </Typography>

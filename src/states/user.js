@@ -8,24 +8,24 @@ import {
 
 const localStorageUserKey = "user";
 
-const initialUserState = { matriculation: "", firstName: "", secondName: "" };
+const initialStateUser = { matriculation: "", firstName: "", secondName: "" };
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
     removeLocalStorageItem({ key: localStorageUserKey });
 
-    return initialUserState;
+    return initialStateUser;
   }
 
   return { ...previousState, ...newState };
 };
 
-const UserContext = createContext(initialUserState);
+const UserContext = createContext(initialStateUser);
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useReducer(
     reducer,
-    getLocalStorageItem({ key: localStorageUserKey, initialUserState })
+    getLocalStorageItem({ key: localStorageUserKey, initialState: initialStateUser })
   );
 
   useEffect(() => {
@@ -42,4 +42,4 @@ const UserProvider = ({ children }) => {
   );
 };
 
-export { UserContext, UserProvider, initialUserState };
+export { UserContext, UserProvider, initialStateUser };

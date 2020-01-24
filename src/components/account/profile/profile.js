@@ -30,6 +30,7 @@ const AccountProfile = props => {
             <Typography gutterBottom variant="h2">
               {user.firstName} {user.secondName}
             </Typography>
+
             <Typography
               className={classes.locationText}
               color="textSecondary"
@@ -37,6 +38,7 @@ const AccountProfile = props => {
             >
               {user.email}
             </Typography>
+
             <Typography
               className={classes.locationText}
               color="textSecondary"
@@ -44,6 +46,7 @@ const AccountProfile = props => {
             >
               {user.cpf}
             </Typography>
+
             <Typography
               className={classes.locationText}
               color="textSecondary"
@@ -51,26 +54,35 @@ const AccountProfile = props => {
             >
               {user.matriculation}
             </Typography>
+
             <Typography
               className={classes.dateText}
               color="textSecondary"
               variant="body1"
             >
-              {moment().format("hh:mm A")} ({user.createdAt})
+              {moment(user.createdAt).format('hh:mm A MMMM Do YYYY')}
             </Typography>
           </div>
-          <Avatar className={classes.avatar}>{user.firstName[0]}</Avatar>
+
+          <Avatar className={classes.avatar}>
+            {!!user.firstName && user.firstName[0]}
+          </Avatar>
         </div>
+
         <div className={classes.progress}>
           <Typography variant="body1">Profile Completeness: 70%</Typography>
+
           <LinearProgress value={70} variant="determinate" />
         </div>
       </CardContent>
+
       <Divider />
+
       <CardActions>
         <Button className={classes.uploadButton} color="primary" variant="text">
           Upload picture
         </Button>
+
         <Button variant="text">Remove picture</Button>
       </CardActions>
     </Card>

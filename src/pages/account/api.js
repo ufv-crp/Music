@@ -1,4 +1,4 @@
-const listUserById = `
+const searchUser = `
     query SearchUser($id: Int!) {
         searchUser(id: $id) {
             id
@@ -18,4 +18,4 @@ const listUserById = `
     }
 `;
 
-export { listUserById };
+export { searchUser };
