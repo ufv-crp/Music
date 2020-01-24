@@ -22,7 +22,11 @@ import { withRouter } from "react-router-dom";
 
 import { authenticate, resetPassword } from "../../authentication";
 
-import { AuthenticationContext } from "../../states";
+import { createAuthenticatedClient } from "../../authentication";
+
+import { AuthenticationContext, UserContext } from "../../states";
+
+import {listUserById } from '../../pages/account/api'
 
 const FormikForgotPassword = ({ classes }) => (
   <Formik
@@ -84,7 +88,7 @@ const FormikForgotPassword = ({ classes }) => (
   </Formik>
 );
 
-const FormikSign = ({ classes, setAuthentication, props }) => (
+const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
   <Formik
     initialValues={{
       email: "admin@gmail.com",
@@ -117,6 +121,17 @@ const FormikSign = ({ classes, setAuthentication, props }) => (
         });
 
         setAuthentication({ ...response.login });
+
+        const client = createAuthenticatedClient({ token: response.login.token });
+
+        client
+        .request(listUserById, { id: response.login.userId })
+        .then(response => {
+          setUser({ user: response.searchUser});
+        })
+        .catch(error => {
+          setUser({...error.response});
+        });
 
         resetForm();
       } catch (error) {
@@ -172,6 +187,8 @@ const FormikSign = ({ classes, setAuthentication, props }) => (
 
 const Login = props => {
   const { setAuthentication } = useContext(AuthenticationContext);
+  const { setUser } = useContext(UserContext);
+
 
   const [forgotPassword, setForgotPassword] = useState(false);
 
@@ -193,7 +210,7 @@ const Login = props => {
         {forgotPassword && FormikForgotPassword({ classes })}
 
         {forgotPassword === false &&
-          FormikSign({ classes, setAuthentication, props })}
+          FormikSign({ classes, setAuthentication, setUser, props })}
 
         <Grid container>
           <Grid item xs>

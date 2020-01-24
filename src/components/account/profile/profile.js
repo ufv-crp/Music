@@ -18,18 +18,9 @@ import {
 } from "@material-ui/core";
 
 const AccountProfile = props => {
-  const { className, ...rest } = props;
+  const { className, user, ...rest } = props;
 
   const classes = useStyles();
-
-  const user = {
-    name: "Walter Sphinxs",
-    bio: "Senior Developer",
-    city: "Rio Paranaíba",
-    country: "Brazil",
-    timezone: "GTM-3",
-    avatar: "/images/avatars/avatar_11.png"
-  };
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -37,24 +28,38 @@ const AccountProfile = props => {
         <div className={classes.details}>
           <div>
             <Typography gutterBottom variant="h2">
-              {user.name}
+              {user.firstName} {user.secondName}
             </Typography>
             <Typography
               className={classes.locationText}
               color="textSecondary"
               variant="body1"
             >
-              {user.city}, {user.country}
+              {user.email}
+            </Typography>
+            <Typography
+              className={classes.locationText}
+              color="textSecondary"
+              variant="body1"
+            >
+              {user.cpf}
+            </Typography>
+            <Typography
+              className={classes.locationText}
+              color="textSecondary"
+              variant="body1"
+            >
+              {user.matriculation}
             </Typography>
             <Typography
               className={classes.dateText}
               color="textSecondary"
               variant="body1"
             >
-              {moment().format("hh:mm A")} ({user.timezone})
+              {moment().format("hh:mm A")} ({user.createdAt})
             </Typography>
           </div>
-          <Avatar className={classes.avatar}>{user.name[0]}</Avatar>
+          <Avatar className={classes.avatar}>{user.firstName[0]}</Avatar>
         </div>
         <div className={classes.progress}>
           <Typography variant="body1">Profile Completeness: 70%</Typography>

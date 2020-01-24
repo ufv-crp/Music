@@ -9,14 +9,9 @@ import useStyles from "./styles";
 import { Avatar, Typography } from "@material-ui/core";
 
 const Profile = props => {
-  const { className, ...rest } = props;
+  const { className, user, ...rest } = props;
 
   const classes = useStyles();
-
-  const user = {
-    name: "Walter Sphinxs",
-    bio: "Senior Developer"
-  };
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -26,14 +21,15 @@ const Profile = props => {
         component={RouterLink}
         to="/users"
       >
-        {user.name[0]}
+        {user.firstName[0]}
       </Avatar>
 
-      <Typography className={classes.name} variant="h4">
-        {user.name}
+      <Typography className={classes.name} variant="h5">
+        {user.firstName} {user.secondName}
       </Typography>
       
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">{user.email}</Typography>
+      <Typography variant="body2">{user.matriculation}</Typography>
     </div>
   );
 };

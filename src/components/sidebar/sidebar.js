@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 
@@ -8,8 +8,12 @@ import { Profile, SidebarRoutes, Logout } from "./index";
 
 import useStyles from "./styles";
 
+import { UserContext } from "../../states";
+
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
+  
+  const { user } = useContext(UserContext);
 
   const classes = useStyles();
 
@@ -22,7 +26,7 @@ const Sidebar = props => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile />
+        <Profile user={user} />
 
         <Divider className={classes.divider} />
 
