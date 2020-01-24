@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 
 import Application from "./application";
 
-import { AuthenticationProvider } from "./states";
+import { AuthenticationProvider, UserProvider } from "./states";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -14,7 +14,9 @@ dotenv.config();
 
 ReactDOM.render(
   <AuthenticationProvider>
-    <Application />
+    <UserProvider>
+      <Application />
+    </UserProvider>
   </AuthenticationProvider>,
   document.getElementById("root")
 );

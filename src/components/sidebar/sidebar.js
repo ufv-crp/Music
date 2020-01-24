@@ -8,9 +8,7 @@ import { Profile, SidebarRoutes, Logout } from "./index";
 
 import useStyles from "./styles";
 
-const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
-
+const Sidebar = ({ open, variant, onClose, user, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -22,7 +20,7 @@ const Sidebar = props => {
       variant={variant}
     >
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile />
+        <Profile user={user} />
 
         <Divider className={classes.divider} />
 

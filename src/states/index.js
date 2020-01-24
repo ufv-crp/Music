@@ -1,8 +1,14 @@
 import {
   AuthenticationContext,
   AuthenticationProvider,
-  initialState
+  initialStateAuthentication
 } from "./authentication";
+
+import {
+  UserContext,
+  UserProvider,
+  initialStateUser
+} from "./user";
 
 import {
   getLocalStorageItem,
@@ -11,9 +17,12 @@ import {
 } from "./utils";
 
 export {
+  UserContext,
+  UserProvider,
+  initialStateUser,
   AuthenticationContext,
   AuthenticationProvider,
-  initialState,
+  initialStateAuthentication,
   getLocalStorageItem,
   setLocalStorageItem,
   removeLocalStorageItem
