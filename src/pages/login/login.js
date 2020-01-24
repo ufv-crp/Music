@@ -26,7 +26,7 @@ import { createAuthenticatedClient } from "../../authentication";
 
 import { AuthenticationContext, UserContext } from "../../states";
 
-import {listUserById } from '../../pages/account/api'
+import { listUserById } from "../../pages/account/api";
 
 const FormikForgotPassword = ({ classes }) => (
   <Formik
@@ -114,28 +114,33 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
     onSubmit={async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
 
+      let userResponse = {};
+
       try {
         const response = await authenticate({
           email: values.email,
           password: values.password
         });
 
+        userResponse = response.login;
+
         setAuthentication({ ...response.login });
-
-        const client = createAuthenticatedClient({ token: response.login.token });
-
-        client
-        .request(listUserById, { id: response.login.userId })
-        .then(response => {
-          setUser({ user: response.searchUser});
-        })
-        .catch(error => {
-          setUser({...error.response});
-        });
 
         resetForm();
       } catch (error) {
         console.log(error);
+      }
+
+      try {
+        const client = createAuthenticatedClient({ token: userResponse.token });
+
+        const response = await client.request(listUserById, {
+          id: userResponse.userId
+        });
+
+        setUser({ ...response.searchUser });
+      } catch (error) {
+        setUser({ ...error.response });
       }
 
       props.history.push("/dashboard");
@@ -188,7 +193,6 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
 const Login = props => {
   const { setAuthentication } = useContext(AuthenticationContext);
   const { setUser } = useContext(UserContext);
-
 
   const [forgotPassword, setForgotPassword] = useState(false);
 

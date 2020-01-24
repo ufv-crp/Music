@@ -8,8 +8,8 @@ import useStyles from "./styles";
 
 import { Avatar, Typography } from "@material-ui/core";
 
-const Profile = props => {
-  const { className, user, ...rest } = props;
+const Profile = ({ className, userInfo, ...rest }) => {
+  const { firstName, secondName, email, matriculation } = userInfo;
 
   const classes = useStyles();
 
@@ -21,15 +21,18 @@ const Profile = props => {
         component={RouterLink}
         to="/users"
       >
-        {user.firstName[0]}
+        {!!firstName && firstName[0]}
       </Avatar>
 
       <Typography className={classes.name} variant="h5">
-        {user.firstName} {user.secondName}
+        {!!firstName && firstName}
+        {!!secondName && secondName}
       </Typography>
-      
-      <Typography variant="body2">{user.email}</Typography>
-      <Typography variant="body2">{user.matriculation}</Typography>
+
+      <Typography variant="body2">{!!email && email}</Typography>
+      <Typography variant="body2">
+        {!!matriculation && matriculation}
+      </Typography>
     </div>
   );
 };

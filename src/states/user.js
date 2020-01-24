@@ -8,7 +8,7 @@ import {
 
 const localStorageUserKey = "user";
 
-const initialUserState = { matriculation: "" ,firstName: "", secondName: "" };
+const initialUserState = { matriculation: "", firstName: "", secondName: "" };
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
@@ -36,9 +36,7 @@ const UserProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <UserContext.Provider
-      value={{ user, setUser }}
-    >
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
