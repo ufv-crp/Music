@@ -110,7 +110,7 @@ const Header = props => {
               Cancel
             </Button>
 
-            <Button onClick={logout} color="primary" autoFocus>
+            <Button onClick={() => { logout(); setOpen(false); }} color="primary" autoFocus>
               Yes
             </Button>
           </DialogActions>

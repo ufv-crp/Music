@@ -15,7 +15,7 @@ import {
 
 import { ExitToApp } from "@material-ui/icons";
 
-import { logout } from "./"
+import { logout } from "./utils"
 
 const Logout = () => {
   const [open, setOpen] = useState(false);
@@ -38,10 +38,10 @@ const Logout = () => {
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
-        
+
         <ListItemText primary="Logout" />
       </ListItem>
-      
+
       {open && (
         <Dialog
           fullWidth
@@ -52,7 +52,7 @@ const Logout = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
-         
+
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Are you sure you want to logout?
@@ -63,8 +63,8 @@ const Logout = () => {
             <Button onClick={handleClose} variant="contained" color="secondary">
               Cancel
             </Button>
-            
-            <Button onClick={logout} color="primary" autoFocus>
+
+            <Button onClick={() => { logout(); setOpen(false); }} color="primary" autoFocus>
               Yes
             </Button>
           </DialogActions>
