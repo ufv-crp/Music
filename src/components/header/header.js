@@ -21,20 +21,16 @@ import {
   IconButton
 } from "@material-ui/core";
 
-import { AuthenticationContext } from "../../states";
-
-import { createHashHistory } from "history";
-
 import {
   Menu as MenuIcon,
   NotificationsOutlined as NotificationsIcon,
   Input as InputIcon
 } from "@material-ui/icons";
 
+import { logout } from "../sidebar/logout";
+
 const Header = props => {
   const { className, onSidebarOpen, ...rest } = props;
-
-  const { setAuthentication } = useContext(AuthenticationContext);
 
   const [open, setOpen] = useState(false);
 
@@ -53,14 +49,6 @@ const Header = props => {
   const classes = useStyles();
 
   const [notifications] = useState([]);
-
-  function logout() {
-    setAuthentication(null);
-
-    const history = createHashHistory();
-
-    history.push("/login");
-  }
 
   return (
     <>
@@ -99,7 +87,7 @@ const Header = props => {
           </Hidden>
         </Toolbar>
       </AppBar>
-      
+
       {open && (
         <Dialog
           fullWidth
@@ -110,7 +98,7 @@ const Header = props => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
-          
+
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Are you sure you want to logout?
@@ -121,8 +109,8 @@ const Header = props => {
             <Button onClick={handleClose} variant="contained" color="secondary">
               Cancel
             </Button>
-            
-            <Button onClick={logout} color="primary" autoFocus>
+
+            <Button onClick={() => { logout(); setOpen(false); }} color="primary" autoFocus>
               Yes
             </Button>
           </DialogActions>

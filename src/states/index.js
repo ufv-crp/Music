@@ -13,7 +13,8 @@ import {
 import {
   getLocalStorageItem,
   setLocalStorageItem,
-  removeLocalStorageItem
+  removeLocalStorageItem,
+  removeAllLocalStorage
 } from "./utils";
 
 export {
@@ -25,5 +26,6 @@ export {
   initialStateAuthentication,
   getLocalStorageItem,
   setLocalStorageItem,
-  removeLocalStorageItem
+  removeLocalStorageItem,
+  removeAllLocalStorage
 };
