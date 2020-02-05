@@ -19,7 +19,7 @@ import { Formik, Field } from "formik";
 
 import { TextField } from "formik-material-ui";
 
-import { UserContext, AuthenticationContext } from "../../../states";
+import { UserContext } from "../../../states";
 
 import { createAuthenticatedClient } from "../../../authentication";
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FormikAccount = ({ classes, user, authentication, props }) => (
+const FormikAccount = ({ classes, user, props }) => (
   <Formik
     enableReinitialize={true}
     initialValues={{ ...user, password: "" }}
@@ -50,20 +50,16 @@ const FormikAccount = ({ classes, user, authentication, props }) => (
       return errors;
     }}
     onSubmit={async (values, { setSubmitting, setUser }) => {
-      const client = createAuthenticatedClient({ token: authentication.token });
+      const client = createAuthenticatedClient();
 
       setSubmitting(true);
 
+      const updatedUser = ({ email, createdAt, updatedAt, creator, ...rest }) =>
+        rest;
+
       try {
         const response = await client.request(updateUserById, {
-          params: {
-            id: values.id,
-            password: values.password,
-            cpf: values.cpf,
-            matriculation: values.matriculation,
-            firstName: values.firstName,
-            secondName: values.secondName
-          }
+          params: updatedUser(values)
         });
 
         setUser({ ...response.updateUser });
@@ -172,19 +168,13 @@ const AccountDetails = props => {
 
   const classes = useStyles();
 
-  const { authentication } = useContext(AuthenticationContext);
-
   const { user, setUser } = useContext(UserContext);
-
-  console.log(user);
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader subheader="Some information can be edited" title="Account" />
       <Divider />
-      <CardContent>
-        {FormikAccount({ classes, user, setUser, authentication })}
-      </CardContent>
+      <CardContent>{FormikAccount({ classes, user, setUser })}</CardContent>
     </Card>
   );
 };
