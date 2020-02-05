@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import clsx from "clsx";
 
@@ -10,7 +10,6 @@ import { useMediaQuery } from "@material-ui/core";
 
 import { Header, Sidebar, Footer } from "../../components";
 
-import { UserContext } from "../../states";
 
 const General = props => {
   const { children } = props;
@@ -18,8 +17,6 @@ const General = props => {
   const classes = useStyles();
 
   const theme = useTheme();
-
-  const { user } = useContext(UserContext);
 
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
     defaultMatches: true
@@ -50,7 +47,6 @@ const General = props => {
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
         variant={isDesktop ? "persistent" : "temporary"}
-        user={user}
       />
 
       <main className={classes.content}>{children}</main>

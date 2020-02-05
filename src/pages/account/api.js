@@ -18,4 +18,17 @@ const searchUser = `
     }
 `;
 
-export { searchUser };
+const updateUserById = `
+    mutation UpdateUser($params: UserUpdateInput!) {
+        updateUser(params: $params) {
+            id
+            password
+            cpf
+            matriculation
+            firstName
+            secondName
+        }
+  }
+`;
+
+export { searchUser, updateUserById };

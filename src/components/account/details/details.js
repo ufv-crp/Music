@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 
@@ -8,151 +8,183 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
   Grid,
   Button,
-  TextField
+  LinearProgress,
+  CardActions
 } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
-  root: {}
+import { Formik, Field } from "formik";
+
+import { TextField } from "formik-material-ui";
+
+import { UserContext, AuthenticationContext } from "../../../states";
+
+import { createAuthenticatedClient } from "../../../authentication";
+
+import { updateUserById } from "../../../pages/account/api";
+
+const useStyles = makeStyles(theme => ({
+  root: {},
+  submit: {
+    marginTop: "10px"
+  }
 }));
+
+const FormikAccount = ({ classes, user, authentication, props }) => (
+  <Formik
+    enableReinitialize={true}
+    initialValues={{ ...user, password: "" }}
+    validate={values => {
+      const errors = {};
+
+      if (!values.email) {
+        errors.email = "Required";
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+      ) {
+        errors.email = "Invalid email address";
+      }
+
+      return errors;
+    }}
+    onSubmit={async (values, { setSubmitting, setUser }) => {
+      const client = createAuthenticatedClient({ token: authentication.token });
+
+      setSubmitting(true);
+
+      try {
+        const response = await client.request(updateUserById, {
+          params: {
+            id: values.id,
+            password: values.password,
+            cpf: values.cpf,
+            matriculation: values.matriculation,
+            firstName: values.firstName,
+            secondName: values.secondName
+          }
+        });
+
+        setUser({ ...response.updateUser });
+      } catch (error) {
+        console.log(error);
+      }
+    }}
+  >
+    {props => (
+      <Grid container spacing={1}>
+        <Grid item md={6} xs={12}>
+          <Field
+            name="email"
+            type="email"
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <Field
+            disabled
+            name="password"
+            label="Password"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <Field
+            name="firstName"
+            label="First Name"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <Field
+            name="secondName"
+            label="Second Name"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <Field
+            name="matriculation"
+            label="Matriculation"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <Field
+            name="cpf"
+            label="CPF"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
+        </Grid>
+
+        {props.isSubmitting && <LinearProgress />}
+
+        <br />
+
+        <Divider />
+
+        <CardActions>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            className={classes.submit}
+            disabled={props.isSubmitting}
+            onClick={props.submitForm}
+          >
+            Update
+          </Button>
+        </CardActions>
+      </Grid>
+    )}
+  </Formik>
+);
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    firstName: "Shen",
-    lastName: "Zhi",
-    email: "shen.zhi@devias.io",
-    phone: "",
-    state: "Alabama",
-    country: "USA"
-  });
+  const { authentication } = useContext(AuthenticationContext);
 
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
+  const { user, setUser } = useContext(UserContext);
 
-  const states = [
-    {
-      value: "alabama",
-      label: "Alabama"
-    },
-    {
-      value: "new-york",
-      label: "New York"
-    },
-    {
-      value: "san-francisco",
-      label: "San Francisco"
-    }
-  ];
+  console.log(user);
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                margin="dense"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                margin="dense"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Select State"
-                margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Country"
-                margin="dense"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained">
-            Save details
-          </Button>
-        </CardActions>
-      </form>
+      <CardHeader subheader="Some information can be edited" title="Account" />
+      <Divider />
+      <CardContent>
+        {FormikAccount({ classes, user, setUser, authentication })}
+      </CardContent>
     </Card>
   );
 };
