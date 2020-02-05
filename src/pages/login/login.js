@@ -131,9 +131,7 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
         console.log(error);
       }
 
-      const client = createAuthenticatedClient({
-        token: authenticationResponse.token
-      });
+      const client = createAuthenticatedClient();
 
       try {
         const response = await client.request(searchUser, {
