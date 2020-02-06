@@ -1,5 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 
+import moment from "moment";
+
+import { Formik, Form, Field } from "formik";
+
 import clsx from "clsx";
 
 import {
@@ -10,54 +14,51 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Button,
   IconButton,
-  Collapse
+  Collapse,
+  InputAdornment,
+  Tooltip,
+  Fab,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  TextField as TextFieldMaterialUi,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 
+import { TextField } from "formik-material-ui";
+
 import {
-  EventAvailable,
-  EventBusy,
-  RemoveCircleOutline,
-  Update,
-  ExpandMore
+  EventAvailable as EventAvailableIcon,
+  EventBusy as EventBusyIcon,
+  RemoveCircleOutline as RemoveCircleOutlineIcon,
+  Update as UpdateIcon,
+  ExpandMore as ExpandMoreIcon,
+  Search as SearchIcon,
+  Add as AddIcon,
+  ArrowBack as ArrowBackIcon,
+  LockOpen as LockOpenIcon,
+  Description as DescriptionIcon,
+  PermIdentity as PermIdentityIcon
 } from "@material-ui/icons";
 
 import { createAuthenticatedClient } from "../../authentication";
 
 import { AuthenticationContext } from "../../states";
 
-import moment from "moment";
-
-import { styled } from "@material-ui/core/styles";
-
 import {
   listAllCourses,
-  updateCourseById,
-  removeCourseById,
-  createCourse
+  createCourse,
+  searchCourseCreator,
+  removeCourseById
 } from "./api";
 
 const useStyles = makeStyles(theme => ({
-  card: {
-    minWidth: 125
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  icon: {
-    display: "inline-block",
-    marginBottom: "-7px"
-  },
-  cardContent: {
-    "& *": {
-      paddingTop: "5px",
-      paddingBottom: "5px"
-    }
-  },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -67,152 +68,564 @@ const useStyles = makeStyles(theme => ({
   },
   expandOpen: {
     transform: "rotate(180deg)"
+  },
+  toolbarItem: {
+    display: "flex",
+    justifyContent: "center",
+    [theme.breakpoints.down("xs")]: {
+      "&": {
+        justifyContent: "flex-start"
+      }
+    }
+  },
+  addIconFab: {
+    width: "45px",
+    height: "45px"
+  },
+  notFoundCourses: {
+    padding: "15px"
+  },
+  cardContent: {
+    display: "flex",
+    flexDirection: "column",
+    "& > *": {
+      padding: "5px 0 5px 0"
+    }
+  },
+  centerIconText: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  date: {
+    "& > svg": {
+      marginRight: "10px"
+    },
+    "& > svg:nth-child(2)": {
+      marginLeft: "10px"
+    }
+  },
+  marginSvgIcon: {
+    "& > svg": {
+      marginRight: "10px"
+    }
+  },
+  deleteIcon: {
+    color: "#dc5a5a"
+  },
+  removeCourseDisagree: {
+    color: "#dc5a5a"
+  },
+  removeCourseAgree: {
+    color: "#4CAF50"
   }
 }));
 
-const Courses = () => {
-  const { authentication } = useContext(AuthenticationContext);
+const _listAllCourses = ({
+  client,
+  query,
+  setCourses,
+  privateCourses = false
+}) => {
+  client
+    .request(query, { private: privateCourses })
+    .then(response => {
+      setCourses(response.listCourses);
+    })
+    .catch(error => {
+      console.log(error.response);
 
-  const client = createAuthenticatedClient({ token: authentication.token });
+      setCourses([]);
+    });
+};
 
-  const classes = useStyles();
-
-  const [courses, setCourses] = useState({ courses: [] }); // Status and errors from GraphQL
-
-  const [listPrivateCourses, setListPrivateCourses] = useState(false);
-
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  useEffect(() => {
-    client
-      .request(listAllCourses, { private: true })
-      .then(response => {
-        setCourses({ ...courses, courses: response.listCourses });
-      })
-      .catch(error => {
-        setCourses({ courses: [], ...error.response });
-      });
-  }, []);
+const ListCourses = ({
+  classes,
+  client,
+  courses,
+  setCourses,
+  createCourseState,
+  setCreateCourseState,
+  privateCourses,
+  setPrivateCourses,
+  searchCourse,
+  setSearchCourse
+}) => {
+  if (createCourseState) return null;
 
   return (
-    <Box p={5}>
+    <>
+      <Box bgcolor="white" mb="25px" borderRadius="borderRadius" p="15px">
+        <Grid container spacing={5} justify="space-evenly" alignItems="center">
+          <Grid item lg={6} md={6} sm={6} xs={12}>
+            <TextFieldMaterialUi
+              id="searchInput"
+              placeholder="Search"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                )
+              }}
+              onChange={event => {
+                setSearchCourse(event.target.value.toLowerCase());
+              }}
+            />
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={3}
+            xs={12}
+            className={classes.toolbarItem}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={privateCourses}
+                  onChange={() => {
+                    setPrivateCourses(!privateCourses);
+
+                    !privateCourses
+                      ? _listAllCourses({
+                          client,
+                          setCourses: setCourses,
+                          query: listAllCourses,
+                          privateCourses: true
+                        })
+                      : setCourses(
+                          courses.filter(course => {
+                            return course.private === false ? course : null;
+                          })
+                        );
+                  }}
+                />
+              }
+              label="Private"
+            />
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={3}
+            xs={12}
+            className={classes.toolbarItem}
+          >
+            <Tooltip
+              title="Add"
+              aria-label="add"
+              onClick={() => setCreateCourseState(!createCourseState)}
+            >
+              <Fab color="primary" className={classes.addIconFab}>
+                <AddIcon />
+              </Fab>
+            </Tooltip>
+          </Grid>
+        </Grid>
+      </Box>
+
       <Grid container spacing={4}>
-        {courses.courses.length &&
-          courses.courses
+        {(courses.length &&
+          courses
             .filter(course => {
-              if (course.private && !listPrivateCourses) return null;
+              if (course.private && !privateCourses) return null;
+
+              if (searchCourse !== "") {
+                if (
+                  (course.title !== undefined &&
+                    course.title.toLowerCase().includes(searchCourse)) ||
+                  (course.description !== undefined &&
+                    course.description.toLowerCase().includes(searchCourse))
+                )
+                  return course;
+                else return null;
+              }
 
               return course;
             })
             .map(course => {
               return (
-                <Grid
-                  item
-                  lg={3}
-                  md={4}
-                  s={5}
-                  xs={12}
+                <CardCourse
+                  course={course}
+                  classes={classes}
+                  client={client}
+                  setCourses={setCourses}
                   key={course.id}
-                  display="flex"
-                >
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography
-                        className={classes.title}
-                        color="textSecondary"
-                        gutterBottom
-                      >
-                        {course.title}
-                      </Typography>
-
-                      <Typography variant="h5" component="h2">
-                        {course.description}
-                      </Typography>
-
-                      <Typography
-                        className={(classes.pos, classes.p)}
-                        color="textSecondary"
-                      >
-                        <EventAvailable className={classes.icon} />
-                        {moment(course.start).format("MMMM Do YYYY")}
-                        <EventBusy className={classes.icon} />
-                        {moment(course.end).format("MMMM Do YYYY")}
-                      </Typography>
-
-                      <Typography variant="body2" component="p">
-                        {(course.private && "Private") || "Public"}
-                      </Typography>
-                    </CardContent>
-
-                    <CardActions>
-                      <IconButton
-                        className={clsx(classes.expand, {
-                          [classes.expandOpen]: expanded
-                        })}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                      >
-                        <ExpandMore />
-                      </IconButton>
-
-                      <IconButton style={{ color: "#dc5a5a" }}>
-                        <RemoveCircleOutline />
-                      </IconButton>
-
-                      <IconButton style={{ color: "#5adc7b" }}>
-                        <Update />
-                      </IconButton>
-                    </CardActions>
-
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                      <CardContent>
-                        <Typography paragraph>Method:</Typography>
-
-                        <Typography paragraph>
-                          Heat 1/2 cup of the broth in a pot until simmering,
-                          add saffron and set aside for 10 minutes.
-                        </Typography>
-
-                        <Typography paragraph>
-                          Heat oil in a (14- to 16-inch) paella pan or a large,
-                          deep skillet over medium-high heat. Add chicken,
-                          shrimp and chorizo, and cook, stirring occasionally
-                          until lightly browned, 6 to 8 minutes. Transfer shrimp
-                          to a large plate and set aside, leaving chicken and
-                          chorizo in the pan. Add pimentón, bay leaves, garlic,
-                          tomatoes, onion, salt and pepper, and cook, stirring
-                          often until thickened and fragrant, about 10 minutes.
-                          Add saffron broth and remaining 4 1/2 cups chicken
-                          broth; bring to a boil.
-                        </Typography>
-
-                        <Typography paragraph>
-                          Add rice and stir very gently to distribute. Top with
-                          artichokes and peppers, and cook without stirring,
-                          until most of the liquid is absorbed, 15 to 18
-                          minutes. Reduce heat to medium-low, add reserved
-                          shrimp and mussels, tucking them down into the rice,
-                          and cook again without stirring, until mussels have
-                          opened and rice is just tender, 5 to 7 minutes more.
-                          (Discard any mussels that don’t open.)
-                        </Typography>
-
-                        <Typography>
-                          Set aside off of the heat to let rest for 10 minutes,
-                          and then serve.
-                        </Typography>
-                      </CardContent>
-                    </Collapse>
-                  </Card>
-                </Grid>
+                />
               );
-            })}
+            })) || (
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Paper className={classes.notFoundCourses}>
+              <Typography>No course (s) added</Typography>
+            </Paper>
+          </Grid>
+        )}
       </Grid>
+    </>
+  );
+};
+
+const CardCourse = ({ course, classes, client, setCourses }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [courseCreator, setCourseCreator] = useState({
+    firstName: "",
+    secondName: ""
+  });
+
+  const [courseRemoved, setCourseRemoved] = useState(false);
+
+  const handleDialogClick = () => {
+    setDialogOpen(!dialogOpen);
+  };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const previewDescriptionWords = 12;
+
+  const descriptionSplitted = course.description
+    .split(" ")
+    .slice(0, previewDescriptionWords)
+    .join(" ");
+
+  const _courseCreator = ({ client, query, id, setCourseCreator }) => {
+    client
+      .request(query, { id })
+      .then(response => {
+        setCourseCreator(response.searchUser);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  const _removeCourse = ({
+    client,
+    query,
+    id,
+    setCourseRemoved,
+    setCourses,
+    listAllCourses
+  }) => {
+    client
+      .request(query, { id })
+      .then(response => {
+        setCourseRemoved(true);
+
+        _listAllCourses({
+          client,
+          setCourses,
+          query: listAllCourses,
+          privateCourses: false
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+        setCourseRemoved(false);
+      });
+
+    setDialogOpen(!dialogOpen);
+  };
+
+  return (
+    <Grid item lg={4} md={6} sm={6} xs={12} key={course.id} display="flex">
+      <Card>
+        <CardContent className={classes.cardContent}>
+          <Typography color="textSecondary" gutterBottom>
+            {course.title}
+          </Typography>
+
+          <Typography
+            color="textSecondary"
+            className={`${classes.date} ${classes.centerIconText}`}
+          >
+            <EventAvailableIcon />
+            Star {moment(course.start).format("MMMM Do YYYY h:mm a")}
+            <EventBusyIcon />
+            End {moment(course.end).format("MMMM Do YYYY h:mm a")}
+          </Typography>
+
+          <Typography
+            color="textSecondary"
+            className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
+          >
+            <LockOpenIcon /> {(course.private && "Private") || "Public"}
+          </Typography>
+
+          <Typography variant="h5" component="h2">
+            {descriptionSplitted}
+          </Typography>
+        </CardContent>
+
+        <CardActions>
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded
+            })}
+            onClick={() => {
+              _courseCreator({
+                client,
+                query: searchCourseCreator,
+                id: course.creator,
+                setCourseCreator
+              });
+
+              handleExpandClick();
+            }}
+            aria-expanded={expanded}
+            aria-label="Show more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+
+          <IconButton
+            className={classes.deleteIcon}
+            onClick={handleDialogClick}
+          >
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+
+          <Dialog
+            open={dialogOpen}
+            onClose={handleDialogClick}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {`Are you sure you want to remove the course ${course.title}`}
+            </DialogTitle>
+
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                When you remove a course you can't access the course anymore
+              </DialogContentText>
+            </DialogContent>
+
+            <DialogActions>
+              <Button
+                onClick={handleDialogClick}
+                className={classes.removeCourseDisagree}
+              >
+                Disagree
+              </Button>
+
+              <Button
+                onClick={() => {
+                  _removeCourse({
+                    client,
+                    query: removeCourseById,
+                    id: course.id,
+                    setCourseRemoved,
+                    setCourses,
+                    listAllCourses
+                  });
+                }}
+                className={classes.removeCourseAgree}
+                autoFocus
+              >
+                Agree
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <IconButton>
+            <UpdateIcon />
+          </IconButton>
+        </CardActions>
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent className={classes.cardContent}>
+            <Typography
+              className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
+            >
+              <PermIdentityIcon />
+              {courseCreator.firstName
+                ? `${courseCreator.firstName} ${courseCreator.secondName}`
+                : "Loading"}
+            </Typography>
+
+            <Typography
+              className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
+            >
+              <DescriptionIcon />
+              Complete description
+            </Typography>
+
+            {course.description
+              .split(/(\r\n|\n|\r)/gm)
+              .map((paragraph, index) => (
+                <Typography key={index} paragraph>
+                  {paragraph}
+                </Typography>
+              ))}
+          </CardContent>
+        </Collapse>
+      </Card>
+    </Grid>
+  );
+};
+
+const CreateCourse = ({
+  classes,
+  client,
+  courses,
+  setCreateCourseState,
+  setCourses,
+  createCourseState,
+  authentication
+}) => {
+  if (!createCourseState) return null;
+  return (
+    <Box m={5} p={2} width="70%" bgcolor="white" borderRadius="borderRadius">
+      <Grid container spacing={4}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => {
+              _listAllCourses({
+                client,
+                setCourses: setCourses,
+                query: listAllCourses,
+                privateCourses: false
+              });
+              setCreateCourseState(!createCourseState);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={4} direction="column">
+        <Grid item lg={12} md={12} sm={12} xs={12} p={5}>
+          <Formik
+            initialValues={{
+              title: "",
+              description: "",
+              start: new Date().toISOString(),
+              end: new Date().toISOString(),
+              private: true
+            }}
+            onSubmit={values => {
+              console.log(values);
+              client
+                .request(createCourse, {
+                  params: { ...values, creator: authentication.userId }
+                })
+                .then(response => {
+                  console.log("created");
+                })
+                .catch(error => {
+                  console.log("error", error.response);
+                });
+            }}
+          >
+            {formik => (
+              <Form>
+                <Grid container spacing={4} direction="column">
+                  <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Field
+                      name="title"
+                      type="text"
+                      label="Title"
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      component={TextField}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Field component="textarea" name="description" />
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Field type="datetime-local" name="start" />
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Field type="datetime-local" name="end" />
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Field name="private" as="select">
+                      <option value="true">Yes</option>
+                      <option value="false">Not</option>
+                    </Field>
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <button type="submit">Submit</button>
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+const Courses = () => {
+  const classes = useStyles();
+
+  const { authentication } = useContext(AuthenticationContext);
+
+  const client = createAuthenticatedClient();
+
+  const [courses, setCourses] = useState([]);
+
+  const [privateCourses, setPrivateCourses] = useState(false);
+
+  const [createCourseState, setCreateCourseState] = useState(false);
+
+  const [searchCourse, setSearchCourse] = useState("");
+
+  useEffect(() => {
+    _listAllCourses({
+      client,
+      setCourses,
+      query: listAllCourses,
+      privateCourses
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Box m={5}>
+      <ListCourses
+        classes={classes}
+        client={client}
+        courses={courses}
+        setCourses={setCourses}
+        createCourseState={createCourseState}
+        setCreateCourseState={setCreateCourseState}
+        privateCourses={privateCourses}
+        setPrivateCourses={setPrivateCourses}
+        searchCourse={searchCourse}
+        setSearchCourse={setSearchCourse}
+      />
+
+      <CreateCourse
+        classes={classes}
+        courses={setCourses}
+        setCourses={setCourses}
+        createCourseState={createCourseState}
+        setCreateCourseState={setCreateCourseState}
+        client={client}
+        authentication={authentication}
+      />
     </Box>
   );
 };

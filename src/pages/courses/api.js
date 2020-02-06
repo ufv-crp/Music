@@ -14,6 +14,15 @@ const listAllCourses = `
     }
 `;
 
+const searchCourseCreator = `
+	query SearchUser($id: Int!) {
+		searchUser(id: $id) {
+			firstName
+			secondName
+		}
+	}
+`;
+
 const updateCourseById = `
     mutation UpdateCourse($params: CourseUpdate!) {
         updateCourse(params: $params) {
@@ -52,4 +61,10 @@ const createCourse = `
   }
 `;
 
-export { listAllCourses, updateCourseById, removeCourseById, createCourse };
+export {
+  listAllCourses,
+  updateCourseById,
+  removeCourseById,
+  createCourse,
+  searchCourseCreator
+};
