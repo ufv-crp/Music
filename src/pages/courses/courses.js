@@ -2,7 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 
 import moment from "moment";
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+
+import * as Yup from "yup";
+
+import { useSnackbar } from "notistack";
 
 import clsx from "clsx";
 
@@ -28,7 +32,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  LinearProgress
 } from "@material-ui/core";
 
 import { TextField } from "formik-material-ui";
@@ -113,11 +118,38 @@ const useStyles = makeStyles(theme => ({
   deleteIcon: {
     color: "#dc5a5a"
   },
+  updateIcon: {
+    color: "#4CAF50"
+  },
   removeCourseDisagree: {
     color: "#dc5a5a"
   },
   removeCourseAgree: {
     color: "#4CAF50"
+  },
+  boxCreateCourse: {
+    width: "70%",
+    [theme.breakpoints.down("xs")]: {
+      "&": {
+        width: "100%"
+      }
+    }
+  },
+  checkedBox: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  checkedError: {
+    fontSize: "0.75rem",
+    marginTop: "3px",
+    fontFamily: "Roboto",
+    fontWeight: "400",
+    lineHeight: "1.66",
+    letterSpacing: "0.03333em",
+    color: theme.palette.errorLight
+  },
+  linearProgress: {
+    margin: "16px"
   }
 }));
 
@@ -248,14 +280,14 @@ const ListCourses = ({
 
               return course;
             })
-            .map(course => {
+            .map((course, index) => {
               return (
                 <CardCourse
                   course={course}
                   classes={classes}
                   client={client}
                   setCourses={setCourses}
-                  key={course.id}
+                  key={course.id + index}
                 />
               );
             })) || (
@@ -271,6 +303,8 @@ const ListCourses = ({
 };
 
 const CardCourse = ({ course, classes, client, setCourses }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [expanded, setExpanded] = useState(false);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -280,6 +314,7 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
     secondName: ""
   });
 
+  // eslint-disable-next-line
   const [courseRemoved, setCourseRemoved] = useState(false);
 
   const handleDialogClick = () => {
@@ -314,11 +349,17 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
     id,
     setCourseRemoved,
     setCourses,
-    listAllCourses
+    listAllCourses,
+    enqueueSnackbar
   }) => {
     client
       .request(query, { id })
       .then(response => {
+        enqueueSnackbar("Course removed", {
+          variant: "success",
+          autoHideDuration: 5000
+        });
+
         setCourseRemoved(true);
 
         _listAllCourses({
@@ -329,7 +370,13 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
         });
       })
       .catch(error => {
+        enqueueSnackbar("Error on course remove", {
+          variant: "error",
+          autoHideDuration: 8000
+        });
+
         console.log(error.response);
+
         setCourseRemoved(false);
       });
 
@@ -337,7 +384,7 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
   };
 
   return (
-    <Grid item lg={4} md={6} sm={6} xs={12} key={course.id} display="flex">
+    <Grid item lg={4} md={6} sm={12} xs={12} key={course.id} display="flex">
       <Card>
         <CardContent className={classes.cardContent}>
           <Typography color="textSecondary" gutterBottom>
@@ -426,7 +473,8 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
                     id: course.id,
                     setCourseRemoved,
                     setCourses,
-                    listAllCourses
+                    listAllCourses,
+                    enqueueSnackbar
                   });
                 }}
                 className={classes.removeCourseAgree}
@@ -437,7 +485,7 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
             </DialogActions>
           </Dialog>
 
-          <IconButton>
+          <IconButton className={classes.updateIcon}>
             <UpdateIcon />
           </IconButton>
         </CardActions>
@@ -483,9 +531,23 @@ const CreateCourse = ({
   createCourseState,
   authentication
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [privateCourse, setPrivateCourse] = useState(false);
+
+  const handlePrivateCourse = () => {
+    setPrivateCourse(!privateCourse);
+  };
+
   if (!createCourseState) return null;
+
   return (
-    <Box m={5} p={2} width="70%" bgcolor="white" borderRadius="borderRadius">
+    <Box
+      p={5}
+      bgcolor="white"
+      borderRadius="borderRadius"
+      className={classes.boxCreateCourse}
+    >
       <Grid container spacing={4}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <IconButton
@@ -506,65 +568,140 @@ const CreateCourse = ({
       </Grid>
 
       <Grid container spacing={4} direction="column">
-        <Grid item lg={12} md={12} sm={12} xs={12} p={5}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
           <Formik
             initialValues={{
               title: "",
               description: "",
-              start: new Date().toISOString(),
-              end: new Date().toISOString(),
-              private: true
+              start: "",
+              end: "",
+              private: privateCourse
             }}
-            onSubmit={values => {
-              console.log(values);
+            onSubmit={(values, actions) => {
+              actions.setSubmitting(true);
+
               client
                 .request(createCourse, {
-                  params: { ...values, creator: authentication.userId }
+                  params: {
+                    ...values,
+                    creator: authentication.userId,
+                    start: new Date(values.start).toISOString(),
+                    end: new Date(values.end).toISOString()
+                  }
                 })
                 .then(response => {
-                  console.log("created");
+                  enqueueSnackbar("Course created", {
+                    variant: "success",
+                    autoHideDuration: 5000
+                  });
                 })
                 .catch(error => {
+                  enqueueSnackbar("Error on course create", {
+                    variant: "error",
+                    autoHideDuration: 8000
+                  });
+
                   console.log("error", error.response);
                 });
+
+              actions.setSubmitting(false);
+
+              actions.resetForm();
             }}
+            validationSchema={Yup.object().shape({
+              title: Yup.string()
+                .min(10, "At least 10 characteres are required")
+                .required("Title is required"),
+              description: Yup.string()
+                .min(30, "At least 30 characteres are required")
+                .required("Description is required"),
+              start: Yup.date().required("Start date is required"),
+              end: Yup.date().required("End date is required"),
+              private: Yup.bool().oneOf([true, false], "Invalid value")
+            })}
           >
             {formik => (
               <Form>
                 <Grid container spacing={4} direction="column">
-                  <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
                     <Field
+                      component={TextField}
                       name="title"
                       type="text"
                       label="Title"
                       variant="outlined"
-                      margin="normal"
                       fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
                       component={TextField}
+                      name="description"
+                      type="textarea"
+                      label="Description"
+                      variant="outlined"
+                      multiline
+                      rows="4"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="start"
+                      type="datetime-local"
+                      label="Start"
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="end"
+                      type="datetime-local"
+                      label="End"
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
                     />
                   </Grid>
 
                   <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Field component="textarea" name="description" />
+                    <Box className={classes.checkedBox}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={privateCourse}
+                            onChange={handlePrivateCourse}
+                            value={privateCourse}
+                          />
+                        }
+                        label="Private"
+                      />
+
+                      <span className={classes.checkedError}>
+                        <ErrorMessage name="private" />
+                      </span>
+                    </Box>
                   </Grid>
 
-                  <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Field type="datetime-local" name="start" />
-                  </Grid>
+                  {formik.isSubmitting && (
+                    <LinearProgress className={classes.linearProgress} />
+                  )}
 
                   <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Field type="datetime-local" name="end" />
-                  </Grid>
-
-                  <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Field name="private" as="select">
-                      <option value="true">Yes</option>
-                      <option value="false">Not</option>
-                    </Field>
-                  </Grid>
-
-                  <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <button type="submit">Submit</button>
+                    <Button variant="outlined" color="primary" type="submit">
+                      Submit
+                    </Button>
                   </Grid>
                 </Grid>
               </Form>

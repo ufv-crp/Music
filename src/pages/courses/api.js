@@ -58,7 +58,7 @@ const createCourse = `
             createdAt
             updatedAt
         }
-  }
+  	}
 `;
 
 export {

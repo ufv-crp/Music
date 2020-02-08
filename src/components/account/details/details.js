@@ -65,7 +65,6 @@ const AccountDetails = props => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
                 label="First name"
                 margin="dense"
                 name="firstName"
