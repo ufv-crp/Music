@@ -3,6 +3,7 @@ const searchUser = `
         searchUser(id: $id) {
             id
             email
+            password
             cpf
             matriculation
             firstName

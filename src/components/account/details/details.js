@@ -21,6 +21,8 @@ import {
   DialogActions
 } from "@material-ui/core";
 
+import { useSnackbar } from "notistack";
+
 import { AccountCircle as AccountCircleIcon } from "@material-ui/icons";
 
 import { Formik, Field } from "formik";
@@ -40,42 +42,63 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
+const AccountForm = ({
+  classes,
+  user,
+  setUser,
+  open,
+  setOpen,
+  enqueueSnackbar
+}) => (
   <Formik
+    enableReinitialize
     initialValues={{ ...user, confirmPassword: "" }}
-    onSubmit={async (values, { setSubmitting }) => {
+    onSubmit={async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
 
-      // const client = createAuthenticatedClient();
+      const client = createAuthenticatedClient();
 
-      /*const updatedUser = ({
+      const updatedUser = ({
         email,
         password,
         confirmPassword,
+        address,
+        contact,
         createdAt,
         updatedAt,
         creator,
         ...rest
       }) => rest;
 
-      console.log("Form Values => ", values);
-      console.log("User Context => ", user);
-      console.log("updatedUser => ", updatedUser(values));*/
+      if (values.confirmPassword === user.password) {
+        try {
+          const response = await client.request(updateUserById, {
+            params: updatedUser(values)
+          });
 
-      setOpen(false);
+          setUser({ ...response.updateUser });
 
-      /*try {
-        const response = await client.request(updateUserById, {
-          params: updatedUser(values)
+          enqueueSnackbar("Account updated", {
+            variant: "success",
+            autoHideDuration: 5000
+          });
+
+          resetForm();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        enqueueSnackbar("Password is wrong", {
+          variant: "error",
+          autoHideDuration: 5000
         });
 
-        console.log(response);
-        //setUser({ ...response.updateUser });
-      } catch (error) {
-        console.log(error);
-      }*/
+        resetForm();
+      }
 
       setSubmitting(false);
+
+      setOpen(false);
     }}
   >
     {({ isSubmitting, submitForm, touched }) => (
@@ -186,6 +209,10 @@ const AccountDetails = props => {
 
   const [open, setOpen] = React.useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  console.log("user", user);
+
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
@@ -210,7 +237,14 @@ const AccountDetails = props => {
       />
       <Divider />
       <CardContent>
-        {AccountForm({ classes, user, setUser, open, setOpen })}
+        {AccountForm({
+          classes,
+          user,
+          setUser,
+          open,
+          setOpen,
+          enqueueSnackbar
+        })}
       </CardContent>
     </Card>
   );
