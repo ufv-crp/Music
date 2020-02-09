@@ -1,158 +1,249 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/styles";
 
 import {
+  Avatar,
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
   Grid,
   Button,
-  TextField
+  LinearProgress,
+  CardActions,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
-  root: {}
+import { useSnackbar } from "notistack";
+
+import { AccountCircle as AccountCircleIcon } from "@material-ui/icons";
+
+import { Formik, Field } from "formik";
+
+import { TextField } from "formik-material-ui";
+
+import { UserContext } from "../../../states";
+
+import { createAuthenticatedClient } from "../../../authentication";
+
+import { updateUserById } from "../../../pages/account/api";
+
+const useStyles = makeStyles(theme => ({
+  root: {},
+  submit: {
+    marginTop: "10px"
+  }
 }));
+
+const AccountForm = ({
+  classes,
+  user,
+  setUser,
+  open,
+  setOpen,
+  enqueueSnackbar
+}) => (
+  <Formik
+    enableReinitialize
+    initialValues={{ ...user, confirmPassword: "" }}
+    onSubmit={async (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
+
+      const client = createAuthenticatedClient();
+
+      const updatedUser = ({
+        email,
+        password,
+        confirmPassword,
+        address,
+        contact,
+        createdAt,
+        updatedAt,
+        creator,
+        ...rest
+      }) => rest;
+
+      if (values.confirmPassword === user.password) {
+        try {
+          const response = await client.request(updateUserById, {
+            params: updatedUser(values)
+          });
+
+          setUser({ ...response.updateUser });
+
+          enqueueSnackbar("Account updated", {
+            variant: "success",
+            autoHideDuration: 5000
+          });
+
+          resetForm();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        enqueueSnackbar("Password is wrong", {
+          variant: "error",
+          autoHideDuration: 5000
+        });
+
+        resetForm();
+      }
+
+      setSubmitting(false);
+
+      setOpen(false);
+    }}
+  >
+    {({ isSubmitting, submitForm, touched }) => (
+      <>
+        <Grid container spacing={1}>
+          <Grid item md={6} xs={12}>
+            <Field
+              name="firstName"
+              label="First Name"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Field
+              name="secondName"
+              label="Second Name"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Field
+              name="matriculation"
+              label="Matriculation"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Field
+              name="cpf"
+              label="CPF"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          {isSubmitting && <LinearProgress />}
+
+          <br />
+
+          <Divider />
+        </Grid>
+
+        <CardActions>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            className={classes.submit}
+            disabled={isSubmitting || !Object.keys(touched).length}
+            onClick={() => setOpen(true)}
+          >
+            Update
+          </Button>
+        </CardActions>
+        {open && (
+          <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle id="form-dialog-title">Confirm Password</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To update your account, please enter your current password below
+              </DialogContentText>
+              <Field
+                name="confirmPassword"
+                type="password"
+                label="Password"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                component={TextField}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpen(false)} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={submitForm} color="primary">
+                Update
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      </>
+    )}
+  </Formik>
+);
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    firstName: "Shen",
-    lastName: "Zhi",
-    email: "shen.zhi@devias.io",
-    phone: "",
-    state: "Alabama",
-    country: "USA"
-  });
+  const { user, setUser } = useContext(UserContext);
 
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
+  const [open, setOpen] = React.useState(false);
 
-  const states = [
-    {
-      value: "alabama",
-      label: "Alabama"
-    },
-    {
-      value: "new-york",
-      label: "New York"
-    },
-    {
-      value: "san-francisco",
-      label: "San Francisco"
-    }
-  ];
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <form autoComplete="off" noValidate>
-        <CardHeader subheader="The information can be edited" title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                margin="dense"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                margin="dense"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Select State"
-                margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Country"
-                margin="dense"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained">
-            Save details
-          </Button>
-        </CardActions>
-      </form>
+      <CardHeader
+        title="Account"
+        subheader="Some information can be edited"
+        avatar={
+          <Avatar aria-label="account" variant="rounded">
+            <AccountCircleIcon />
+          </Avatar>
+        }
+        titleTypographyProps={{
+          align: "left",
+          variant: "h5",
+          display: "block"
+        }}
+        subheaderTypographyProps={{
+          align: "left",
+          variant: "body1",
+          display: "block",
+          color: "textSecondary"
+        }}
+      />
+      <Divider />
+      <CardContent>
+        {AccountForm({
+          classes,
+          user,
+          setUser,
+          open,
+          setOpen,
+          enqueueSnackbar
+        })}
+      </CardContent>
     </Card>
   );
 };

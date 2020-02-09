@@ -6,4 +6,6 @@ import Footer from "./footer/footer";
 
 import { AccountDetails, AccountProfile } from "./account";
 
-export { Header, Sidebar, Footer, AccountDetails, AccountProfile };
+import { UserAddress, UserContact } from "./user";
+
+export { Header, Sidebar, Footer, AccountDetails, AccountProfile, UserAddress, UserContact };
