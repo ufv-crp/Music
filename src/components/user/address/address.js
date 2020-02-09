@@ -2,26 +2,21 @@ import React, { useContext } from "react";
 
 import clsx from "clsx";
 
-import { makeStyles } from "@material-ui/styles";
-
 import {
-  Avatar,
   Card,
   CardHeader,
   CardContent,
-  Divider,
-  Grid,
-  Button,
-  LinearProgress,
   CardActions,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
+  Button,
+  Grid,
+  Divider,
+  Avatar,
+  LinearProgress
 } from "@material-ui/core";
 
-import { AccountCircle as AccountCircleIcon } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/styles";
+
+import { LocationOn as LocationIcon } from "@material-ui/icons";
 
 import { Formik, Field } from "formik";
 
@@ -31,7 +26,7 @@ import { UserContext } from "../../../states";
 
 import { createAuthenticatedClient } from "../../../authentication";
 
-import { updateUserById } from "../../../pages/account/api";
+import { updateAddressById } from "../../../pages/account/api";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,40 +35,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
+const UserAddressForm = ({ classes, address, setUser }) => (
   <Formik
-    initialValues={{ ...user, confirmPassword: "" }}
+    enableReinitialize
+    initialValues={{ ...address }}
     onSubmit={async (values, { setSubmitting }) => {
       setSubmitting(true);
 
-      // const client = createAuthenticatedClient();
+      const client = createAuthenticatedClient();
 
-      /*const updatedUser = ({
-        email,
-        password,
-        confirmPassword,
-        createdAt,
-        updatedAt,
-        creator,
-        ...rest
-      }) => rest;
+      const updatedAddress = ({ userId, createdAt, updatedAt, ...rest }) =>
+        rest;
 
-      console.log("Form Values => ", values);
-      console.log("User Context => ", user);
-      console.log("updatedUser => ", updatedUser(values));*/
-
-      setOpen(false);
-
-      /*try {
-        const response = await client.request(updateUserById, {
-          params: updatedUser(values)
+      try {
+        const response = await client.request(updateAddressById, {
+          params: updatedAddress(values)
         });
 
-        console.log(response);
-        //setUser({ ...response.updateUser });
+        setUser({ address: { ...response.updateAddress } });
       } catch (error) {
         console.log(error);
-      }*/
+      }
 
       setSubmitting(false);
     }}
@@ -83,8 +65,8 @@ const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
         <Grid container spacing={1}>
           <Grid item md={6} xs={12}>
             <Field
-              name="firstName"
-              label="First Name"
+              name="street"
+              label="Street"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -94,8 +76,20 @@ const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
 
           <Grid item md={6} xs={12}>
             <Field
-              name="secondName"
-              label="Second Name"
+              name="number"
+              label="Number"
+              variant="outlined"
+              margin="normal"
+              type="number"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Field
+              name="city"
+              label="City"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -105,8 +99,8 @@ const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
 
           <Grid item md={6} xs={12}>
             <Field
-              name="matriculation"
-              label="Matriculation"
+              name="state"
+              label="State"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -116,8 +110,19 @@ const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
 
           <Grid item md={6} xs={12}>
             <Field
-              name="cpf"
-              label="CPF"
+              name="zipCode"
+              label="Zip Code"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              component={TextField}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <Field
+              name="complement"
+              label="Complement"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -140,62 +145,30 @@ const AccountForm = ({ classes, user, setUser, open, setOpen }) => (
             fullWidth
             className={classes.submit}
             disabled={isSubmitting || !Object.keys(touched).length}
-            onClick={() => setOpen(true)}
+            onClick={submitForm}
           >
             Update
           </Button>
         </CardActions>
-        {open && (
-          <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle id="form-dialog-title">Confirm Password</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                To update your account, please enter your current password below
-              </DialogContentText>
-              <Field
-                name="confirmPassword"
-                type="password"
-                label="Password"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                component={TextField}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={submitForm} color="primary">
-                Update
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
       </>
     )}
   </Formik>
 );
 
-const AccountDetails = props => {
+const UserAddress = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
 
   const { user, setUser } = useContext(UserContext);
 
-  const [open, setOpen] = React.useState(false);
+  const address = user.address;
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        title="Account"
         subheader="Some information can be edited"
-        avatar={
-          <Avatar aria-label="account" variant="rounded">
-            <AccountCircleIcon />
-          </Avatar>
-        }
+        title="Address"
         titleTypographyProps={{
           align: "left",
           variant: "h5",
@@ -207,13 +180,18 @@ const AccountDetails = props => {
           display: "block",
           color: "textSecondary"
         }}
+        avatar={
+          <Avatar aria-label="contact" variant="rounded">
+            <LocationIcon />
+          </Avatar>
+        }
       />
       <Divider />
       <CardContent>
-        {AccountForm({ classes, user, setUser, open, setOpen })}
+        {UserAddressForm({ classes, address, setUser })}
       </CardContent>
     </Card>
   );
 };
 
-export default AccountDetails;
+export default UserAddress;
