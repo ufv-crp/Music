@@ -211,8 +211,6 @@ const AccountDetails = props => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log("user", user);
-
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
