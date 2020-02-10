@@ -8,8 +8,7 @@ import { useTheme } from "@material-ui/styles";
 
 import { useMediaQuery } from "@material-ui/core";
 
-import { Header, Sidebar, Footer } from "../../components";
-
+import { Header, Sidebar, Footer, RouterBreadcrumbs } from "../../components";
 
 const General = props => {
   const { children } = props;
@@ -42,6 +41,8 @@ const General = props => {
       })}
     >
       <Header onSidebarOpen={handleSidebarOpen} />
+
+      <RouterBreadcrumbs />
 
       <Sidebar
         onClose={handleSidebarClose}
