@@ -60,7 +60,8 @@ import {
   listAllCourses,
   createCourse,
   searchCourseCreator,
-  removeCourseById
+  removeCourseById,
+  updateCourseById
 } from "./api";
 
 const useStyles = makeStyles(theme => ({
@@ -181,10 +182,10 @@ const ListCourses = ({
   privateCourses,
   setPrivateCourses,
   searchCourse,
-  setSearchCourse
+  setSearchCourse,
+  updateCourseState,
+  setUpdateCourseState
 }) => {
-  if (createCourseState) return null;
-
   return (
     <>
       <Box bgcolor="white" mb="25px" borderRadius="borderRadius" p="15px">
@@ -288,6 +289,8 @@ const ListCourses = ({
                   client={client}
                   setCourses={setCourses}
                   key={course.id + index}
+                  updateCourseState={updateCourseState}
+                  setUpdateCourseState={setUpdateCourseState}
                 />
               );
             })) || (
@@ -302,7 +305,14 @@ const ListCourses = ({
   );
 };
 
-const CardCourse = ({ course, classes, client, setCourses }) => {
+const CardCourse = ({
+  course,
+  classes,
+  client,
+  setCourses,
+  updateCourseState,
+  setUpdateCourseState
+}) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [expanded, setExpanded] = useState(false);
@@ -485,7 +495,12 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
             </DialogActions>
           </Dialog>
 
-          <IconButton className={classes.updateIcon}>
+          <IconButton
+            className={classes.updateIcon}
+            onClick={() =>
+              setUpdateCourseState({ state: !updateCourseState.state, course })
+            }
+          >
             <UpdateIcon />
           </IconButton>
         </CardActions>
@@ -525,9 +540,9 @@ const CardCourse = ({ course, classes, client, setCourses }) => {
 const CreateCourse = ({
   classes,
   client,
-  courses,
   setCreateCourseState,
   setCourses,
+  createCourse,
   createCourseState,
   authentication
 }) => {
@@ -538,8 +553,6 @@ const CreateCourse = ({
   const handlePrivateCourse = () => {
     setPrivateCourse(!privateCourse);
   };
-
-  if (!createCourseState) return null;
 
   return (
     <Box
@@ -594,6 +607,8 @@ const CreateCourse = ({
                     variant: "success",
                     autoHideDuration: 5000
                   });
+
+                  actions.resetForm();
                 })
                 .catch(error => {
                   enqueueSnackbar("Error on course create", {
@@ -605,8 +620,6 @@ const CreateCourse = ({
                 });
 
               actions.setSubmitting(false);
-
-              actions.resetForm();
             }}
             validationSchema={Yup.object().shape({
               title: Yup.string()
@@ -713,6 +726,212 @@ const CreateCourse = ({
   );
 };
 
+const UpdateCourse = ({
+  classes,
+  setCourses,
+  updateCourseState,
+  setUpdateCourseState,
+  updateCourseById,
+  client,
+  authentication
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [privateCourse, setPrivateCourse] = useState(
+    updateCourseState.course.private
+  );
+
+  const handlePrivateCourse = () => {
+    setPrivateCourse(!privateCourse);
+  };
+
+  console.log(updateCourseState);
+  return (
+    <Box
+      p={5}
+      bgcolor="white"
+      borderRadius="borderRadius"
+      className={classes.boxCreateCourse}
+    >
+      <Grid container spacing={4}>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => {
+              _listAllCourses({
+                client,
+                setCourses: setCourses,
+                query: listAllCourses,
+                privateCourses: false
+              });
+              setUpdateCourseState({
+                state: !updateCourseState.state,
+                course: {}
+              });
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={4} direction="column">
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              title: updateCourseState.course.title,
+              description: updateCourseState.course.description,
+              start: moment(updateCourseState.course.start).format(
+                "YYYY-MM-DDThh:mm"
+              ),
+              end: moment(updateCourseState.course.end).format(
+                "YYYY-MM-DDThh:mm"
+              ),
+              private: privateCourse
+            }}
+            onSubmit={(values, actions) => {
+              actions.setSubmitting(true);
+
+              client
+                .request(updateCourseById, {
+                  params: {
+                    ...values,
+                    id: updateCourseState.course.id,
+                    start: new Date(values.start).toISOString(),
+                    end: new Date(values.end).toISOString()
+                  }
+                })
+                .then(response => {
+                  enqueueSnackbar("Course updated", {
+                    variant: "success",
+                    autoHideDuration: 5000
+                  });
+                })
+                .catch(error => {
+                  enqueueSnackbar("Error on course update", {
+                    variant: "error",
+                    autoHideDuration: 8000
+                  });
+
+                  console.log("error", error.response);
+                });
+
+              actions.setSubmitting(false);
+            }}
+            validationSchema={Yup.object().shape({
+              title: Yup.string()
+                .min(10, "At least 10 characteres are required")
+                .required("Title is required"),
+              description: Yup.string()
+                .min(30, "At least 30 characteres are required")
+                .required("Description is required"),
+              start: Yup.date().required("Start date is required"),
+              end: Yup.date().required("End date is required"),
+              private: Yup.bool().oneOf([true, false], "Invalid value")
+            })}
+          >
+            {formik => (
+              <Form>
+                <Grid container spacing={4} direction="column">
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="title"
+                      type="text"
+                      label="Title"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="description"
+                      type="textarea"
+                      label="Description"
+                      variant="outlined"
+                      multiline
+                      rows="4"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="start"
+                      type="datetime-local"
+                      label="Start"
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                    <Field
+                      component={TextField}
+                      name="end"
+                      type="datetime-local"
+                      label="End"
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Box className={classes.checkedBox}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={privateCourse}
+                            onChange={handlePrivateCourse}
+                            value={privateCourse}
+                          />
+                        }
+                        label="Private"
+                      />
+
+                      <span className={classes.checkedError}>
+                        <ErrorMessage name="private" />
+                      </span>
+                    </Box>
+                  </Grid>
+
+                  {formik.isSubmitting && (
+                    <LinearProgress className={classes.linearProgress} />
+                  )}
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                      disabled={
+                        formik.isSubmitting ||
+                        !Object.keys(formik.touched).length
+                      }
+                    >
+                      Submit
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
 const Courses = () => {
   const classes = useStyles();
 
@@ -725,6 +944,11 @@ const Courses = () => {
   const [privateCourses, setPrivateCourses] = useState(false);
 
   const [createCourseState, setCreateCourseState] = useState(false);
+
+  const [updateCourseState, setUpdateCourseState] = useState({
+    state: false,
+    course: {}
+  });
 
   const [searchCourse, setSearchCourse] = useState("");
 
@@ -741,28 +965,46 @@ const Courses = () => {
 
   return (
     <Box m={5}>
-      <ListCourses
-        classes={classes}
-        client={client}
-        courses={courses}
-        setCourses={setCourses}
-        createCourseState={createCourseState}
-        setCreateCourseState={setCreateCourseState}
-        privateCourses={privateCourses}
-        setPrivateCourses={setPrivateCourses}
-        searchCourse={searchCourse}
-        setSearchCourse={setSearchCourse}
-      />
+      {!createCourseState && !updateCourseState.state && (
+        <ListCourses
+          classes={classes}
+          client={client}
+          courses={courses}
+          setCourses={setCourses}
+          createCourseState={createCourseState}
+          setCreateCourseState={setCreateCourseState}
+          privateCourses={privateCourses}
+          setPrivateCourses={setPrivateCourses}
+          searchCourse={searchCourse}
+          setSearchCourse={setSearchCourse}
+          updateCourseState={updateCourseState}
+          setUpdateCourseState={setUpdateCourseState}
+        />
+      )}
 
-      <CreateCourse
-        classes={classes}
-        courses={setCourses}
-        setCourses={setCourses}
-        createCourseState={createCourseState}
-        setCreateCourseState={setCreateCourseState}
-        client={client}
-        authentication={authentication}
-      />
+      {createCourseState && (
+        <CreateCourse
+          classes={classes}
+          setCourses={setCourses}
+          createCourseState={createCourseState}
+          setCreateCourseState={setCreateCourseState}
+          createCourse={createCourse}
+          client={client}
+          authentication={authentication}
+        />
+      )}
+
+      {updateCourseState.state && (
+        <UpdateCourse
+          classes={classes}
+          setCourses={setCourses}
+          updateCourseState={updateCourseState}
+          setUpdateCourseState={setUpdateCourseState}
+          updateCourseById={updateCourseById}
+          client={client}
+          authentication={authentication}
+        />
+      )}
     </Box>
   );
 };
