@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 
@@ -8,17 +8,18 @@ import useStyles from "./styles";
 
 import {
   Card,
-  CardActions,
   CardContent,
   Avatar,
   Typography,
-  Divider,
-  Button,
-  LinearProgress
+  Divider
 } from "@material-ui/core";
 
+import { UserContext } from "../../../states";
+
 const AccountProfile = props => {
-  const { className, user, ...rest } = props;
+  const { className, ...rest } = props;
+
+  const { user } = useContext(UserContext);
 
   const classes = useStyles();
 
@@ -60,7 +61,7 @@ const AccountProfile = props => {
               color="textSecondary"
               variant="body1"
             >
-              {moment(user.createdAt).format('hh:mm A MMMM Do YYYY')}
+              {moment(user.createdAt).format("hh:mm A MMMM Do YYYY")}
             </Typography>
           </div>
 
@@ -68,23 +69,9 @@ const AccountProfile = props => {
             {!!user.firstName && user.firstName[0]}
           </Avatar>
         </div>
-
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-
-          <LinearProgress value={70} variant="determinate" />
-        </div>
       </CardContent>
 
       <Divider />
-
-      <CardActions>
-        <Button className={classes.uploadButton} color="primary" variant="text">
-          Upload picture
-        </Button>
-
-        <Button variant="text">Remove picture</Button>
-      </CardActions>
     </Card>
   );
 };

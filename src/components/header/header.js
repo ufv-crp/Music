@@ -21,11 +21,7 @@ import {
   IconButton
 } from "@material-ui/core";
 
-import {
-  Menu as MenuIcon,
-  NotificationsOutlined as NotificationsIcon,
-  Input as InputIcon
-} from "@material-ui/icons";
+import { Menu as MenuIcon, Input as InputIcon } from "@material-ui/icons";
 
 import { logout } from "../sidebar/logout";
 
@@ -48,8 +44,6 @@ const Header = props => {
 
   const classes = useStyles();
 
-  const [notifications] = useState([]);
-
   return (
     <>
       <AppBar {...rest} className={clsx(classes.root, className)}>
@@ -61,16 +55,6 @@ const Header = props => {
           <div className={classes.flexGrow} />
 
           <Hidden mdDown>
-            <IconButton color="inherit">
-              <Badge
-                badgeContent={notifications.length}
-                color="primary"
-                variant="dot"
-              >
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-
             <IconButton
               className={classes.signOutButton}
               color="inherit"
@@ -110,7 +94,14 @@ const Header = props => {
               Cancel
             </Button>
 
-            <Button onClick={() => { logout(); setOpen(false); }} color="primary" autoFocus>
+            <Button
+              onClick={() => {
+                logout();
+                setOpen(false);
+              }}
+              color="primary"
+              autoFocus
+            >
               Yes
             </Button>
           </DialogActions>

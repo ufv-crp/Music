@@ -26,7 +26,11 @@ import { createAuthenticatedClient } from "../../authentication";
 
 import { AuthenticationContext, UserContext } from "../../states";
 
-import { searchUser } from "../../pages/account/api";
+import {
+  searchUser,
+  listAddressById,
+  listContactById
+} from "../../pages/account/api";
 
 const FormikForgotPassword = ({ classes }) => (
   <Formik
@@ -134,11 +138,23 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
       const client = createAuthenticatedClient();
 
       try {
-        const response = await client.request(searchUser, {
+        const userResponse = await client.request(searchUser, {
           id: authenticationResponse.userId
         });
 
-        setUser({ ...response.searchUser });
+        setUser({ ...userResponse.searchUser });
+
+        const responseAddress = await client.request(listAddressById, {
+          userId: authenticationResponse.userId
+        });
+
+        setUser({ address: { ...responseAddress.listAddresses[0] } });
+
+        const responseContact = await client.request(listContactById, {
+          userId: authenticationResponse.userId
+        });
+
+        setUser({ contact: { ...responseContact.listContacts[0] } });
       } catch (error) {
         console.log(error);
       }
