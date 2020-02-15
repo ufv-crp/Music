@@ -13,7 +13,6 @@ import clsx from "clsx";
 import {
   Grid,
   Box,
-  makeStyles,
   Card,
   CardContent,
   Typography,
@@ -61,98 +60,11 @@ import {
   createCourse,
   searchCourseCreator,
   removeCourseById,
-  updateCourseById
+  updateCourseById,
+  userCourse
 } from "./api";
 
-const useStyles = makeStyles(theme => ({
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    })
-  },
-  expandOpen: {
-    transform: "rotate(180deg)"
-  },
-  toolbarItem: {
-    display: "flex",
-    justifyContent: "center",
-    [theme.breakpoints.down("xs")]: {
-      "&": {
-        justifyContent: "flex-start"
-      }
-    }
-  },
-  addIconFab: {
-    width: "45px",
-    height: "45px"
-  },
-  notFoundCourses: {
-    padding: "15px"
-  },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    "& > *": {
-      padding: "5px 0 5px 0"
-    }
-  },
-  centerIconText: {
-    display: "flex",
-    alignItems: "center",
-    alignContent: "center"
-  },
-  date: {
-    "& > svg": {
-      marginRight: "10px"
-    },
-    "& > svg:nth-child(2)": {
-      marginLeft: "10px"
-    }
-  },
-  marginSvgIcon: {
-    "& > svg": {
-      marginRight: "10px"
-    }
-  },
-  deleteIcon: {
-    color: "#dc5a5a"
-  },
-  updateIcon: {
-    color: "#4CAF50"
-  },
-  removeCourseDisagree: {
-    color: "#dc5a5a"
-  },
-  removeCourseAgree: {
-    color: "#4CAF50"
-  },
-  boxCreateCourse: {
-    width: "70%",
-    [theme.breakpoints.down("xs")]: {
-      "&": {
-        width: "100%"
-      }
-    }
-  },
-  checkedBox: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  checkedError: {
-    fontSize: "0.75rem",
-    marginTop: "3px",
-    fontFamily: "Roboto",
-    fontWeight: "400",
-    lineHeight: "1.66",
-    letterSpacing: "0.03333em",
-    color: theme.palette.errorLight
-  },
-  linearProgress: {
-    margin: "16px"
-  }
-}));
+import useStyles from "./styles";
 
 const _listAllCourses = ({
   client,
@@ -360,7 +272,8 @@ const CardCourse = ({
     setCourseRemoved,
     setCourses,
     listAllCourses,
-    enqueueSnackbar
+    enqueueSnackbar,
+    expanded
   }) => {
     client
       .request(query, { id })
@@ -424,32 +337,36 @@ const CardCourse = ({
         </CardContent>
 
         <CardActions>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
-            onClick={() => {
-              _courseCreator({
-                client,
-                query: searchCourseCreator,
-                id: course.creator,
-                setCourseCreator
-              });
+          <Tooltip title={(expanded && "Retract") || "Expand"}>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded
+              })}
+              onClick={() => {
+                _courseCreator({
+                  client,
+                  query: searchCourseCreator,
+                  id: course.creator,
+                  setCourseCreator
+                });
 
-              handleExpandClick();
-            }}
-            aria-expanded={expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+                handleExpandClick();
+              }}
+              aria-expanded={expanded}
+              aria-label="Show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            className={classes.deleteIcon}
-            onClick={handleDialogClick}
-          >
-            <RemoveCircleOutlineIcon />
-          </IconButton>
+          <Tooltip title="Remove">
+            <IconButton
+              className={classes.deleteIcon}
+              onClick={handleDialogClick}
+            >
+              <RemoveCircleOutlineIcon />
+            </IconButton>
+          </Tooltip>
 
           <Dialog
             open={dialogOpen}
@@ -484,7 +401,8 @@ const CardCourse = ({
                     setCourseRemoved,
                     setCourses,
                     listAllCourses,
-                    enqueueSnackbar
+                    enqueueSnackbar,
+                    expanded
                   });
                 }}
                 className={classes.removeCourseAgree}
@@ -494,15 +412,19 @@ const CardCourse = ({
               </Button>
             </DialogActions>
           </Dialog>
-
-          <IconButton
-            className={classes.updateIcon}
-            onClick={() =>
-              setUpdateCourseState({ state: !updateCourseState.state, course })
-            }
-          >
-            <UpdateIcon />
-          </IconButton>
+          <Tooltip title="Update">
+            <IconButton
+              className={classes.updateIcon}
+              onClick={() =>
+                setUpdateCourseState({
+                  state: !updateCourseState.state,
+                  course
+                })
+              }
+            >
+              <UpdateIcon />
+            </IconButton>
+          </Tooltip>
         </CardActions>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -562,7 +484,7 @@ const CreateCourse = ({
       className={classes.boxCreateCourse}
     >
       <Grid container spacing={4}>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
           <IconButton
             aria-label="delete"
             onClick={() => {
@@ -577,6 +499,10 @@ const CreateCourse = ({
           >
             <ArrowBackIcon />
           </IconButton>
+
+          <Typography className={classes.backItemText}>
+            Create course
+          </Typography>
         </Grid>
       </Grid>
 
@@ -590,34 +516,60 @@ const CreateCourse = ({
               end: "",
               private: privateCourse
             }}
-            onSubmit={(values, actions) => {
+            onSubmit={async (values, actions) => {
               actions.setSubmitting(true);
 
-              client
-                .request(createCourse, {
+              let responseCourse = {};
+
+              try {
+                responseCourse = await client.request(createCourse, {
                   params: {
                     ...values,
                     creator: authentication.userId,
                     start: new Date(values.start).toISOString(),
                     end: new Date(values.end).toISOString()
                   }
-                })
-                .then(response => {
-                  enqueueSnackbar("Course created", {
-                    variant: "success",
-                    autoHideDuration: 5000
-                  });
+                });
 
-                  actions.resetForm();
-                })
-                .catch(error => {
-                  enqueueSnackbar("Error on course create", {
+                enqueueSnackbar("Course created", {
+                  variant: "success",
+                  autoHideDuration: 5000
+                });
+
+                actions.resetForm();
+              } catch (error) {
+                enqueueSnackbar("Error on course create", {
+                  variant: "error",
+                  autoHideDuration: 8000
+                });
+
+                console.log("error", error.response);
+              }
+
+			  // eslint-disable-next-line
+              let responseUserCourse = {};
+
+              try {
+                responseUserCourse = await client.request(userCourse, {
+                  courseId: responseCourse.createCourse.id,
+                  userId: authentication.userId
+                });
+
+                enqueueSnackbar("Course associated with the user", {
+                  variant: "success",
+                  autoHideDuration: 5000
+                });
+              } catch (error) {
+                enqueueSnackbar(
+                  "Unable to associate the course and the user, contact an admin",
+                  {
                     variant: "error",
                     autoHideDuration: 8000
-                  });
+                  }
+                );
 
-                  console.log("error", error.response);
-                });
+                console.log("error", error.response);
+              }
 
               actions.setSubmitting(false);
             }}
@@ -636,7 +588,7 @@ const CreateCourse = ({
             {formik => (
               <Form>
                 <Grid container spacing={4} direction="column">
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="title"
@@ -647,7 +599,7 @@ const CreateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="description"
@@ -660,7 +612,7 @@ const CreateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="start"
@@ -674,7 +626,7 @@ const CreateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="end"
@@ -754,7 +706,7 @@ const UpdateCourse = ({
       className={classes.boxCreateCourse}
     >
       <Grid container spacing={4}>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
           <IconButton
             aria-label="delete"
             onClick={() => {
@@ -772,6 +724,10 @@ const UpdateCourse = ({
           >
             <ArrowBackIcon />
           </IconButton>
+
+          <Typography className={classes.backItemText}>
+            Update course
+          </Typography>
         </Grid>
       </Grid>
 
@@ -834,7 +790,7 @@ const UpdateCourse = ({
             {formik => (
               <Form>
                 <Grid container spacing={4} direction="column">
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="title"
@@ -845,7 +801,7 @@ const UpdateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="description"
@@ -858,7 +814,7 @@ const UpdateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="start"
@@ -872,7 +828,7 @@ const UpdateCourse = ({
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={9} lg={9}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       component={TextField}
                       name="end"

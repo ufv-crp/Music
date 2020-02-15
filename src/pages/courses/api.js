@@ -43,10 +43,17 @@ const createCourse = `
   	}
 `;
 
+const userCourse = `
+	mutation CreateCourseUser($courseId: Int!, $userId: Int!) {
+		createCourseUser(courseId: $courseId, userId: $userId)
+ 	}
+`;
+
 export {
   listAllCourses,
   updateCourseById,
   removeCourseById,
   createCourse,
-  searchCourseCreator
+  searchCourseCreator,
+  userCourse
 };
