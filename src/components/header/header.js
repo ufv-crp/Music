@@ -16,7 +16,6 @@ import {
   Slide,
   AppBar,
   Toolbar,
-  Badge,
   Hidden,
   IconButton
 } from "@material-ui/core";
