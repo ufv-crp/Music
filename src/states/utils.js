@@ -1,4 +1,4 @@
-import * as SecureLS from "secure-ls";
+import SecureLS from "secure-ls";
 
 const encryptLocalStorage = true;
 

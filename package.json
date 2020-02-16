@@ -21,7 +21,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "secure-ls": "^1.2.6",
-    "styled-components": "^5.0.0"
+    "styled-components": "^5.0.0",
+    "yup": "^0.28.1"
   },
   "scripts": {
     "start": "export PORT=4000 && react-scripts start",

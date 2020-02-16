@@ -138,11 +138,11 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
       const client = createAuthenticatedClient();
 
       try {
-        const responseData = await client.request(searchUser, {
+        const userResponse = await client.request(searchUser, {
           id: authenticationResponse.userId
         });
 
-        setUser({ ...responseData.searchUser });
+        setUser({ ...userResponse.searchUser });
 
         const responseAddress = await client.request(listAddressById, {
           userId: authenticationResponse.userId

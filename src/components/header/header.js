@@ -1,4 +1,4 @@
-import React, { useState, useContext, forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 
 import clsx from "clsx";
 
@@ -16,7 +16,6 @@ import {
   Slide,
   AppBar,
   Toolbar,
-  Badge,
   Hidden,
   IconButton
 } from "@material-ui/core";
