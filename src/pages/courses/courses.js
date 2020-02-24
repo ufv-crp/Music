@@ -102,7 +102,7 @@ const ListCourses = ({
     <>
       <Box bgcolor="white" mb="25px" borderRadius="borderRadius" p="15px">
         <Grid container spacing={5} justify="space-evenly" alignItems="center">
-          <Grid item lg={6} md={6} sm={6} xs={12}>
+          <Grid item lg={6} md={6} sm={6} xs={4}>
             <TextFieldMaterialUi
               id="searchInput"
               placeholder="Search"
@@ -124,8 +124,8 @@ const ListCourses = ({
             lg={3}
             md={3}
             sm={3}
-            xs={12}
-            className={classes.toolbarItem}
+            xs={4}
+            className={`${classes.toolbarItem} ${classes.alignLeft}`}
           >
             <FormControlLabel
               control={
@@ -149,17 +149,17 @@ const ListCourses = ({
                   }}
                 />
               }
-              label="Private"
+			  label="Private"
             />
           </Grid>
 
           <Grid
             item
-            lg={3}
-            md={3}
-            sm={3}
-            xs={12}
-            className={classes.toolbarItem}
+            lg={2}
+            md={2}
+            sm={2}
+            xs={3}
+            className={`${classes.toolbarItem} ${classes.alignLeft}`}
           >
             <Tooltip
               title="Add"
@@ -920,7 +920,7 @@ const Courses = () => {
   }, []);
 
   return (
-    <Box m={5}>
+    <Box>
       {!createCourseState && !updateCourseState.state && (
         <ListCourses
           classes={classes}
