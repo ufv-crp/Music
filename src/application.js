@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { AuthenticationContext } from "./states";
 
+import { SnackbarProvider } from "notistack";
+
 import {
   authenticationMiddleware,
   checkTokenExpiration,
@@ -31,25 +33,27 @@ const Application = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          {authenticationMiddleware({ authentication })}
-          {redirectWrapperNotLogged({
-            invalid: tokenExpiration.invalid,
-            expired: tokenExpiration.expired,
-            pathname: "/login",
-            state: {
+      <SnackbarProvider maxSnack={3}>
+        <Router>
+          <Switch>
+            {authenticationMiddleware({ authentication })}
+            {redirectWrapperNotLogged({
+              invalid: tokenExpiration.invalid,
               expired: tokenExpiration.expired,
-              invalid: tokenExpiration.invalid
-            }
-          })}
-          {redirectWrapperNotFound({
-            pathname: "/dashboard",
-            state: {}
-          })}
-          />
-        </Switch>
-      </Router>
+              pathname: "/login",
+              state: {
+                expired: tokenExpiration.expired,
+                invalid: tokenExpiration.invalid
+              }
+            })}
+            {redirectWrapperNotFound({
+              pathname: "/dashboard",
+              state: {}
+            })}
+            />
+          </Switch>
+        </Router>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };
