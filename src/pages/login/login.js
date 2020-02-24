@@ -13,7 +13,8 @@ import {
   LinearProgress,
   Container,
   Typography,
-  Grid
+  Grid,
+  Box
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -26,73 +27,91 @@ import { createAuthenticatedClient } from "../../authentication";
 
 import { AuthenticationContext, UserContext } from "../../states";
 
+import { useSnackbar } from "notistack";
+
 import {
   searchUser,
   listAddressById,
   listContactById
 } from "../../pages/account/api";
 
-const FormikForgotPassword = ({ classes }) => (
-  <Formik
-    initialValues={{ email: "" }}
-    validate={values => {
-      const errors = {};
+const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
+  return (
+    <Formik
+      initialValues={{ email: "" }}
+      validate={values => {
+        const errors = {};
 
-      if (!values.email) {
-        errors.email = "Required";
-      } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-      ) {
-        errors.email = "Invalid email address";
-      }
+        if (!values.email) {
+          errors.email = "Required";
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+        ) {
+          errors.email = "Invalid email address";
+        }
 
-      return errors;
-    }}
-    onSubmit={async (values, { setSubmitting, resetForm }) => {
-      setSubmitting(true);
+        return errors;
+      }}
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        setSubmitting(true);
 
-      try {
-        resetPassword({ email: values.email });
+        try {
+          await resetPassword({ email: values.email });
 
-        resetForm();
-      } catch (error) {
-        console.log(error);
-      }
-    }}
-  >
-    {props => (
-      <Form className={classes.form}>
-        <Field
-          name="email"
-          type="email"
-          label="Email"
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          component={TextField}
-        />
+          enqueueSnackbar("Password changed, check your e-mail", {
+            variant: "success",
+            autoHideDuration: 5000
+          });
+        } catch (error) {
+          console.log(error);
 
-        <br />
+          enqueueSnackbar("Error on password change, contact an admin", {
+            variant: "error",
+            autoHideDuration: 8000
+          });
+        }
+      }}
+    >
+      {props => (
+        <Form className={classes.form}>
+          <Field
+            name="email"
+            type="email"
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            component={TextField}
+          />
 
-        {props.isSubmitting && <LinearProgress />}
+          <br />
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          disabled={props.isSubmitting}
-          onClick={props.submitForm}
-        >
-          Send Password
-        </Button>
-      </Form>
-    )}
-  </Formik>
-);
+          {props.isSubmitting && <LinearProgress />}
 
-const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={props.isSubmitting}
+            onClick={props.submitForm}
+          >
+            Send Password
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+const FormikSign = ({
+  classes,
+  setAuthentication,
+  setUser,
+  enqueueSnackbar,
+  props
+}) => (
   <Formik
     initialValues={{
       email: "",
@@ -133,6 +152,11 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
         resetForm();
       } catch (error) {
         console.log(error);
+
+        enqueueSnackbar("Error on login, contact an admin", {
+          variant: "error",
+          autoHideDuration: 8000
+        });
       }
 
       const client = createAuthenticatedClient();
@@ -208,39 +232,50 @@ const FormikSign = ({ classes, setAuthentication, setUser, props }) => (
 
 const Login = props => {
   const { setAuthentication } = useContext(AuthenticationContext);
+
   const { setUser } = useContext(UserContext);
 
   const [forgotPassword, setForgotPassword] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Box className={classes.boxContainer}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
 
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
 
-        <Typography component="h1" variant="h5">
-          {forgotPassword ? "Recover your account" : "Login"}
-        </Typography>
+          <Typography component="h1" variant="h5">
+            {forgotPassword ? "Recover your account" : "Login"}
+          </Typography>
 
-        {forgotPassword && FormikForgotPassword({ classes })}
+          {forgotPassword && FormikForgotPassword({ classes, enqueueSnackbar })}
 
-        {forgotPassword === false &&
-          FormikSign({ classes, setAuthentication, setUser, props })}
+          {forgotPassword === false &&
+            FormikSign({
+              classes,
+              setAuthentication,
+              setUser,
+              enqueueSnackbar,
+              props
+            })}
 
-        <Grid container>
-          <Grid item xs>
-            <Button onClick={() => setForgotPassword(!forgotPassword)}>
-              {forgotPassword ? "Back to Login" : "Forgot Password?"}
-            </Button>
+          <Grid container>
+            <Grid item xs>
+              <Button onClick={() => setForgotPassword(!forgotPassword)}>
+                {forgotPassword ? "Back to Login" : "Forgot Password?"}
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
-    </Container>
+        </div>
+      </Container>
+    </Box>
   );
 };
 

@@ -27,7 +27,7 @@ const authenticate = async ({ email, password }) => {
       password
     });
   } catch (error) {
-    return JSON.stringify(error);
+    throw JSON.stringify(error);
   }
 };
 
@@ -75,7 +75,7 @@ const resetPassword = async ({ email }) => {
       email
     });
   } catch (error) {
-    return JSON.stringify(error);
+    throw JSON.stringify(error);
   }
 };
 

@@ -1,7 +1,8 @@
 {
   "name": "music",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "private": true,
+  "author": "Walter (https://github.com/Sphinxs) and Igor (https://github.com/iguit0)",
   "dependencies": {
     "@material-ui/core": "^4.8.3",
     "@material-ui/icons": "^4.5.1",
@@ -19,7 +20,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "secure-ls": "^1.2.6",
     "styled-components": "^5.0.0",
     "yup": "^0.28.1"

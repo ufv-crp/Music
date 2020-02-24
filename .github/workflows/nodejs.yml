@@ -1,4 +1,4 @@
-name: Node Continuous Integration
+name: Continuous Integration
 
 on: [push]
 
@@ -12,11 +12,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Npm install and test
+      - name: Install and test
         run: |
           npm install
           npm test
