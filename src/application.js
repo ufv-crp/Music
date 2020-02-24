@@ -18,11 +18,16 @@ import {
 } from "./authentication";
 
 const Application = () => {
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication, setAuthentication } = useContext(
+    AuthenticationContext
+  );
 
   const tokenExpiration = checkTokenExpiration({
     expireAt: authentication.expireAt
   });
+
+  if (tokenExpiration.expired || tokenExpiration.invalid)
+    setAuthentication(null);
 
   return (
     <ThemeProvider theme={theme}>
