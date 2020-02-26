@@ -149,7 +149,7 @@ const ListCourses = ({
                   }}
                 />
               }
-			  label="Private"
+              label="Private"
             />
           </Grid>
 
@@ -208,7 +208,9 @@ const ListCourses = ({
             })) || (
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <Paper className={classes.notFoundCourses}>
-              <Typography>No course (s) added</Typography>
+              <Typography>
+                No course (s) added or private course (s) are not listed
+              </Typography>
             </Paper>
           </Grid>
         )}
@@ -280,7 +282,11 @@ const CardCourse = ({
       .then(response => {
         enqueueSnackbar("Course removed", {
           variant: "success",
-          autoHideDuration: 5000
+          autoHideDuration: 5000,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right"
+          }
         });
 
         setCourseRemoved(true);
@@ -295,7 +301,11 @@ const CardCourse = ({
       .catch(error => {
         enqueueSnackbar("Error on course remove", {
           variant: "error",
-          autoHideDuration: 8000
+          autoHideDuration: 8000,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right"
+          }
         });
 
         console.log(error.response);
@@ -375,7 +385,7 @@ const CardCourse = ({
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {`Are you sure you want to remove the course ${course.title}`}
+              {`Are you sure you want to remove the course`}
             </DialogTitle>
 
             <DialogContent>
@@ -533,20 +543,28 @@ const CreateCourse = ({
 
                 enqueueSnackbar("Course created", {
                   variant: "success",
-                  autoHideDuration: 5000
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
 
                 actions.resetForm();
               } catch (error) {
                 enqueueSnackbar("Error on course create", {
                   variant: "error",
-                  autoHideDuration: 8000
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
 
                 console.log("error", error.response);
               }
 
-			  // eslint-disable-next-line
+              // eslint-disable-next-line
               let responseUserCourse = {};
 
               try {
@@ -557,16 +575,21 @@ const CreateCourse = ({
 
                 enqueueSnackbar("Course associated with the user", {
                   variant: "success",
-                  autoHideDuration: 5000
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
               } catch (error) {
-                enqueueSnackbar(
-                  "Unable to associate the course and the user, contact an admin",
-                  {
-                    variant: "error",
-                    autoHideDuration: 8000
+                enqueueSnackbar("Unable to associate the course and the user", {
+                  variant: "error",
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
                   }
-                );
+                });
 
                 console.log("error", error.response);
               }
@@ -697,7 +720,6 @@ const UpdateCourse = ({
     setPrivateCourse(!privateCourse);
   };
 
-  console.log(updateCourseState);
   return (
     <Box
       p={5}
@@ -761,13 +783,21 @@ const UpdateCourse = ({
                 .then(response => {
                   enqueueSnackbar("Course updated", {
                     variant: "success",
-                    autoHideDuration: 5000
+                    autoHideDuration: 5000,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }
                   });
                 })
                 .catch(error => {
                   enqueueSnackbar("Error on course update", {
                     variant: "error",
-                    autoHideDuration: 8000
+                    autoHideDuration: 8000,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }
                   });
 
                   console.log("error", error.response);
@@ -871,8 +901,9 @@ const UpdateCourse = ({
                       color="primary"
                       type="submit"
                       disabled={
-                        formik.isSubmitting ||
-                        !Object.keys(formik.touched).length
+                        (formik.isSubmitting ||
+                          !Object.keys(formik.touched).length) &&
+                        !privateCourse !== updateCourseState.course.private
                       }
                     >
                       Submit
