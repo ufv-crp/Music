@@ -1,3 +1,24 @@
+const listAllUsers = `
+    query ListUsers {
+        listUsers(all: true) {
+            id
+            email
+            password
+            cpf
+            matriculation
+            firstName
+            secondName
+            createdAt
+            updatedAt
+            creator {
+                id
+                email
+                matriculation
+            }
+        }
+    }
+`;
+
 const searchUser = `
     query SearchUser($id: Int!) {
         searchUser(id: $id) {
@@ -89,6 +110,7 @@ const updateContactById = `
 `;
 
 export {
+  listAllUsers,
   searchUser,
   updateUserById,
   listAddressById,

@@ -214,7 +214,7 @@ const AccountDetails = props => {
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        title="Account"
+        title="Personal Data"
         subheader="Some information can be edited"
         avatar={
           <Avatar aria-label="account" variant="rounded">

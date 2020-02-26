@@ -10,8 +10,5 @@ export default makeStyles(theme => ({
   },
   shiftContent: {
     paddingLeft: 240
-  },
-  content: {
-    height: "100%"
   }
 }));
