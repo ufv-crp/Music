@@ -4,7 +4,8 @@ import {
   checkTokenExpiration,
   redirectWrapperNotLogged,
   redirectWrapperNotFound,
-  resetPassword
+  resetPassword,
+  checkScope
 } from "./authenticate";
 
 import { createAuthenticatedClient } from "./client";
@@ -22,5 +23,6 @@ export {
   routes,
   filterRoutes,
   createRoutesComponents,
-  createRoutesSidebarLinks
+  createRoutesSidebarLinks,
+  checkScope
 };

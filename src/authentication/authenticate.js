@@ -6,6 +6,8 @@ import { request } from "graphql-request";
 
 import { routes, createRoutesComponents, filterRoutes } from "./routes";
 
+import { getLocalStorageItem, initialStateAuthentication } from "../states";
+
 const authenticate = async ({ email, password }) => {
   const query = `
 		query Login($email: String!, $password: String!) {
@@ -79,11 +81,23 @@ const resetPassword = async ({ email }) => {
   }
 };
 
+const checkScope = ({ scope }) => {
+  const authenticationState = getLocalStorageItem({
+    key: "authentication",
+    initialState: initialStateAuthentication
+  });
+
+  return (
+    authenticationState.scopes && authenticationState.scopes.includes(scope)
+  );
+};
+
 export {
   authenticate,
   authenticationMiddleware,
   checkTokenExpiration,
   redirectWrapperNotLogged,
   redirectWrapperNotFound,
-  resetPassword
+  resetPassword,
+  checkScope
 };
