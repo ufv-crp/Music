@@ -433,9 +433,8 @@ const CardCourse = ({
               className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
             >
               <PermIdentityIcon />
-              {courseCreator.firstName
-                ? `${courseCreator.firstName} ${courseCreator.secondName}`
-                : "Loading"}
+              {`${courseCreator.firstName || ""} ${courseCreator.secondName ||
+                ""}`}
             </Typography>
 
             <Typography
@@ -546,7 +545,7 @@ const CreateCourse = ({
                 console.log("error", error.response);
               }
 
-			  // eslint-disable-next-line
+              // eslint-disable-next-line
               let responseUserCourse = {};
 
               try {

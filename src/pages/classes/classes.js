@@ -24,13 +24,13 @@ const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
   const { enqueueSnackbar } = useSnackbar();
-
+  
   return (
     <MaterialTable
       title="Classes"
       icons={icons}
       data={async () => {
-        let _listClasses = [];
+        let _listClasses;
 
         try {
           const _listClassesRaw = await client.request(listClasses, {
@@ -88,7 +88,6 @@ const ListClasses = ({ client, rowDataCourse }) => {
       options={{
         selection: false,
         search: false,
-        // header: false,
         showTitle: true,
         toolbar: true,
         columnsButton: false,
