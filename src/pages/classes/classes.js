@@ -20,6 +20,8 @@ import {
 
 import { useSnackbar } from "notistack";
 
+import icons from "../../components/materialTable/icons";
+
 const useStyles = makeStyles(theme => ({
   classesTable: {
     padding: theme.spacing(2),
@@ -35,15 +37,92 @@ const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const classes = useStyles();
-
+  
   return (
-    <Box className={classes.classesTable}>
-      <MaterialTable
-        title="Classes"
-        data={async () => {
-          let _listClasses = [];
+    <MaterialTable
+      title="Classes"
+      icons={icons}
+      data={async () => {
+        let _listClasses;
+
+        try {
+          const _listClassesRaw = await client.request(listClasses, {
+            params: { courseId: rowDataCourse.id }
+          });
+
+          let classesInstructors;
+
+          classesInstructors = _listClassesRaw.listClasses.map(
+            ({ instructor, ...rest }) => {
+              return client.request(searchClassInstructor, {
+                id: instructor
+              });
+            }
+          );
+
+          classesInstructors = await Promise.all(classesInstructors);
+
+          classesInstructors = classesInstructors.map(instructorData => {
+            return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
+          });
+
+          _listClasses = _listClassesRaw.listClasses.map(
+            ({ instructor, ...rest }, index) => {
+              return {
+                ...rest,
+                instructor: classesInstructors[index],
+                instructorId: instructor
+              };
+            }
+          );
+        } catch (error) {
+          console.log(error);
+        }
+
+        return new Promise((resolve, reject) => {
+          return resolve({
+            data: _listClasses,
+            page: 0,
+            totalCount: _listClasses.length
+          });
+        });
+      }}
+      columns={[
+        { title: "Vacancies", field: "vacancies", type: "numeric" },
+        { title: "Room", field: "room", type: "string" },
+        { title: "Shift", field: "shift", type: "string" },
+        {
+          title: "Instructor",
+          field: "instructor",
+          type: "string",
+          editable: "never"
+        }
+      ]}
+      options={{
+        selection: false,
+        search: false,
+        showTitle: true,
+        toolbar: true,
+        columnsButton: false,
+        exportButton: true,
+        paging: false,
+        detailPanelColumnAlignment: "left"
+      }}
+      editable={{
+        isEditable: rowData => {
+          return (
+            rowData.instructorId === rowDataCourse.creator ||
+            rowData.instructorId === authentication.userId
+          );
+        },
+        isDeletable: rowData => {
+          return (
+            rowData.instructorId === rowDataCourse.creator ||
+            rowData.instructorId === authentication.userId
+          );
+        },
+        onRowAdd: async newData => {
+          let classCreated;
 
           try {
             const _listClassesRaw = await client.request(listClasses, {
@@ -282,6 +361,7 @@ const ListCourses = ({ client }) => {
   return (
     <MaterialTable
       title="Courses"
+      icons={icons}
       data={async query => {
         let filters = query.filters.map(item => {
           return {

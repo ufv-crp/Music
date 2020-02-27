@@ -443,9 +443,8 @@ const CardCourse = ({
               className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
             >
               <PermIdentityIcon />
-              {courseCreator.firstName
-                ? `${courseCreator.firstName} ${courseCreator.secondName}`
-                : "Loading"}
+              {`${courseCreator.firstName || ""} ${courseCreator.secondName ||
+                ""}`}
             </Typography>
 
             <Typography
