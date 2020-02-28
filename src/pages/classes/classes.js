@@ -18,6 +18,8 @@ import {
 
 import { useSnackbar } from "notistack";
 
+import icons from "../../components/materialTable/icons";
+
 const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
@@ -26,6 +28,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
   return (
     <MaterialTable
       title="Classes"
+      icons={icons}
       data={async () => {
         let _listClasses = [];
 
@@ -232,6 +235,7 @@ const ListCourses = ({ client }) => {
   return (
     <MaterialTable
       title="Courses"
+      icons={icons}
       data={async query => {
         let filters = query.filters.map(item => {
           return {
