@@ -8,20 +8,17 @@ import { AuthenticationProvider, UserProvider } from "./states";
 
 import * as serviceWorker from "./serviceWorker";
 
-import { SnackbarProvider } from "notistack";
-
 import dotenv from "dotenv";
 
 dotenv.config();
 
 ReactDOM.render(
-  <SnackbarProvider maxSnack={3}>
     <AuthenticationProvider>
       <UserProvider>
         <Application />
       </UserProvider>
     </AuthenticationProvider>
-  </SnackbarProvider>,
+  ,
   document.getElementById("root")
 );
 

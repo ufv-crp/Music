@@ -1,11 +1,11 @@
 {
   "name": "Music",
   "short_name": "Music",
-  "theme_color": "#2dce9c",
-  "background_color": "#32325d",
+  "theme_color": "#f751fd",
+  "background_color": "#a00ee1",
   "display": "fullscreen",
-  "Scope": ".",
-  "start_url": ".",
+  "Scope": "/",
+  "start_url": "/",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

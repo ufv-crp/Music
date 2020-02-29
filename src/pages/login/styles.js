@@ -6,6 +6,12 @@ export default makeStyles(theme => ({
       backgroundColor: theme.palette.common.white
     }
   },
+  boxContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%"
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
