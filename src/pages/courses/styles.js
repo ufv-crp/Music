@@ -95,6 +95,10 @@ const useStyles = makeStyles(theme => ({
   backItemText: {
     fontSize: "1.1rem",
     fontWeight: "500"
+  },
+  alignLeft: {
+    display: "flex",
+    justifyContent: "flex-end"
   }
 }));
 
