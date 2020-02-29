@@ -6,7 +6,6 @@ import {
   Dashboard,
   Login,
   Users,
-  Scopes,
   Courses,
   Classes,
   Progresses,
@@ -18,7 +17,6 @@ import General from "../layouts/general/general";
 import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
-  LockOpen as LockOpenIcon,
   SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
   DonutLarge as DonutLargeIcon,
@@ -75,25 +73,6 @@ const routes = [
     ],
     sidebar: true,
     icon: <PeopleIcon />,
-    layout: General
-  },
-  {
-    title: "Scopes",
-    path: "/scopes",
-    component: <Scopes />,
-    scopes: [
-      "searchScope",
-      "createScope",
-      "removeScope",
-      "updateScope",
-      "listScopes",
-      "createUserScope",
-      "createUserScopeBulk",
-      "removeUserScope",
-      "listUserScopes"
-    ],
-    sidebar: true,
-    icon: <LockOpenIcon />,
     layout: General
   },
   {
