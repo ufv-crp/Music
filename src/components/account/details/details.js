@@ -80,7 +80,11 @@ const AccountForm = ({
 
           enqueueSnackbar("Account updated", {
             variant: "success",
-            autoHideDuration: 5000
+            autoHideDuration: 5000,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
           });
 
           resetForm();
@@ -90,7 +94,11 @@ const AccountForm = ({
       } else {
         enqueueSnackbar("Password is wrong", {
           variant: "error",
-          autoHideDuration: 5000
+          autoHideDuration: 5000,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right"
+          }
         });
 
         resetForm();

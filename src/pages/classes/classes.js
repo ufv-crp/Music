@@ -6,6 +6,8 @@ import { createAuthenticatedClient } from "../../authentication";
 
 import { AuthenticationContext } from "../../states";
 
+import { Box, makeStyles } from "@material-ui/core";
+
 import {
   listAllCourses,
   listClasses,
@@ -18,12 +20,25 @@ import {
 
 import { useSnackbar } from "notistack";
 
+const useStyles = makeStyles(theme => ({
+  classesTable: {
+    padding: theme.spacing(2),
+    "& > *": {
+      border: "0px",
+      boxShadow: "0px 0px"
+    },
+    background: "#f4f6f8"
+  }
+}));
+
 import icons from "../../components/materialTable/icons";
 
 const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
   const { enqueueSnackbar } = useSnackbar();
+
+  const classes = useStyles();
 
   return (
     <MaterialTable
@@ -66,168 +81,243 @@ const ListClasses = ({ client, rowDataCourse }) => {
           console.log(error);
         }
 
-        return new Promise((resolve, reject) => {
-          return resolve({
-            data: _listClasses,
-            page: 0,
-            totalCount: _listClasses.length
-          });
-        });
-      }}
-      columns={[
-        { title: "Vacancies", field: "vacancies", type: "numeric" },
-        { title: "Room", field: "room", type: "string" },
-        { title: "Shift", field: "shift", type: "string" },
-        {
-          title: "Instructor",
-          field: "instructor",
-          type: "string",
-          editable: "never"
-        }
-      ]}
-      options={{
-        selection: false,
-        search: false,
-        // header: false,
-        showTitle: true,
-        toolbar: true,
-        columnsButton: false,
-        exportButton: true,
-        paging: false,
-        detailPanelColumnAlignment: "left"
-      }}
-      editable={{
-        isEditable: rowData => {
-          return (
-            rowData.instructorId === rowDataCourse.creator ||
-            rowData.instructorId === authentication.userId
-          );
-        },
-        isDeletable: rowData => {
-          return (
-            rowData.instructorId === rowDataCourse.creator ||
-            rowData.instructorId === authentication.userId
-          );
-        },
-        onRowAdd: async newData => {
-          let classCreated;
+  return (
+    <Box className={classes.classesTable}>
+      <MaterialTable
+        title="Classes"
+        data={async () => {
+          let _listClasses = [];
 
           try {
-            classCreated = await client.request(createClass, {
-              params: {
-                ...newData,
-                vacancies: parseInt(newData.vacancies),
-                instructor: authentication.userId,
-                courseId: rowDataCourse.id
-              }
+            const _listClassesRaw = await client.request(listClasses, {
+              params: { courseId: rowDataCourse.id }
             });
 
-            enqueueSnackbar("Class created", {
-              variant: "success",
-              autoHideDuration: 5000
-            });
-          } catch (error) {
-            console.log(error);
+            let classesInstructors;
 
-            enqueueSnackbar(
-              "Error on class create, check if all fields are filled",
-              {
-                variant: "error",
-                autoHideDuration: 8000
+            classesInstructors = _listClassesRaw.listClasses.map(
+              ({ instructor, ...rest }) => {
+                return client.request(searchClassInstructor, {
+                  id: instructor
+                });
               }
             );
-          }
 
-          try {
-            // eslint-disable-next-line
-            const classUserCreated = await client.request(createClassUser, {
-              classId: classCreated.createClass.id,
-              userId: authentication.userId
+            classesInstructors = await Promise.all(classesInstructors);
+
+            classesInstructors = classesInstructors.map(instructorData => {
+              return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
             });
 
-            enqueueSnackbar("Class associated with the user", {
-              variant: "success",
-              autoHideDuration: 5000
-            });
-          } catch (error) {
-            console.log(error);
-
-            enqueueSnackbar(
-              "Unable to associate the class and the user, contact an admin",
-              {
-                variant: "error",
-                autoHideDuration: 8000
+            _listClasses = _listClassesRaw.listClasses.map(
+              ({ instructor, ...rest }, index) => {
+                return {
+                  ...rest,
+                  instructor: classesInstructors[index],
+                  instructorId: instructor
+                };
               }
             );
-          }
-
-          return new Promise((resolve, reject) => {
-            resolve();
-          });
-        },
-        onRowUpdate: async (newData, oldData) => {
-          const changes = Object.keys(newData)
-            .filter(key => {
-              return newData[key] !== oldData[key] ? key : null;
-            })
-            .map(key => {
-              let cache = { [key]: newData[key] };
-
-              if (["vacancies"].includes(key))
-                cache = { [key]: parseInt(newData[key]) };
-
-              return cache;
-            });
-
-          try {
-            // eslint-disable-next-line
-            const classUpdated = await client.request(updateClass, {
-              params: Object.assign(...changes, { id: newData.id })
-            });
-
-            enqueueSnackbar("Class updated", {
-              variant: "success",
-              autoHideDuration: 5000
-            });
           } catch (error) {
             console.log(error);
-
-            enqueueSnackbar("Error on class update", {
-              variant: "error",
-              autoHideDuration: 8000
-            });
           }
 
           return new Promise((resolve, reject) => {
-            resolve();
+            return resolve({
+              data: _listClasses,
+              page: 0,
+              totalCount: _listClasses.length
+            });
           });
-        },
-        onRowDelete: async oldData => {
-          try {
-            // eslint-disable-next-line
-            const classRemoved = await client.request(removeClass, {
-              id: oldData.id
-            });
+        }}
+        columns={[
+          {
+            title: "Vacancies",
+            field: "vacancies",
+            type: "numeric"
+          },
+          { title: "Room", field: "room", type: "string" },
+          { title: "Shift", field: "shift", type: "string" },
+          {
+            title: "Instructor",
+            field: "instructor",
+            type: "string",
+            editable: "never"
+          }
+        ]}
+        options={{
+          selection: false,
+          search: false,
+          // header: false,
+          showTitle: true,
+          toolbar: true,
+          columnsButton: false,
+          exportButton: true,
+          paging: false,
+          detailPanelColumnAlignment: "left"
+        }}
+        editable={{
+          isEditable: rowData => {
+            return (
+              rowData.instructorId === rowDataCourse.creator ||
+              rowData.instructorId === authentication.userId
+            );
+          },
+          isDeletable: rowData => {
+            return (
+              rowData.instructorId === rowDataCourse.creator ||
+              rowData.instructorId === authentication.userId
+            );
+          },
+          onRowAdd: async newData => {
+            let classCreated;
 
-            enqueueSnackbar("Class removed", {
-              variant: "success",
-              autoHideDuration: 5000
-            });
-          } catch (error) {
-            console.log(error);
+            try {
+              classCreated = await client.request(createClass, {
+                params: {
+                  ...newData,
+                  vacancies: parseInt(newData.vacancies),
+                  instructor: authentication.userId,
+                  courseId: rowDataCourse.id
+                }
+              });
 
-            enqueueSnackbar("Error on class remove", {
-              variant: "error",
-              autoHideDuration: 8000
+              enqueueSnackbar("Class created", {
+                variant: "success",
+                autoHideDuration: 5000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            } catch (error) {
+              console.log(error);
+
+              enqueueSnackbar(
+                "Error on class create, check if all fields are filled",
+                {
+                  variant: "error",
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
+                }
+              );
+            }
+
+            try {
+              // eslint-disable-next-line
+              const classUserCreated = await client.request(createClassUser, {
+                classId: classCreated.createClass.id,
+                userId: authentication.userId
+              });
+
+              enqueueSnackbar("Class associated with the user", {
+                variant: "success",
+                autoHideDuration: 5000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            } catch (error) {
+              console.log(error);
+
+              enqueueSnackbar("Unable to associate the class and the user", {
+                variant: "error",
+                autoHideDuration: 8000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            }
+
+            return new Promise((resolve, reject) => {
+              resolve();
+            });
+          },
+          onRowUpdate: async (newData, oldData) => {
+            const changes = Object.keys(newData)
+              .filter(key => {
+                return newData[key] !== oldData[key] ? key : null;
+              })
+              .map(key => {
+                let cache = { [key]: newData[key] };
+
+                if (["vacancies"].includes(key))
+                  cache = { [key]: parseInt(newData[key]) };
+
+                return cache;
+              });
+
+            try {
+              // eslint-disable-next-line
+              const classUpdated = await client.request(updateClass, {
+                params: Object.assign(...changes, { id: newData.id })
+              });
+
+              enqueueSnackbar("Class updated", {
+                variant: "success",
+                autoHideDuration: 5000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            } catch (error) {
+              console.log(error);
+
+              enqueueSnackbar("Error on class update", {
+                variant: "error",
+                autoHideDuration: 8000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            }
+
+            return new Promise((resolve, reject) => {
+              resolve();
+            });
+          },
+          onRowDelete: async oldData => {
+            try {
+              // eslint-disable-next-line
+              const classRemoved = await client.request(removeClass, {
+                id: oldData.id
+              });
+
+              enqueueSnackbar("Class removed", {
+                variant: "success",
+                autoHideDuration: 5000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            } catch (error) {
+              console.log(error);
+
+              enqueueSnackbar("Error on class remove", {
+                variant: "error",
+                autoHideDuration: 8000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
+              });
+            }
+
+            return new Promise((resolve, reject) => {
+              resolve();
             });
           }
-
-          return new Promise((resolve, reject) => {
-            resolve();
-          });
-        }
-      }}
-    />
+        }}
+      />
+    </Box>
   );
 };
 
@@ -259,8 +349,6 @@ const ListCourses = ({ client }) => {
         const courses = await client.request(listAllCourses, {
           private: filters.private.value === "checked" ? true : false
         });
-
-        console.log(filters, courses);
 
         const coursesFiltered = courses.listCourses.filter(course => {
           if (filters.title) return course.title.includes(filters.title.value);

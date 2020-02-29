@@ -40,7 +40,7 @@ const General = props => {
         [classes.shiftContent]: isDesktop
       })}
     >
-      <Header onSidebarOpen={handleSidebarOpen} />
+      <Header openSidebar={openSidebar} onSidebarOpen={handleSidebarOpen} />
 
       <RouterBreadcrumbs />
 

@@ -20,12 +20,16 @@ import {
   IconButton
 } from "@material-ui/core";
 
-import { Menu as MenuIcon, Input as InputIcon } from "@material-ui/icons";
+import {
+  Menu as MenuIcon,
+  Close as CloseIcon,
+  Input as InputIcon
+} from "@material-ui/icons";
 
 import { logout } from "../sidebar/logout";
 
 const Header = props => {
-  const { className, onSidebarOpen, ...rest } = props;
+  const { className, openSidebar, onSidebarOpen, ...rest } = props;
 
   const [open, setOpen] = useState(false);
 
@@ -65,7 +69,7 @@ const Header = props => {
 
           <Hidden lgUp>
             <IconButton color="inherit" onClick={onSidebarOpen}>
-              <MenuIcon />
+              {openSidebar ? <CloseIcon /> : <MenuIcon />}
             </IconButton>
           </Hidden>
         </Toolbar>
