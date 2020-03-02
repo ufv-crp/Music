@@ -20,6 +20,8 @@ import {
 
 import { useSnackbar } from "notistack";
 
+import icons from "../../components/materialTable/icons";
+
 const useStyles = makeStyles(theme => ({
   classesTable: {
     padding: theme.spacing(2),
@@ -31,55 +33,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-import icons from "../../components/materialTable/icons";
-
 const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
   const { enqueueSnackbar } = useSnackbar();
 
   const classes = useStyles();
-
-  return (
-    <MaterialTable
-      title="Classes"
-      icons={icons}
-      data={async () => {
-        let _listClasses = [];
-
-        try {
-          const _listClassesRaw = await client.request(listClasses, {
-            params: { courseId: rowDataCourse.id }
-          });
-
-          let classesInstructors;
-
-          classesInstructors = _listClassesRaw.listClasses.map(
-            ({ instructor, ...rest }) => {
-              return client.request(searchClassInstructor, {
-                id: instructor
-              });
-            }
-          );
-
-          classesInstructors = await Promise.all(classesInstructors);
-
-          classesInstructors = classesInstructors.map(instructorData => {
-            return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
-          });
-
-          _listClasses = _listClassesRaw.listClasses.map(
-            ({ instructor, ...rest }, index) => {
-              return {
-                ...rest,
-                instructor: classesInstructors[index],
-                instructorId: instructor
-              };
-            }
-          );
-        } catch (error) {
-          console.log(error);
-        }
 
   return (
     <Box className={classes.classesTable}>
