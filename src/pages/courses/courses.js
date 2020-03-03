@@ -295,7 +295,7 @@ const CardCourse = ({
           client,
           setCourses,
           query: listAllCourses,
-          privateCourses: false
+          privateCourses: true
         });
       })
       .catch(error => {
@@ -534,6 +534,7 @@ const CreateCourse = ({
                 responseCourse = await client.request(createCourse, {
                   params: {
                     ...values,
+                    private: privateCourse,
                     creator: authentication.userId,
                     start: new Date(values.start).toISOString(),
                     end: new Date(values.end).toISOString()
@@ -790,7 +791,7 @@ const UpdateCourse = ({
                   });
                 })
                 .catch(error => {
-                  enqueueSnackbar("Error on course update", {
+                  enqueueSnackbar("Error on course update, check if you have made changes", {
                     variant: "error",
                     autoHideDuration: 8000,
                     anchorOrigin: {
@@ -899,11 +900,6 @@ const UpdateCourse = ({
                       variant="outlined"
                       color="primary"
                       type="submit"
-                      disabled={
-                        (formik.isSubmitting ||
-                          !Object.keys(formik.touched).length) &&
-                        !privateCourse !== updateCourseState.course.private
-                      }
                     >
                       Submit
                     </Button>

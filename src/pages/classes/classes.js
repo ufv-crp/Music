@@ -36,102 +36,32 @@ const useStyles = makeStyles(theme => ({
 const ListClasses = ({ client, rowDataCourse }) => {
   const { authentication } = useContext(AuthenticationContext);
 
+  const classes = useStyles();
+
   const { enqueueSnackbar } = useSnackbar();
-  
+
   return (
-    <MaterialTable
-      title="Classes"
-      icons={icons}
-      data={async () => {
-        let _listClasses;
-
-        try {
-          const _listClassesRaw = await client.request(listClasses, {
-            params: { courseId: rowDataCourse.id }
-          });
-
-          let classesInstructors;
-
-          classesInstructors = _listClassesRaw.listClasses.map(
-            ({ instructor, ...rest }) => {
-              return client.request(searchClassInstructor, {
-                id: instructor
-              });
-            }
-          );
-
-          classesInstructors = await Promise.all(classesInstructors);
-
-          classesInstructors = classesInstructors.map(instructorData => {
-            return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
-          });
-
-          _listClasses = _listClassesRaw.listClasses.map(
-            ({ instructor, ...rest }, index) => {
-              return {
-                ...rest,
-                instructor: classesInstructors[index],
-                instructorId: instructor
-              };
-            }
-          );
-        } catch (error) {
-          console.log(error);
-        }
-
-        return new Promise((resolve, reject) => {
-          return resolve({
-            data: _listClasses,
-            page: 0,
-            totalCount: _listClasses.length
-          });
-        });
-      }}
-      columns={[
-        { title: "Vacancies", field: "vacancies", type: "numeric" },
-        { title: "Room", field: "room", type: "string" },
-        { title: "Shift", field: "shift", type: "string" },
-        {
-          title: "Instructor",
-          field: "instructor",
-          type: "string",
-          editable: "never"
-        }
-      ]}
-      options={{
-        selection: false,
-        search: false,
-        showTitle: true,
-        toolbar: true,
-        columnsButton: false,
-        exportButton: true,
-        paging: false,
-        detailPanelColumnAlignment: "left"
-      }}
-      editable={{
-        isEditable: rowData => {
-          return (
-            rowData.instructorId === rowDataCourse.creator ||
-            rowData.instructorId === authentication.userId
-          );
-        },
-        isDeletable: rowData => {
-          return (
-            rowData.instructorId === rowDataCourse.creator ||
-            rowData.instructorId === authentication.userId
-          );
-        },
-        onRowAdd: async newData => {
-          let classCreated;
+    <Box className={classes.classesTable}>
+      <MaterialTable
+        title="Classes"
+        icons={icons}
+        data={async () => {
+          let _listClassesRaw;
 
           try {
-            const _listClassesRaw = await client.request(listClasses, {
+            _listClassesRaw = await client.request(listClasses, {
               params: { courseId: rowDataCourse.id }
             });
+          } catch (error) {
+            console.log(error);
 
-            let classesInstructors;
+            _listClassesRaw = { listClasses: [] };
+          }
 
-            classesInstructors = _listClassesRaw.listClasses.map(
+          let _listClasses;
+
+          try {
+            let classesInstructors = _listClassesRaw.listClasses.map(
               ({ instructor, ...rest }) => {
                 return client.request(searchClassInstructor, {
                   id: instructor
@@ -156,6 +86,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
             );
           } catch (error) {
             console.log(error);
+
+            _listClasses = [];
           }
 
           return new Promise((resolve, reject) => {
@@ -382,27 +314,45 @@ const ListCourses = ({ client }) => {
           ...filters
         );
 
-        const courses = await client.request(listAllCourses, {
-          private: filters.private.value === "checked" ? true : false
-        });
+        let courses;
 
-        const coursesFiltered = courses.listCourses.filter(course => {
-          if (filters.title) return course.title.includes(filters.title.value);
+        try {
+          courses = await client.request(listAllCourses, {
+            private: filters.private.value === "checked" ? true : false
+          });
+        } catch (error) {
+          console.log(error);
 
-          if (filters.start)
-            return (
-              new Date(course.start).toLocaleDateString() ===
-              new Date(filters.start.value).toLocaleDateString()
-            );
+          courses = { listCourses: [] };
+        }
 
-          if (filters.end)
-            return (
-              new Date(course.end).toLocaleDateString() ===
-              new Date(filters.end.value).toLocaleDateString()
-            );
+        const coursesFiltered = courses.listCourses
+          .filter(course => {
+            if (filters.title)
+              return course.title
+                .toLowerCase()
+                .includes(filters.title.value.toLowerCase());
 
-          return true;
-        });
+            return true;
+          })
+          .filter(course => {
+            if (filters.start)
+              return (
+                new Date(course.start).toLocaleDateString() ===
+                new Date(filters.start.value).toLocaleDateString()
+              );
+
+            return true;
+          })
+          .filter(course => {
+            if (filters.end)
+              return (
+                new Date(course.end).toLocaleDateString() ===
+                new Date(filters.end.value).toLocaleDateString()
+              );
+
+            return true;
+          });
 
         return new Promise((resolve, reject) => {
           resolve({

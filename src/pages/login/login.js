@@ -69,7 +69,7 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
         } catch (error) {
           console.log(error);
 
-          enqueueSnackbar("Error on password change", {
+          enqueueSnackbar("Error on password change, check your e-mail", {
             variant: "error",
             autoHideDuration: 8000,
             anchorOrigin: {
@@ -161,7 +161,7 @@ const FormikSign = ({
       } catch (error) {
         console.log(error);
 
-        enqueueSnackbar("Error on login, contact an admin", {
+        enqueueSnackbar("Error on login, check your e-mail and password", {
           variant: "error",
           autoHideDuration: 8000,
           anchorOrigin: {

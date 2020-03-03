@@ -56,16 +56,25 @@ const ListUsers = ({ client, rowDataClass }) => {
             });
           } catch (error) {
             console.log(error);
+
+            classUsers = { listClassUsers: [] };
           }
 
-          const users = classUsers.listClassUsers.map(user => {
-            return client
-              .request(searchClassUser, { id: user.userId })
-              .then(response => ({
-                ...response.searchUser,
-                classUserId: user.id
-              }));
-          });
+          const users = classUsers.listClassUsers
+            .map(user => {
+              return client
+                .request(searchClassUser, { id: user.userId })
+                .then(response => ({
+                  ...response.searchUser,
+                  classUserId: user.id
+                }))
+                .catch(error => {
+                  console.log(error);
+
+                  return null;
+                });
+            })
+            .filter(user => (user ? true : false));
 
           let usersData;
 
@@ -80,6 +89,8 @@ const ListUsers = ({ client, rowDataClass }) => {
             });
           } catch (error) {
             console.log(error);
+
+            usersData = [];
           }
 
           const usersProgresses = usersData.map(user => {
@@ -99,6 +110,8 @@ const ListUsers = ({ client, rowDataClass }) => {
             usersProgressesData = await Promise.all(usersProgresses);
           } catch (error) {
             console.log(error);
+
+            usersProgressesData = [];
           }
 
           return new Promise((resolve, reject) => {
@@ -164,7 +177,11 @@ const ListUsers = ({ client, rowDataClass }) => {
 
                 enqueueSnackbar("Progress created", {
                   variant: "success",
-                  autoHideDuration: 5000
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
               } catch (error) {
                 console.log(error);
@@ -173,7 +190,11 @@ const ListUsers = ({ client, rowDataClass }) => {
                   "Error on progress create, check if all fields are filled",
                   {
                     variant: "error",
-                    autoHideDuration: 8000
+                    autoHideDuration: 8000,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }
                   }
                 );
               }
@@ -191,14 +212,22 @@ const ListUsers = ({ client, rowDataClass }) => {
 
                 enqueueSnackbar("Progress updated", {
                   variant: "success",
-                  autoHideDuration: 5000
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
               } catch (error) {
                 console.log(error);
 
                 enqueueSnackbar("Error on progress update", {
                   variant: "error",
-                  autoHideDuration: 8000
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
                 });
               }
             }
@@ -216,14 +245,22 @@ const ListUsers = ({ client, rowDataClass }) => {
 
               enqueueSnackbar("Progress removed", {
                 variant: "success",
-                autoHideDuration: 5000
+                autoHideDuration: 5000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
               });
             } catch (error) {
               console.log(error);
 
               enqueueSnackbar("Error on progress remove", {
                 variant: "error",
-                autoHideDuration: 8000
+                autoHideDuration: 8000,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                }
               });
             }
 
@@ -246,16 +283,22 @@ const ListClasses = ({ client, rowDataCourse }) => {
         title="Classes"
         icons={icons}
         data={async () => {
+          let _listClassesRaw;
+
+          try {
+            _listClassesRaw = await client.request(listClasses, {
+              params: { courseId: rowDataCourse.id }
+            });
+          } catch (error) {
+            console.log(error);
+
+            _listClassesRaw = { listClasses: [] };
+          }
+
           let _listClasses;
 
           try {
-            const _listClassesRaw = await client.request(listClasses, {
-              params: { courseId: rowDataCourse.id }
-            });
-
-            let classesInstructors;
-
-            classesInstructors = _listClassesRaw.listClasses.map(
+            let classesInstructors = _listClassesRaw.listClasses.map(
               ({ instructor, ...rest }) => {
                 return client.request(searchClassInstructor, {
                   id: instructor
@@ -266,8 +309,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             classesInstructors = await Promise.all(classesInstructors);
 
             classesInstructors = classesInstructors.map(instructorData => {
-              return `${instructorData.searchUser.firstName ||
-                ""} ${instructorData.searchUser.secondName || ""}`;
+              return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
             });
 
             _listClasses = _listClassesRaw.listClasses.map(
@@ -281,6 +323,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
             );
           } catch (error) {
             console.log(error);
+
+            _listClasses = [];
           }
 
           return new Promise((resolve, reject) => {
@@ -351,27 +395,45 @@ const ListCourses = ({ client }) => {
           ...filters
         );
 
-        const courses = await client.request(listAllCourses, {
-          private: filters.private.value === "checked" ? true : false
-        });
+        let courses;
 
-        const coursesFiltered = courses.listCourses.filter(course => {
-          if (filters.title) return course.title.includes(filters.title.value);
+        try {
+          courses = await client.request(listAllCourses, {
+            private: filters.private.value === "checked" ? true : false
+          });
+        } catch (error) {
+          console.log(error);
 
-          if (filters.start)
-            return (
-              new Date(course.start).toLocaleDateString() ===
-              new Date(filters.start.value).toLocaleDateString()
-            );
+          courses = { listCourses: [] };
+        }
 
-          if (filters.end)
-            return (
-              new Date(course.end).toLocaleDateString() ===
-              new Date(filters.end.value).toLocaleDateString()
-            );
+        const coursesFiltered = courses.listCourses
+          .filter(course => {
+            if (filters.title)
+              return course.title
+                .toLowerCase()
+                .includes(filters.title.value.toLowerCase());
 
-          return true;
-        });
+            return true;
+          })
+          .filter(course => {
+            if (filters.start)
+              return (
+                new Date(course.start).toLocaleDateString() ===
+                new Date(filters.start.value).toLocaleDateString()
+              );
+
+            return true;
+          })
+          .filter(course => {
+            if (filters.end)
+              return (
+                new Date(course.end).toLocaleDateString() ===
+                new Date(filters.end.value).toLocaleDateString()
+              );
+
+            return true;
+          });
 
         return new Promise((resolve, reject) => {
           resolve({
