@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { Paper, Box, Grid, IconButton, Typography } from "@material-ui/core";
+import { Box, Grid, IconButton, Typography } from "@material-ui/core";
+
+import useStyles from "./styles";
 
 import MaterialTable from "material-table";
 
@@ -65,21 +67,26 @@ const ListUsers = ({ users, createUserState, setCreateUserState }) => {
   );
 };
 
-const CreateUser = ({ setUsers, createUserState, setCreateUserState }) => {
+const CreateUser = ({
+  classes,
+  setUsers,
+  createUserState,
+  setCreateUserState
+}) => {
   return (
-    <Box p={5}>
+    <Box p={2} bgcolor="white">
       <Grid container spacing={4}>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <IconButton
-            aria-label="delete"
-            onClick={() => setCreateUserState(!createUserState)}
-          >
+        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
+          <IconButton onClick={() => setCreateUserState(!createUserState)}>
             <ArrowBackIcon />
           </IconButton>
 
-          <Typography>Create User</Typography>
+          <Typography className={classes.backItemText}>Create User</Typography>
         </Grid>
-        <Wizard />
+
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Wizard />
+        </Grid>
       </Grid>
     </Box>
   );
@@ -91,6 +98,8 @@ const Users = () => {
   const [createUserState, setCreateUserState] = useState(false);
 
   const client = createAuthenticatedClient();
+
+  const classes = useStyles();
 
   useEffect(() => {
     _listAllUsers({
@@ -113,6 +122,7 @@ const Users = () => {
       )}{" "}
       {createUserState && (
         <CreateUser
+          classes={classes}
           setUsers={setUsers}
           createUserState={createUserState}
           setCreateUserState={setCreateUserState}
