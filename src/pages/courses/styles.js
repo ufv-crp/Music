@@ -99,6 +99,9 @@ const useStyles = makeStyles(theme => ({
   alignLeft: {
     display: "flex",
     justifyContent: "flex-end"
+  },
+  iconColor: {
+    color: theme.palette.icon
   }
 }));
 

@@ -28,6 +28,7 @@ import {
 
 import { logout } from "../sidebar/logout";
 
+// Font Made Evolve Sans
 import logo from "../../assets/images/logo2.png";
 
 const Header = props => {

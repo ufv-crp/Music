@@ -320,7 +320,7 @@ const CardCourse = ({
     <Grid item lg={4} md={6} sm={12} xs={12} key={course.id} display="flex">
       <Card>
         <CardContent className={classes.cardContent}>
-          <Typography color="textSecondary" gutterBottom>
+          <Typography color="textPrimary" gutterBottom>
             {course.title}
           </Typography>
 
@@ -328,9 +328,9 @@ const CardCourse = ({
             color="textSecondary"
             className={`${classes.date} ${classes.centerIconText}`}
           >
-            <EventAvailableIcon />
+            <EventAvailableIcon className={classes.iconColor} />
             Star {moment(course.start).format("MMMM Do YYYY h:mm a")}
-            <EventBusyIcon />
+            <EventBusyIcon className={classes.iconColor} />
             End {moment(course.end).format("MMMM Do YYYY h:mm a")}
           </Typography>
 
@@ -338,10 +338,11 @@ const CardCourse = ({
             color="textSecondary"
             className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
           >
-            <LockOpenIcon /> {(course.private && "Private") || "Public"}
+            <LockOpenIcon className={classes.iconColor} />{" "}
+            {(course.private && "Private") || "Public"}
           </Typography>
 
-          <Typography variant="h5" component="h2">
+          <Typography variant="h5" component="h2" color="textPrimary">
             {descriptionSplitted}
           </Typography>
         </CardContent>
@@ -441,23 +442,25 @@ const CardCourse = ({
           <CardContent className={classes.cardContent}>
             <Typography
               className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
+              color="textSecondary"
             >
-              <PermIdentityIcon />
+              <PermIdentityIcon className={classes.iconColor} />
               {`${courseCreator.firstName || ""} ${courseCreator.secondName ||
                 ""}`}
             </Typography>
 
             <Typography
               className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
+              color="textSecondary"
             >
-              <DescriptionIcon />
+              <DescriptionIcon className={classes.iconColor} />
               Complete description
             </Typography>
 
             {course.description
               .split(/(\r\n|\n|\r)/gm)
               .map((paragraph, index) => (
-                <Typography key={index} paragraph>
+                <Typography key={index} paragraph color="textPrimary">
                   {paragraph}
                 </Typography>
               ))}
@@ -791,14 +794,17 @@ const UpdateCourse = ({
                   });
                 })
                 .catch(error => {
-                  enqueueSnackbar("Error on course update, check if you have made changes", {
-                    variant: "error",
-                    autoHideDuration: 8000,
-                    anchorOrigin: {
-                      vertical: "bottom",
-                      horizontal: "right"
+                  enqueueSnackbar(
+                    "Error on course update, check if you have made changes",
+                    {
+                      variant: "error",
+                      autoHideDuration: 8000,
+                      anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "right"
+                      }
                     }
-                  });
+                  );
 
                   console.log("error", error.response);
                 });
@@ -896,11 +902,7 @@ const UpdateCourse = ({
                   )}
 
                   <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      type="submit"
-                    >
+                    <Button variant="outlined" color="primary" type="submit">
                       Submit
                     </Button>
                   </Grid>
