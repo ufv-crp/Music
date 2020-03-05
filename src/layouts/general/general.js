@@ -37,7 +37,8 @@ const General = props => {
     <div
       className={clsx({
         [classes.root]: true,
-        [classes.shiftContent]: isDesktop
+        [classes.shiftContent]: isDesktop,
+        [classes.containerTheme]: true
       })}
     >
       <Header openSidebar={openSidebar} onSidebarOpen={handleSidebarOpen} />

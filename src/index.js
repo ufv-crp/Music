@@ -10,15 +10,16 @@ import * as serviceWorker from "./serviceWorker";
 
 import dotenv from "dotenv";
 
+import "./index.css";
+
 dotenv.config();
 
 ReactDOM.render(
-    <AuthenticationProvider>
-      <UserProvider>
-        <Application />
-      </UserProvider>
-    </AuthenticationProvider>
-  ,
+  <AuthenticationProvider>
+    <UserProvider>
+      <Application />
+    </UserProvider>
+  </AuthenticationProvider>,
   document.getElementById("root")
 );
 

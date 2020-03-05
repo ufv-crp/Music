@@ -8,12 +8,15 @@ export default makeStyles(theme => ({
       paddingTop: 64
     }
   },
+  containerTheme: {
+    background: theme.palette.background.default
+  },
   shiftContent: {
     paddingLeft: 240
   },
   content: {
     height: "100%",
-	padding: theme.spacing(2),
-	paddingTop: "0"
+    padding: theme.spacing(2),
+    paddingTop: "0"
   }
 }));

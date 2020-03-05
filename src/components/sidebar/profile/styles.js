@@ -10,7 +10,9 @@ export default makeStyles(theme => ({
   avatar: {
     width: 60,
     height: 60,
-    textDecoration: "none"
+    textDecoration: "none",
+    color: theme.palette.white,
+    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
   },
   name: {
     marginTop: theme.spacing(1)

@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
       border: "0px",
       boxShadow: "0px 0px"
     },
-    background: "#f4f6f8"
+	background: theme.palette.background.default,
+	border: `6px solid ${theme.palette.white}`
   }
 }));
 

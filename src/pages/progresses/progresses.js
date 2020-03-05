@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
       border: "0px",
       boxShadow: "0px 0px"
     },
-    background: theme.palette.background.default
+    background: theme.palette.background.default,
+    border: `6px solid ${theme.palette.white}`
   }
 }));
 

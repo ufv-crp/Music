@@ -1,5 +1,3 @@
-import { colors } from "@material-ui/core";
-
 const white = "#FFFFFF";
 
 const black = "#000000";
@@ -9,51 +7,51 @@ const palette = {
   white,
   primary: {
     contrastText: white,
-    dark: colors.indigo[900],
-    main: colors.indigo[500],
-    light: colors.indigo[100]
+    dark: "#2534de",
+    main: "#5864e6",
+    light: "#8b94ee"
   },
   secondary: {
     contrastText: white,
-    dark: colors.blue[900],
-    main: colors.blue["A400"],
-    light: colors.blue["A400"]
+    dark: "#7606f7",
+    main: "#953efa",
+    light: "#b577fb"
   },
   success: {
     contrastText: white,
-    dark: colors.green[900],
-    main: colors.green[600],
-    light: colors.green[400]
+    dark: "#50bc85",
+    main: "#34d885",
+    light: "#18f485"
   },
   info: {
     contrastText: white,
-    dark: colors.blue[900],
-    main: colors.blue[600],
-    light: colors.blue[400]
+    dark: "#50bcbb",
+    main: "#34d8d7",
+    light: "#18f4f3"
   },
   warning: {
     contrastText: white,
-    dark: colors.orange[900],
-    main: colors.orange[600],
-    light: colors.orange[400]
+    dark: "#ffb609",
+    main: "#ffc230",
+    light: "#ffd36b"
   },
   error: {
     contrastText: white,
-    dark: colors.red[900],
-    main: colors.red[600],
-    light: colors.red[400]
+    dark: "#fe2c2a",
+    main: "#fe5351",
+    light: "#fe8d8c"
   },
   text: {
-    primary: colors.blueGrey[900],
-    secondary: colors.blueGrey[600],
-    link: colors.blue[600]
+    primary: "#324c78",
+    secondary: "#1b2941",
+    link: "#53f0f2"
   },
   background: {
-    default: "#F4F6F8",
+    default: "#fafbfc",
     paper: white
   },
-  icon: colors.blueGrey[600],
-  divider: colors.grey[200]
+  icon: "#CDD2D9",
+  divider: "#eff0f3"
 };
 
 export default palette;

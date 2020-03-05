@@ -10,15 +10,24 @@ import {
   Slide,
   ListItemIcon,
   ListItem,
-  ListItemText
+  ListItemText,
+  makeStyles
 } from "@material-ui/core";
 
 import { ExitToApp } from "@material-ui/icons";
 
-import { logout } from "./utils"
+import { logout } from "./utils";
+
+const useStyles = makeStyles(theme => ({
+  icon: {
+    color: theme.palette.icon
+  }
+}));
 
 const Logout = () => {
   const [open, setOpen] = useState(false);
+
+  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,7 +44,7 @@ const Logout = () => {
   return (
     <>
       <ListItem button onClick={handleClickOpen}>
-        <ListItemIcon>
+        <ListItemIcon className={classes.icon}>
           <ExitToApp />
         </ListItemIcon>
 
@@ -64,7 +73,14 @@ const Logout = () => {
               Cancel
             </Button>
 
-            <Button onClick={() => { logout(); setOpen(false); }} color="primary" autoFocus>
+            <Button
+              onClick={() => {
+                logout();
+                setOpen(false);
+              }}
+              color="secondary"
+              autoFocus
+            >
               Yes
             </Button>
           </DialogActions>

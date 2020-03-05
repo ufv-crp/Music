@@ -23,7 +23,19 @@ import {
   AccountCircle as AccountCircleIcon
 } from "@material-ui/icons";
 
-import { ListItem, ListItemIcon, ListItemText, Link } from "@material-ui/core";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Link,
+  makeStyles
+} from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+  icon: {
+    color: theme.palette.icon
+  }
+}));
 
 const routes = [
   {
@@ -151,7 +163,9 @@ const createRoutesComponents = ({ routes }) => {
   });
 };
 
-const createRoutesSidebarLinks = ({ routes }) => {
+const CreateRoutesSidebarLinks = ({ routes }) => {
+  const classes = useStyles();
+
   return routes.map((route, index) => {
     if (route.sidebar)
       return (
@@ -162,7 +176,9 @@ const createRoutesSidebarLinks = ({ routes }) => {
           key={index}
         >
           <ListItem button>
-            {route.icon && <ListItemIcon>{route.icon}</ListItemIcon>}
+            {route.icon && (
+              <ListItemIcon className={classes.icon}>{route.icon}</ListItemIcon>
+            )}
 
             <ListItemText primary={route.title} />
           </ListItem>
@@ -177,5 +193,5 @@ export {
   routes,
   filterRoutes,
   createRoutesComponents,
-  createRoutesSidebarLinks
+  CreateRoutesSidebarLinks
 };

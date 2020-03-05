@@ -19,6 +19,8 @@ import {
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+
 import { withRouter } from "react-router-dom";
 
 import { authenticate, resetPassword } from "../../authentication";
@@ -260,7 +262,7 @@ const Login = props => {
 
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            {forgotPassword ? <MailOutlineIcon /> : <LockOutlinedIcon />}
           </Avatar>
 
           <Typography component="h1" variant="h5">

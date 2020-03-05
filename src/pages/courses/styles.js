@@ -53,16 +53,16 @@ const useStyles = makeStyles(theme => ({
     }
   },
   deleteIcon: {
-    color: "#dc5a5a"
+    color: theme.palette.error.main
   },
   updateIcon: {
-    color: "#4CAF50"
+    color: theme.palette.success.main
   },
   removeCourseDisagree: {
-    color: "#dc5a5a"
+    color: theme.palette.error.main
   },
   removeCourseAgree: {
-    color: "#4CAF50"
+    color: theme.palette.success.main
   },
   boxCreateCourse: {
     maxWidth: "600px",

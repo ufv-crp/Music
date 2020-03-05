@@ -1,8 +1,8 @@
 {
   "name": "Music",
   "short_name": "Music",
-  "theme_color": "#f751fd",
-  "background_color": "#a00ee1",
+  "theme_color": "#7606f7",
+  "background_color": "#600eca",
   "display": "fullscreen",
   "Scope": "/",
   "start_url": "/",

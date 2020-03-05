@@ -28,6 +28,8 @@ import {
 
 import { logout } from "../sidebar/logout";
 
+import logo from "../../assets/images/logo2.png";
+
 const Header = props => {
   const { className, openSidebar, onSidebarOpen, ...rest } = props;
 
@@ -50,25 +52,27 @@ const Header = props => {
   return (
     <>
       <AppBar {...rest} className={clsx(classes.root, className)}>
-        <Toolbar>
-          <RouterLink to="/">
-            <img alt="Logo" src="/images/logos/logo.header.png" width="125px" />
+        <Toolbar className={classes.toolBar}>
+          <RouterLink to="/" className={classes.logoLink}>
+            <img alt="Logo" src={logo} className={classes.logo} />
           </RouterLink>
-
-          <div className={classes.flexGrow} />
 
           <Hidden mdDown>
             <IconButton
-              className={classes.signOutButton}
               color="inherit"
               onClick={handleClickOpen}
+              className={`${classes.signOutButton} ${classes.iconTheme}`}
             >
               <InputIcon />
             </IconButton>
           </Hidden>
 
           <Hidden lgUp>
-            <IconButton color="inherit" onClick={onSidebarOpen}>
+            <IconButton
+              color="inherit"
+              onClick={onSidebarOpen}
+              className={classes.iconTheme}
+            >
               {openSidebar ? <CloseIcon /> : <MenuIcon />}
             </IconButton>
           </Hidden>
