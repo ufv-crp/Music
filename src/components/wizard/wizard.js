@@ -4,12 +4,17 @@ import {
   Typography,
   Stepper,
   Step,
-  StepLabel
+  StepLabel,
+  Grid
 } from "@material-ui/core";
 
 import useStyles from "./styles";
 
-const steps = ["Part A", "Part B", "Part C"];
+import { Formik, Field } from "formik";
+
+import { TextField } from "formik-material-ui";
+
+const steps = ["Basic Info", "Address", "Contact"];
 
 function Wizard(props) {
   const { field1, field2, field3, field4, field5, field6 } = props;
@@ -42,7 +47,57 @@ function Wizard(props) {
 
     switch (step) {
       case 0:
-        return "A";
+        return (
+          <Formik>
+            {formik => (
+              <Grid container spacing={1}>
+                <Grid item md={6} xs={12}>
+                  <Field
+                    name="firstName"
+                    label="First Name"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    component={TextField}
+                  />
+                </Grid>
+
+                <Grid item md={6} xs={12}>
+                  <Field
+                    name="secondName"
+                    label="Second Name"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    component={TextField}
+                  />
+                </Grid>
+
+                <Grid item md={6} xs={12}>
+                  <Field
+                    name="matriculation"
+                    label="Matriculation"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    component={TextField}
+                  />
+                </Grid>
+
+                <Grid item md={6} xs={12}>
+                  <Field
+                    name="cpf"
+                    label="CPF"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    component={TextField}
+                  />
+                </Grid>
+              </Grid>
+            )}
+          </Formik>
+        );
       case 1:
         return "B";
       case 2:
@@ -54,7 +109,7 @@ function Wizard(props) {
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map(label => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
@@ -64,7 +119,7 @@ function Wizard(props) {
       <React.Fragment>
         {activeStep === steps.length ? (
           <Typography className={classes.instructions}>
-            All steps completed - you&apos;re finished
+            All steps completed - finished!
           </Typography>
         ) : (
           <div>

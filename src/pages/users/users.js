@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, Grid, IconButton, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Typography,
+  Stepper,
+  Step,
+  StepLabel
+} from "@material-ui/core";
 
 import useStyles from "./styles";
 
@@ -13,8 +22,6 @@ import { createAuthenticatedClient } from "../../authentication";
 import { title, columns, tableIcons, options } from "./tableData";
 
 import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
-
-import Wizard from "../../components/wizard/wizard";
 
 const _listAllUsers = ({ client, query, setUsers }) => {
   client
@@ -71,8 +78,37 @@ const CreateUser = ({
   classes,
   setUsers,
   createUserState,
-  setCreateUserState
+  setCreateUserState,
+  steps
 }) => {
+  const [activeStep, setActiveStep] = useState(0);
+
+  // Stepper Stuff
+  const handleNext = () => {
+    // setFormValues({ ...formValues, ...newValues });
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    // setFormValues({ ...formValues, ...newValues });
+    setActiveStep(activeStep - 1);
+  };
+
+  function getStepContent(step) {
+    const isLastStep = activeStep === steps.length - 1;
+
+    switch (step) {
+      case 0:
+        return "Info"; // basic info
+      case 1:
+        return "Address"; // address
+      case 2:
+        return "Contact"; // contact
+      default:
+        throw new Error("Mis-step!");
+    }
+  }
+
   return (
     <Box p={2} bgcolor="white">
       <Grid container spacing={4}>
@@ -85,7 +121,41 @@ const CreateUser = ({
         </Grid>
 
         <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Wizard />
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <>
+            {activeStep === steps.length ? (
+              <Typography className={classes.instructions}>
+                All steps completed - finished!
+              </Typography>
+            ) : (
+              <div>
+                {getStepContent(activeStep)}
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
         </Grid>
       </Grid>
     </Box>
@@ -98,6 +168,8 @@ const Users = () => {
   const [createUserState, setCreateUserState] = useState(false);
 
   const client = createAuthenticatedClient();
+
+  const steps = ["Basic Info", "Address", "Contact"];
 
   const classes = useStyles();
 
@@ -126,6 +198,7 @@ const Users = () => {
           setUsers={setUsers}
           createUserState={createUserState}
           setCreateUserState={setCreateUserState}
+          steps={steps}
         />
       )}
     </Box>
