@@ -170,7 +170,6 @@ const AccountForm = ({
             color="primary"
             fullWidth
             className={classes.submit}
-            disabled={isSubmitting || !Object.keys(touched).length}
             onClick={() => setOpen(true)}
           >
             Update

@@ -8,7 +8,7 @@ import { useTheme } from "@material-ui/styles";
 
 import { useMediaQuery } from "@material-ui/core";
 
-import { Header, Sidebar, Footer, RouterBreadcrumbs } from "../../components";
+import { Header, Sidebar, RouterBreadcrumbs } from "../../components";
 
 const General = props => {
   const { children } = props;
@@ -52,8 +52,6 @@ const General = props => {
       />
 
       <main className={classes.content}>{children}</main>
-
-      <Footer />
     </div>
   );
 };

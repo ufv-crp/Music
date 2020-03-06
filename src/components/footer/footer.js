@@ -15,12 +15,12 @@ const Footer = props => {
     <div {...rest} className={clsx(classes.root, className)}>
       <Typography variant="body1">
         &copy; Copyright{" "}
-        <Link component="a" href="https://github.com/iguit0" target="_blank">
-          @iguit0
-        </Link>{" "}
-        &{" "}
         <Link component="a" href="https://github.com/Sphinxs" target="_blank">
           @Sphinxs
+        </Link>{" "}
+        &{" "}
+        <Link component="a" href="https://github.com/iguit0" target="_blank">
+          @iguit0
         </Link>{" "}
         - {new Date().getFullYear()}
       </Typography>

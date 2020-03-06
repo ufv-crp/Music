@@ -342,7 +342,7 @@ const CardCourse = ({
             {(course.private && "Private") || "Public"}
           </Typography>
 
-          <Typography variant="h5" component="h2" color="textPrimary">
+          <Typography variant="h5" component="h2" color="textSecondary">
             {descriptionSplitted}
           </Typography>
         </CardContent>
@@ -460,7 +460,7 @@ const CardCourse = ({
             {course.description
               .split(/(\r\n|\n|\r)/gm)
               .map((paragraph, index) => (
-                <Typography key={index} paragraph color="textPrimary">
+                <Typography key={index} paragraph color="textSecondary">
                   {paragraph}
                 </Typography>
               ))}

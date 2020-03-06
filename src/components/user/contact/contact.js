@@ -100,7 +100,6 @@ const UserContactForm = ({ classes, contact, setUser }) => (
             color="primary"
             fullWidth
             className={classes.submit}
-            disabled={isSubmitting || !Object.keys(touched).length}
             onClick={submitForm}
           >
             Update
