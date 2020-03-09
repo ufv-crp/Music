@@ -5,6 +5,7 @@ const black = "#000000";
 const palette = {
   black,
   white,
+  boxShadow: "#f8f8f8",
   primary: {
     contrastText: white,
     dark: "#2534de",

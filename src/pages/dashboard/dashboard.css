@@ -1,0 +1,49 @@
+/*
+ * React calendar heatmap styles
+ */
+
+.react-calendar-heatmap {
+}
+
+.react-calendar-heatmap text {
+  font-size: 0.5em;
+  fill: #5864e6;
+}
+
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 5px;
+}
+
+.react-calendar-heatmap rect:hover {
+  stroke: #aaa;
+  stroke-width: 1px;
+}
+
+/*
+ * Default color scale
+ */
+
+.react-calendar-heatmap .color-empty {
+  fill: #eeeeee;
+}
+
+.react-calendar-heatmap .color-filled {
+  fill: #b577fb;
+}
+
+/*
+ * Theme
+ */
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: #b577fb;
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: #953efa;
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: #7606f7;
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: #2534de;
+}
