@@ -31,13 +31,13 @@ const Account = () => {
           <AccountDetails />
         </Grid>
 
-        {/*<Grid item lg={6} md={6} xl={8} xs={12}>
+        <Grid item lg={6} md={6} xl={8} xs={12}>
           <UserAddress />
         </Grid>
 
         <Grid item lg={12} md={6} xl={4} xs={12}>
           <UserContact />
-  </Grid>*/}
+        </Grid>
       </Grid>
     </div>
   );
