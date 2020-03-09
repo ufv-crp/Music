@@ -13,16 +13,18 @@ const Footer = props => {
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      <Typography variant="body1">
-        &copy; Copyright{" "}
-        <Link component="a" href="https://github.com/Sphinxs" target="_blank">
-          @Sphinxs
-        </Link>{" "}
-        &{" "}
+      <Typography variant="body2" className={classes.typo}>
+        &copy; Copyright • {new Date().getFullYear()}
+      </Typography>
+      <Typography variant="body2" className={classes.typo}>
+        {"</>"} by {" "}
         <Link component="a" href="https://github.com/iguit0" target="_blank">
           @iguit0
         </Link>{" "}
-        - {new Date().getFullYear()}
+        &{" "}
+        <Link component="a" href="https://github.com/Sphinxs" target="_blank">
+          @Sphinxs
+        </Link>{" "}
       </Typography>
     </div>
   );

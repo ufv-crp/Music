@@ -25,7 +25,7 @@ const AccountProfile = props => {
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
-      <CardContent>
+      <CardContent className={classes.content}>
         <div className={classes.details}>
           <div>
             <Typography gutterBottom variant="h2">
@@ -70,7 +70,6 @@ const AccountProfile = props => {
           </Avatar>
         </div>
       </CardContent>
-
       <Divider />
     </Card>
   );
