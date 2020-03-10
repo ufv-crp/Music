@@ -3,18 +3,10 @@ const listAllUsers = `
         listUsers(all: true) {
             id
             email
-            password
             cpf
             matriculation
             firstName
             secondName
-            createdAt
-            updatedAt
-            creator {
-                id
-                email
-                matriculation
-            }
         }
     }
 `;
