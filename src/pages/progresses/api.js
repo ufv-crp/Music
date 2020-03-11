@@ -7,6 +7,7 @@ const listClasses = `
 			room
 			shift
 			courseId
+			time
 		}
 	}
 `;

@@ -6,9 +6,8 @@ const createClass = `
 			instructor
 			room
 			shift
-			createdAt
-			updatedAt
 			courseId
+			time
 		}
 	}
 `;
@@ -22,6 +21,7 @@ const updateClass = `
 			room
 			shift
 			courseId
+			time
 		}
 	}
 `;
@@ -41,6 +41,7 @@ const listClasses = `
 			room
 			shift
 			courseId
+			time
 		}
 	}
 `;

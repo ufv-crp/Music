@@ -350,6 +350,11 @@ const ListClasses = ({ client, rowDataCourse }) => {
             field: "instructor",
             type: "string",
             editable: "never"
+          },
+          {
+            title: "Time",
+            field: "time",
+            type: "time"
           }
         ]}
         options={{

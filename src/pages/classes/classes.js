@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
       border: "0px",
       boxShadow: "0px 0px"
     },
-	background: theme.palette.background.default,
-	border: `6px solid ${theme.palette.white}`
+    background: theme.palette.background.default,
+    border: `6px solid ${theme.palette.white}`
   }
 }));
 
@@ -108,6 +108,11 @@ const ListClasses = ({ client, rowDataCourse }) => {
           { title: "Room", field: "room", type: "string" },
           { title: "Shift", field: "shift", type: "string" },
           {
+            title: "Time",
+            field: "time",
+            type: "time"
+          },
+          {
             title: "Instructor",
             field: "instructor",
             type: "string",
@@ -147,7 +152,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                   ...newData,
                   vacancies: parseInt(newData.vacancies),
                   instructor: authentication.userId,
-                  courseId: rowDataCourse.id
+                  courseId: rowDataCourse.id,
+                  time: `${newData.time.getHours()}:${newData.time.getMinutes()}`
                 }
               });
 
@@ -218,6 +224,10 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 if (["vacancies"].includes(key))
                   cache = { [key]: parseInt(newData[key]) };
 
+                if (["time"].includes(key))
+                  cache = {
+                    [key]: `${newData.time.getHours()}:${newData.time.getMinutes()}`
+                  };
                 return cache;
               });
 
