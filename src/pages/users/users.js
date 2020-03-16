@@ -25,7 +25,7 @@ import { useSnackbar } from "notistack";
 
 import MaterialTable from "material-table";
 
-import { listAllUsers, listAddressById } from "../account/api";
+import { listAllUsers, listAddressById, listContactById } from "../account/api";
 
 import { createAuthenticatedClient } from "../../authentication";
 
@@ -49,6 +49,34 @@ const _listAllUsers = ({ client, query, setUsers }) => {
       console.log(error.response);
 
       setUsers([]);
+    });
+};
+
+const _listContactsById = ({
+  client,
+  query,
+  setContacts,
+  userId,
+  enqueueSnackbar
+}) => {
+  client
+    .request(query, { userId })
+    .then(response => {
+      setContacts(response.listContacts);
+    })
+    .catch(error => {
+      // console.log(error.response);
+
+      enqueueSnackbar("No contacts found!", {
+        variant: "error",
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right"
+        }
+      });
+
+      setContacts([]);
     });
 };
 
@@ -85,6 +113,8 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
 
   const [addresses, setAddresses] = useState([]);
 
+  const [contacts, setContacts] = useState([]);
+
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -94,6 +124,14 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       client,
       query: listAddressById,
       setAddresses,
+      userId: rowUserData.id,
+      enqueueSnackbar
+    });
+
+    _listContactsById({
+      client,
+      query: listContactById,
+      setContacts,
       userId: rowUserData.id,
       enqueueSnackbar
     });
@@ -137,7 +175,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
         <ExpansionPanelDetails>
           {addresses.length ? (
             <TableContainer component={Paper}>
-              <Table size="small" aria-label="a dense table">
+              <Table size="small" aria-label="address">
                 <TableHead>
                   <TableRow>
                     <TableCell align="right">ZIP Code</TableCell>
@@ -210,7 +248,30 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
           </Card>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Typography>Contact</Typography>
+          {contacts.length ? (
+            <TableContainer component={Paper}>
+              <Table aria-label="contacts">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Email</TableCell>
+                    <TableCell align="center">Phone</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {contacts.map(contact => (
+                    <TableRow key={contact.id}>
+                      <TableCell component="th" scope="row" align="center">
+                        {contact.email}
+                      </TableCell>
+                      <TableCell align="center">{contact.phone}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Typography variant="h5">No contacts found!</Typography>
+          )}
         </ExpansionPanelDetails>
       </ExpansionPanel>
       {/* ./Contact Panel */}

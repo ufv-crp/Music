@@ -55,8 +55,6 @@ const listAddressById = `
           city
           state
           zipCode
-          createdAt
-          updatedAt
         }
     }
 `;
@@ -81,8 +79,6 @@ const listContactById = `
             id
             email
             phone
-            createdAt
-            updatedAt
             userId
         }
     }
