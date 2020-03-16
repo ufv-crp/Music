@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-
-import { useLocation } from "react-router-dom";
+import React from "react";
 
 import useStyles from "./styles";
 
@@ -13,13 +11,7 @@ import { AccountDetails, UserAddress, UserContact } from "../../components";
 const Account = () => {
   const classes = useStyles();
 
-  const location = useLocation();
-
   const client = createAuthenticatedClient();
-
-  useEffect(() => {
-    console.log(location.state.action);
-  }, [location]);
 
   return (
     <Grid container className={classes.accountContainer}>
