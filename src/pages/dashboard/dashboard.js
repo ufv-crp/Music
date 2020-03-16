@@ -164,7 +164,9 @@ const Counters = ({ client }) => {
         setClassesState(0);
 
         console.log(error);
-      });
+	  });
+	
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -246,7 +248,9 @@ const MyCourses = ({ client }) => {
       })
       .catch(error => {
         console.log(error);
-      });
+	  });
+
+	  // eslint-disable-next-line
   }, []);
 
   return (
@@ -324,7 +328,9 @@ const MyClasses = ({ client }) => {
       })
       .catch(error => {
         console.log(error);
-      });
+	  });
+	  
+	  // eslint-disable-next-line
   }, []);
 
   return (
@@ -392,7 +398,9 @@ const UsersRegistered = ({ client }) => {
       setDatesState(
         Object.entries(datesFormated).map(([date, count]) => ({ date, count }))
       );
-    });
+	});
+	
+	// eslint-disable-next-line
   }, []);
 
   return (
