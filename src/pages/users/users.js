@@ -12,20 +12,34 @@ import {
   TableRow,
   Card,
   CardHeader,
+  IconButton,
   Avatar,
+  Button,
+  LinearProgress,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Typography
 } from "@material-ui/core";
 
+import { TextField } from "formik-material-ui";
+
 import useStyles from "./styles";
 
 import { useSnackbar } from "notistack";
 
+import { Formik, Form, ErrorMessage, Field } from "formik";
+
+import * as Yup from "yup";
+
 import MaterialTable from "material-table";
 
-import { listAllUsers, listAddressById, listContactById } from "../account/api";
+import {
+  createUser,
+  listAllUsers,
+  listAddressById,
+  listContactById
+} from "../account/api";
 
 import { createAuthenticatedClient } from "../../authentication";
 
@@ -33,9 +47,11 @@ import icons from "../../components/materialTable/icons";
 
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import { LocationOn as LocationIcon } from "@material-ui/icons";
-
-import { ContactPhone as ContactIcon } from "@material-ui/icons";
+import {
+  ContactPhone as ContactIcon,
+  LocationOn as LocationIcon,
+  ArrowBack as ArrowBackIcon
+} from "@material-ui/icons";
 
 import { AuthenticationContext } from "../../states";
 
@@ -108,6 +124,194 @@ const _listAddressesById = ({
     });
 };
 
+const CreateUser = ({
+  classes,
+  client,
+  setUsers,
+  createUserState,
+  setCreateUserState,
+  authentication
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  return (
+    <Box p={5} bgcolor="white" className={classes.boxCreateUser}>
+      <Grid container spacing={4}>
+        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
+          <IconButton
+            aria-label="add"
+            onClick={() => {
+              _listAllUsers({
+                client,
+                setUsers: setUsers,
+                query: listAllUsers
+              });
+              setCreateUserState(!createUserState);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+
+          <Typography className={classes.backItemText}>Create User</Typography>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={4} direction="column">
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+              matriculation: "",
+              cpf: "",
+              firstName: "",
+              secondName: ""
+            }}
+            onSubmit={async (values, actions) => {
+              actions.setSubmitting(true);
+
+              let responseUser = {};
+
+              try {
+                responseUser = await client.request(createUser, {
+                  params: {
+                    ...values,
+                    creator: authentication.userId
+                  }
+                });
+
+                enqueueSnackbar("User created", {
+                  variant: "success",
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
+                });
+
+                actions.resetForm();
+              } catch (error) {
+                enqueueSnackbar("Error on user create", {
+                  variant: "error",
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
+                });
+
+                console.log("error", error.response);
+              }
+
+              // TO DO: ASSOCIATE USER TO SCOPE
+
+              actions.setSubmitting(false);
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email()
+                .required("Email is required"),
+              password: Yup.string()
+                .min(6, "At least 6 characteres are required")
+                .required("Password is required"),
+              matriculation: Yup.string()
+                .max(5, "Maximum 5 characters")
+                .required("Matriculation is required"),
+              cpf: Yup.string()
+                .min(11, "At least 11 characters are required")
+                .max(11, "Maximum 11 characters")
+                .required("CPF is required"),
+              firstName: Yup.string().required("First Name is required")
+            })}
+          >
+            {formik => (
+              <Form>
+                <Grid container spacing={4} direction="column">
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="createUserEmail"
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="createUserPassword"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="matriculation"
+                      type="text"
+                      label="Matriculation"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="cpf"
+                      type="text"
+                      label="CPF"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="firstname"
+                      type="text"
+                      label="First Name"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Field
+                      component={TextField}
+                      name="secondname"
+                      type="text"
+                      label="Second Name"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {formik.isSubmitting && (
+                    <LinearProgress className={classes.linearProgress} />
+                  )}
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Button variant="outlined" color="primary" type="submit">
+                      Submit
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
 const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -152,7 +356,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
         >
           <Card>
             <CardHeader
-              title="Address"
+              title={`Address (${addresses.length ? addresses.length : 0})`}
               avatar={
                 <Avatar aria-label="address" variant="rounded">
                   <LocationIcon />
@@ -162,12 +366,6 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
                 align: "left",
                 variant: "h5",
                 display: "block"
-              }}
-              subheaderTypographyProps={{
-                align: "left",
-                variant: "body1",
-                display: "block",
-                color: "textSecondary"
               }}
             />
           </Card>
@@ -227,7 +425,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
         >
           <Card>
             <CardHeader
-              title="Contact"
+              title={`Contact (${contacts.length ? contacts.length : 0})`}
               avatar={
                 <Avatar aria-label="contact" variant="rounded">
                   <ContactIcon />
@@ -237,12 +435,6 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
                 align: "left",
                 variant: "h5",
                 display: "block"
-              }}
-              subheaderTypographyProps={{
-                align: "left",
-                variant: "body1",
-                display: "block",
-                color: "textSecondary"
               }}
             />
           </Card>
@@ -308,9 +500,7 @@ const ListUsers = ({
       icon: icons.Add,
       tooltip: "Add User",
       isFreeAction: true,
-      onClick: event => {
-        alert("teste");
-      }
+      onClick: () => setCreateUserState(!createUserState)
     }
   ];
 
@@ -396,6 +586,17 @@ const Users = () => {
           setCreateUserState={setCreateUserState}
           updateUserState={updateUserState}
           setUpdateUserState={setUpdateUserState}
+        />
+      )}
+
+      {createUserState && (
+        <CreateUser
+          classes={classes}
+          client={client}
+          setUsers={setUsers}
+          createUserState={createUserState}
+          setCreateUserState={setCreateUserState}
+          authentication={authentication}
         />
       )}
     </Box>

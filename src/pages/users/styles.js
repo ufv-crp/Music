@@ -8,6 +8,17 @@ const useStyles = makeStyles(theme => ({
   backItem: {
     display: "inline-flex",
     alignItems: "center"
+  },
+  boxCreateUser: {
+    maxWidth: "600px",
+    [theme.breakpoints.down("xs")]: {
+      "&": {
+        width: "100%"
+      }
+    }
+  },
+  linearProgress: {
+    margin: "16px"
   }
 }));
 

@@ -11,6 +11,14 @@ const listAllUsers = `
     }
 `;
 
+const createUser = `
+    mutation CreateUser($params: UserInput!) {
+        createUser(params: $params) {
+            id
+        }
+  	}
+`;
+
 const searchUser = `
     query SearchUser($id: Int!) {
         searchUser(id: $id) {
@@ -99,6 +107,7 @@ const updateContactById = `
 
 export {
   listAllUsers,
+  createUser,
   searchUser,
   updateUserById,
   listAddressById,
