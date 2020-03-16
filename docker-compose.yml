@@ -10,8 +10,7 @@ services:
       - "4000:4000"
     command: yarn start
     labels:
-	  - "traefik.enable=true"
-	  # Change domain for the IP / domain
+      - "traefik.enable=true"
       - "traefik.frontend.rule=host:domain"
 
   reverse-proxy:
