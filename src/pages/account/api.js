@@ -1,3 +1,24 @@
+const listAllUsers = `
+    query ListUsers {
+        listUsers(all: true) {
+            id
+            email
+            cpf
+            matriculation
+            firstName
+            secondName
+        }
+    }
+`;
+
+const createUser = `
+    mutation CreateUser($params: UserInput!) {
+        createUser(params: $params) {
+            id
+        }
+  	}
+`;
+
 const searchUser = `
     query SearchUser($id: Int!) {
         searchUser(id: $id) {
@@ -42,8 +63,6 @@ const listAddressById = `
           city
           state
           zipCode
-          createdAt
-          updatedAt
         }
     }
 `;
@@ -68,8 +87,6 @@ const listContactById = `
             id
             email
             phone
-            createdAt
-            updatedAt
             userId
         }
     }
@@ -89,6 +106,8 @@ const updateContactById = `
 `;
 
 export {
+  listAllUsers,
+  createUser,
   searchUser,
   updateUserById,
   listAddressById,

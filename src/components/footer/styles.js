@@ -2,7 +2,11 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles(theme => ({
   root: {
-    padding: theme.spacing(4),
-    textAlign: "center"
+    marginLeft: theme.spacing(2),
+    textAlign: 'center'
+  },
+  typo: {
+    marginTop: theme.spacing(1),
+    display: 'inline-block'
   }
 }));

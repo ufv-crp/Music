@@ -6,7 +6,7 @@ import { Divider, Drawer } from "@material-ui/core";
 
 import { Profile, SidebarRoutes, Logout } from "./index";
 
-import { Footer } from "../../components";
+import { Footer } from '../index'
 
 import useStyles from "./styles";
 
@@ -32,7 +32,9 @@ const Sidebar = ({ open, variant, onClose, className, ...rest }) => {
 
         <Logout />
 
-        <Footer />
+        <Divider className={classes.divider} />
+
+        <Footer/>
       </div>
     </Drawer>
   );
