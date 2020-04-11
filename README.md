@@ -59,7 +59,7 @@ Open the [localhost:4000](http://localhost:4000) URL in the browser. If is there
 
 #### Deploy
 
-This project can be deployed of different ways: using Docker or Docker Compose, generating a build and serving it through NGINX, Traefik or any other proxy  / server and using PM2 by installing it `yarn global add pmp`, generating a build and starting the service `pm2 start application.config.json`.
+This project can be deployed of different ways: using Docker or Docker Compose, generating a build and serving it through NGINX, Traefik or any other proxy  / server and using PM2 by installing it `yarn global add pmp`, generating a build and starting the service `pm2 start application.config.json`; or just `export PORT=4000 && pm2 start node_modules/react-scripts/scripts/start.js --name "music"`.
 
 #### Collections
 
