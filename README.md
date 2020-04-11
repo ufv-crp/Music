@@ -57,6 +57,10 @@ Open the [localhost:4000](http://localhost:4000) URL in the browser. If is there
 
 </details>
 
+#### Deploy
+
+This project can be deployed of different ways: using Docker or Docker Compose, generating a build and serving it through NGINX, Traefik or any other proxy  / server and using PM2 by installing it `yarn global add pmp`, generating a build and starting the service `pm2 start application.config.json`.
+
 #### Collections
 
 Collections can be found in the [Graphql API](https://github.com/Sphinxs/Graph/tree/master/collections) project, to test the API, besides the interface implemented here.

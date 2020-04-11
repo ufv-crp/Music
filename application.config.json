@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "music",
+      "script": "npx",
+      "interpreter": "none",
+      "args": "serve -p 4000 -T"
+    }
+  ]
+}
