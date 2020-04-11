@@ -12,7 +12,13 @@ import dotenv from "dotenv";
 
 import "./index.css";
 
+import ReactGA from "react-ga";
+
 dotenv.config();
+
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
+
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 ReactDOM.render(
   <AuthenticationProvider>
