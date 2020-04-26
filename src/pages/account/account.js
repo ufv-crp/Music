@@ -6,7 +6,7 @@ import { Grid } from "@material-ui/core";
 
 import { createAuthenticatedClient } from "../../authentication";
 
-import { AccountDetails, UserAddress, UserContact } from "../../components";
+import { AccountDetails, AccountProfile } from "../../components";
 
 const Account = () => {
   const classes = useStyles();
@@ -14,23 +14,16 @@ const Account = () => {
   const client = createAuthenticatedClient();
 
   return (
-    <Grid container className={classes.accountContainer}>
-      {/*<Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-        <AccountProfile />
-  </Grid>*/}
-
-      <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-        <AccountDetails client={client} />
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item lg={8} md={6} xl={8} xs={12}>
+          <AccountProfile client={client} />
+        </Grid>
+        <Grid item lg={4} md={6} xl={4} xs={12}>
+          <AccountDetails />
+        </Grid>
       </Grid>
-
-      <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-        <UserAddress client={client} />
-      </Grid>
-
-      <Grid item xl={12} lg={12} md={6} sm={6} xs={12}>
-        <UserContact client={client} />
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

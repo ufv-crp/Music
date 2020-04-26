@@ -16,7 +16,7 @@ import {
   authenticationMiddleware,
   checkTokenExpiration,
   redirectWrapperNotLogged,
-  redirectWrapperNotFound
+  redirectWrapperNotFound,
 } from "./authentication";
 
 const Application = () => {
@@ -25,7 +25,7 @@ const Application = () => {
   );
 
   const tokenExpiration = checkTokenExpiration({
-    expireAt: authentication.expireAt
+    expireAt: authentication.expireAt,
   });
 
   if (tokenExpiration.expired || tokenExpiration.invalid)
@@ -43,12 +43,12 @@ const Application = () => {
               pathname: "/login",
               state: {
                 expired: tokenExpiration.expired,
-                invalid: tokenExpiration.invalid
-              }
+                invalid: tokenExpiration.invalid,
+              },
             })}
             {redirectWrapperNotFound({
               pathname: "/dashboard",
-              state: {}
+              state: {},
             })}
             />
           </Switch>

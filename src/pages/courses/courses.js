@@ -32,7 +32,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  LinearProgress
+  LinearProgress,
 } from "@material-ui/core";
 
 import { TextField } from "formik-material-ui";
@@ -48,7 +48,7 @@ import {
   ArrowBack as ArrowBackIcon,
   LockOpen as LockOpenIcon,
   Description as DescriptionIcon,
-  PermIdentity as PermIdentityIcon
+  PermIdentity as PermIdentityIcon,
 } from "@material-ui/icons";
 
 import { createAuthenticatedClient } from "../../authentication";
@@ -61,7 +61,7 @@ import {
   searchCourseCreator,
   removeCourseById,
   updateCourseById,
-  userCourse
+  userCourse,
 } from "./api";
 
 import useStyles from "./styles";
@@ -70,14 +70,14 @@ const _listAllCourses = ({
   client,
   query,
   setCourses,
-  privateCourses = false
+  privateCourses = false,
 }) => {
   client
     .request(query, { private: privateCourses })
-    .then(response => {
+    .then((response) => {
       setCourses(response.listCourses);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error.response);
 
       setCourses([]);
@@ -96,7 +96,7 @@ const ListCourses = ({
   searchCourse,
   setSearchCourse,
   updateCourseState,
-  setUpdateCourseState
+  setUpdateCourseState,
 }) => {
   return (
     <>
@@ -105,15 +105,15 @@ const ListCourses = ({
           <Grid item lg={6} md={6} sm={6} xs={4}>
             <TextFieldMaterialUi
               id="searchInput"
-              placeholder="Search"
+              placeholder="Pesquisar"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <SearchIcon />
                   </InputAdornment>
-                )
+                ),
               }}
-              onChange={event => {
+              onChange={(event) => {
                 setSearchCourse(event.target.value.toLowerCase());
               }}
             />
@@ -139,10 +139,10 @@ const ListCourses = ({
                           client,
                           setCourses: setCourses,
                           query: listAllCourses,
-                          privateCourses: true
+                          privateCourses: true,
                         })
                       : setCourses(
-                          courses.filter(course => {
+                          courses.filter((course) => {
                             return course.private === false ? course : null;
                           })
                         );
@@ -162,7 +162,7 @@ const ListCourses = ({
             className={`${classes.toolbarItem} ${classes.alignLeft}`}
           >
             <Tooltip
-              title="Add"
+              title="Novo Curso"
               aria-label="add"
               onClick={() => setCreateCourseState(!createCourseState)}
             >
@@ -177,7 +177,7 @@ const ListCourses = ({
       <Grid container spacing={4}>
         {(courses.length &&
           courses
-            .filter(course => {
+            .filter((course) => {
               if (course.private && !privateCourses) return null;
 
               if (searchCourse !== "") {
@@ -225,7 +225,7 @@ const CardCourse = ({
   client,
   setCourses,
   updateCourseState,
-  setUpdateCourseState
+  setUpdateCourseState,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -235,7 +235,7 @@ const CardCourse = ({
 
   const [courseCreator, setCourseCreator] = useState({
     firstName: "",
-    secondName: ""
+    secondName: "",
   });
 
   // eslint-disable-next-line
@@ -259,10 +259,10 @@ const CardCourse = ({
   const _courseCreator = ({ client, query, id, setCourseCreator }) => {
     client
       .request(query, { id })
-      .then(response => {
+      .then((response) => {
         setCourseCreator(response.searchUser);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response);
       });
   };
@@ -275,18 +275,18 @@ const CardCourse = ({
     setCourses,
     listAllCourses,
     enqueueSnackbar,
-    expanded
+    expanded,
   }) => {
     client
       .request(query, { id })
-      .then(response => {
+      .then((response) => {
         enqueueSnackbar("Course removed", {
           variant: "success",
           autoHideDuration: 5000,
           anchorOrigin: {
             vertical: "bottom",
-            horizontal: "right"
-          }
+            horizontal: "right",
+          },
         });
 
         setCourseRemoved(true);
@@ -295,17 +295,17 @@ const CardCourse = ({
           client,
           setCourses,
           query: listAllCourses,
-          privateCourses: true
+          privateCourses: true,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         enqueueSnackbar("Error on course remove", {
           variant: "error",
           autoHideDuration: 8000,
           anchorOrigin: {
             vertical: "bottom",
-            horizontal: "right"
-          }
+            horizontal: "right",
+          },
         });
 
         console.log(error.response);
@@ -351,14 +351,14 @@ const CardCourse = ({
           <Tooltip title={(expanded && "Retract") || "Expand"}>
             <IconButton
               className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded
+                [classes.expandOpen]: expanded,
               })}
               onClick={() => {
                 _courseCreator({
                   client,
                   query: searchCourseCreator,
                   id: course.creator,
-                  setCourseCreator
+                  setCourseCreator,
                 });
 
                 handleExpandClick();
@@ -413,7 +413,7 @@ const CardCourse = ({
                     setCourses,
                     listAllCourses,
                     enqueueSnackbar,
-                    expanded
+                    expanded,
                   });
                 }}
                 className={classes.removeCourseAgree}
@@ -429,7 +429,7 @@ const CardCourse = ({
               onClick={() =>
                 setUpdateCourseState({
                   state: !updateCourseState.state,
-                  course
+                  course,
                 })
               }
             >
@@ -445,8 +445,9 @@ const CardCourse = ({
               color="textSecondary"
             >
               <PermIdentityIcon className={classes.iconColor} />
-              {`${courseCreator.firstName || ""} ${courseCreator.secondName ||
-                ""}`}
+              {`${courseCreator.firstName || ""} ${
+                courseCreator.secondName || ""
+              }`}
             </Typography>
 
             <Typography
@@ -478,7 +479,7 @@ const CreateCourse = ({
   setCourses,
   createCourse,
   createCourseState,
-  authentication
+  authentication,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -504,7 +505,7 @@ const CreateCourse = ({
                 client,
                 setCourses: setCourses,
                 query: listAllCourses,
-                privateCourses: false
+                privateCourses: false,
               });
               setCreateCourseState(!createCourseState);
             }}
@@ -526,7 +527,7 @@ const CreateCourse = ({
               description: "",
               start: "",
               end: "",
-              private: privateCourse
+              private: privateCourse,
             }}
             onSubmit={async (values, actions) => {
               actions.setSubmitting(true);
@@ -540,8 +541,8 @@ const CreateCourse = ({
                     private: privateCourse,
                     creator: authentication.userId,
                     start: new Date(values.start).toISOString(),
-                    end: new Date(values.end).toISOString()
-                  }
+                    end: new Date(values.end).toISOString(),
+                  },
                 });
 
                 enqueueSnackbar("Course created", {
@@ -549,8 +550,8 @@ const CreateCourse = ({
                   autoHideDuration: 5000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
 
                 actions.resetForm();
@@ -560,8 +561,8 @@ const CreateCourse = ({
                   autoHideDuration: 8000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
 
                 console.log("error", error.response);
@@ -573,7 +574,7 @@ const CreateCourse = ({
               try {
                 responseUserCourse = await client.request(userCourse, {
                   courseId: responseCourse.createCourse.id,
-                  userId: authentication.userId
+                  userId: authentication.userId,
                 });
 
                 enqueueSnackbar("Course associated with the user", {
@@ -581,8 +582,8 @@ const CreateCourse = ({
                   autoHideDuration: 5000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
               } catch (error) {
                 enqueueSnackbar("Unable to associate the course and the user", {
@@ -590,8 +591,8 @@ const CreateCourse = ({
                   autoHideDuration: 8000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
 
                 console.log("error", error.response);
@@ -608,10 +609,10 @@ const CreateCourse = ({
                 .required("Description is required"),
               start: Yup.date().required("Start date is required"),
               end: Yup.date().required("End date is required"),
-              private: Yup.bool().oneOf([true, false], "Invalid value")
+              private: Yup.bool().oneOf([true, false], "Invalid value"),
             })}
           >
-            {formik => (
+            {(formik) => (
               <Form>
                 <Grid container spacing={4} direction="column">
                   <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -647,7 +648,7 @@ const CreateCourse = ({
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                     />
                   </Grid>
@@ -661,7 +662,7 @@ const CreateCourse = ({
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                     />
                   </Grid>
@@ -711,7 +712,7 @@ const UpdateCourse = ({
   setUpdateCourseState,
   updateCourseById,
   client,
-  authentication
+  authentication,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -739,11 +740,11 @@ const UpdateCourse = ({
                 client,
                 setCourses: setCourses,
                 query: listAllCourses,
-                privateCourses: false
+                privateCourses: false,
               });
               setUpdateCourseState({
                 state: !updateCourseState.state,
-                course: {}
+                course: {},
               });
             }}
           >
@@ -769,7 +770,7 @@ const UpdateCourse = ({
               end: moment(updateCourseState.course.end).format(
                 "YYYY-MM-DDThh:mm"
               ),
-              private: privateCourse
+              private: privateCourse,
             }}
             onSubmit={(values, actions) => {
               actions.setSubmitting(true);
@@ -780,20 +781,20 @@ const UpdateCourse = ({
                     ...values,
                     id: updateCourseState.course.id,
                     start: new Date(values.start).toISOString(),
-                    end: new Date(values.end).toISOString()
-                  }
+                    end: new Date(values.end).toISOString(),
+                  },
                 })
-                .then(response => {
+                .then((response) => {
                   enqueueSnackbar("Course updated", {
                     variant: "success",
                     autoHideDuration: 5000,
                     anchorOrigin: {
                       vertical: "bottom",
-                      horizontal: "right"
-                    }
+                      horizontal: "right",
+                    },
                   });
                 })
-                .catch(error => {
+                .catch((error) => {
                   enqueueSnackbar(
                     "Error on course update, check if you have made changes",
                     {
@@ -801,8 +802,8 @@ const UpdateCourse = ({
                       autoHideDuration: 8000,
                       anchorOrigin: {
                         vertical: "bottom",
-                        horizontal: "right"
-                      }
+                        horizontal: "right",
+                      },
                     }
                   );
 
@@ -820,10 +821,10 @@ const UpdateCourse = ({
                 .required("Description is required"),
               start: Yup.date().required("Start date is required"),
               end: Yup.date().required("End date is required"),
-              private: Yup.bool().oneOf([true, false], "Invalid value")
+              private: Yup.bool().oneOf([true, false], "Invalid value"),
             })}
           >
-            {formik => (
+            {(formik) => (
               <Form>
                 <Grid container spacing={4} direction="column">
                   <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -859,7 +860,7 @@ const UpdateCourse = ({
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                     />
                   </Grid>
@@ -873,7 +874,7 @@ const UpdateCourse = ({
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                     />
                   </Grid>
@@ -931,7 +932,7 @@ const Courses = () => {
 
   const [updateCourseState, setUpdateCourseState] = useState({
     state: false,
-    course: {}
+    course: {},
   });
 
   const [searchCourse, setSearchCourse] = useState("");
@@ -941,7 +942,7 @@ const Courses = () => {
       client,
       setCourses,
       query: listAllCourses,
-      privateCourses
+      privateCourses,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

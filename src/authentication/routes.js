@@ -9,7 +9,7 @@ import {
   Courses,
   Classes,
   Progresses,
-  Account
+  Account,
 } from "../pages";
 
 import General from "../layouts/general/general";
@@ -20,7 +20,7 @@ import {
   SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
   DonutLarge as DonutLargeIcon,
-  AccountCircle as AccountCircleIcon
+  AccountCircle as AccountCircleIcon,
 } from "@material-ui/icons";
 
 import {
@@ -28,13 +28,13 @@ import {
   ListItemIcon,
   ListItemText,
   Link,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
-    color: theme.palette.icon
-  }
+    color: theme.palette.icon,
+  },
 }));
 
 const routes = [
@@ -44,28 +44,28 @@ const routes = [
     component: <Login />,
     scopes: null,
     sidebar: false,
-    icon: null
+    icon: null,
   },
   {
-    title: "Dashboard",
+    title: "Início",
     path: "/dashboard",
     component: <Dashboard />,
     scopes: ["dashboard"],
     sidebar: true,
     icon: <DashboardIcon />,
-    layout: General
+    layout: General,
   },
   {
-    title: "Account",
+    title: "Perfil",
     path: "/account",
     component: <Account />,
     scopes: ["searchUser", "updateUser"],
     sidebar: true,
     icon: <AccountCircleIcon />,
-    layout: General
+    layout: General,
   },
   {
-    title: "Users",
+    title: "Usuários",
     path: "/users",
     component: <Users />,
     scopes: [
@@ -81,14 +81,14 @@ const routes = [
       "listAddresses",
       "createAddress",
       "removeAddress",
-      "updateAddress"
+      "updateAddress",
     ],
     sidebar: true,
     icon: <PeopleIcon />,
-    layout: General
+    layout: General,
   },
   {
-    title: "Courses",
+    title: "Cursos",
     path: "/courses",
     component: <Courses />,
     scopes: [
@@ -99,14 +99,14 @@ const routes = [
       "updateCourse",
       "listCourseUsers",
       "createCourseUser",
-      "removeCourseUser"
+      "removeCourseUser",
     ],
     sidebar: true,
     icon: <SortByAlphaIcon />,
-    layout: General
+    layout: General,
   },
   {
-    title: "Classes",
+    title: "Turmas",
     path: "/classes",
     component: <Classes />,
     scopes: [
@@ -116,30 +116,30 @@ const routes = [
       "listClasses",
       "listClassUsers",
       "createClassUser",
-      "removeClassUser"
+      "removeClassUser",
     ],
     sidebar: true,
     icon: <SchoolIcon />,
-    layout: General
+    layout: General,
   },
   {
-    title: "Progresses",
+    title: "Progresso",
     path: "/progresses",
     component: <Progresses />,
     scopes: [
       "listProgresses",
       "createProgress",
       "removeProgress",
-      "updateProgress"
+      "updateProgress",
     ],
     sidebar: true,
     icon: <DonutLargeIcon />,
-    layout: General
-  }
+    layout: General,
+  },
 ];
 
 const filterRoutes = ({ routes, scopes }) => {
-  return routes.filter(route => {
+  return routes.filter((route) => {
     if (route.scopes)
       for (let scope of route.scopes) if (!scopes.includes(scope)) return null;
 
@@ -193,5 +193,5 @@ export {
   routes,
   filterRoutes,
   createRoutesComponents,
-  CreateRoutesSidebarLinks
+  CreateRoutesSidebarLinks,
 };

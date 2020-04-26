@@ -17,13 +17,13 @@ import {
   AppBar,
   Toolbar,
   Hidden,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  Input as InputIcon
+  Input as InputIcon,
 } from "@material-ui/icons";
 
 import { logout } from "../sidebar/logout";
@@ -31,7 +31,7 @@ import { logout } from "../sidebar/logout";
 // Font Made Evolve Sans
 import logo from "../../assets/images/logo2.png";
 
-const Header = props => {
+const Header = (props) => {
   const { className, openSidebar, onSidebarOpen, ...rest } = props;
 
   const [open, setOpen] = useState(false);
@@ -89,17 +89,17 @@ const Header = props => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
 
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure you want to logout?
+              Você tem certeza que deseja encerrar sessão?
             </DialogContentText>
           </DialogContent>
 
           <DialogActions>
             <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancel
+              Cancelar
             </Button>
 
             <Button
@@ -110,7 +110,7 @@ const Header = props => {
               color="primary"
               autoFocus
             >
-              Yes
+              Sair
             </Button>
           </DialogActions>
         </Dialog>

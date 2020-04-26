@@ -15,23 +15,23 @@ import {
   removeClass,
   updateClass,
   createClass,
-  createClassUser
+  createClassUser,
 } from "./api";
 
 import { useSnackbar } from "notistack";
 
 import icons from "../../components/materialTable/icons";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   classesTable: {
     padding: theme.spacing(2),
     "& > *": {
       border: "0px",
-      boxShadow: "0px 0px"
+      boxShadow: "0px 0px",
     },
     background: theme.palette.background.default,
-    border: `6px solid ${theme.palette.white}`
-  }
+    border: `6px solid ${theme.palette.white}`,
+  },
 }));
 
 const ListClasses = ({ client, rowDataCourse }) => {
@@ -44,14 +44,14 @@ const ListClasses = ({ client, rowDataCourse }) => {
   return (
     <Box className={classes.classesTable}>
       <MaterialTable
-        title="Classes"
+        title="Courses"
         icons={icons}
         data={async () => {
           let _listClassesRaw;
 
           try {
             _listClassesRaw = await client.request(listClasses, {
-              params: { courseId: rowDataCourse.id }
+              params: { courseId: rowDataCourse.id },
             });
           } catch (error) {
             console.log(error);
@@ -65,14 +65,14 @@ const ListClasses = ({ client, rowDataCourse }) => {
             let classesInstructors = _listClassesRaw.listClasses.map(
               ({ instructor, ...rest }) => {
                 return client.request(searchClassInstructor, {
-                  id: instructor
+                  id: instructor,
                 });
               }
             );
 
             classesInstructors = await Promise.all(classesInstructors);
 
-            classesInstructors = classesInstructors.map(instructorData => {
+            classesInstructors = classesInstructors.map((instructorData) => {
               return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
             });
 
@@ -81,7 +81,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 return {
                   ...rest,
                   instructor: classesInstructors[index],
-                  instructorId: instructor
+                  instructorId: instructor,
                 };
               }
             );
@@ -95,7 +95,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             return resolve({
               data: _listClasses,
               page: 0,
-              totalCount: _listClasses.length
+              totalCount: _listClasses.length,
             });
           });
         }}
@@ -103,21 +103,21 @@ const ListClasses = ({ client, rowDataCourse }) => {
           {
             title: "Vacancies",
             field: "vacancies",
-            type: "numeric"
+            type: "numeric",
           },
           { title: "Room", field: "room", type: "string" },
           { title: "Shift", field: "shift", type: "string" },
           {
             title: "Time",
             field: "time",
-            type: "time"
+            type: "time",
           },
           {
             title: "Instructor",
             field: "instructor",
             type: "string",
-            editable: "never"
-          }
+            editable: "never",
+          },
         ]}
         options={{
           selection: false,
@@ -128,22 +128,22 @@ const ListClasses = ({ client, rowDataCourse }) => {
           columnsButton: false,
           exportButton: true,
           paging: false,
-          detailPanelColumnAlignment: "left"
+          detailPanelColumnAlignment: "left",
         }}
         editable={{
-          isEditable: rowData => {
+          isEditable: (rowData) => {
             return (
               rowData.instructorId === rowDataCourse.creator ||
               rowData.instructorId === authentication.userId
             );
           },
-          isDeletable: rowData => {
+          isDeletable: (rowData) => {
             return (
               rowData.instructorId === rowDataCourse.creator ||
               rowData.instructorId === authentication.userId
             );
           },
-          onRowAdd: async newData => {
+          onRowAdd: async (newData) => {
             let classCreated;
 
             try {
@@ -153,8 +153,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                   vacancies: parseInt(newData.vacancies),
                   instructor: authentication.userId,
                   courseId: rowDataCourse.id,
-                  time: `${newData.time.getHours()}:${newData.time.getMinutes()}`
-                }
+                  time: `${newData.time.getHours()}:${newData.time.getMinutes()}`,
+                },
               });
 
               enqueueSnackbar("Class created", {
@@ -162,8 +162,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 5000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             } catch (error) {
               console.log(error);
@@ -175,8 +175,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                   autoHideDuration: 8000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 }
               );
             }
@@ -185,7 +185,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
               // eslint-disable-next-line
               const classUserCreated = await client.request(createClassUser, {
                 classId: classCreated.createClass.id,
-                userId: authentication.userId
+                userId: authentication.userId,
               });
 
               enqueueSnackbar("Class associated with the user", {
@@ -193,8 +193,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 5000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             } catch (error) {
               console.log(error);
@@ -204,8 +204,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 8000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             }
 
@@ -215,10 +215,10 @@ const ListClasses = ({ client, rowDataCourse }) => {
           },
           onRowUpdate: async (newData, oldData) => {
             const changes = Object.keys(newData)
-              .filter(key => {
+              .filter((key) => {
                 return newData[key] !== oldData[key] ? key : null;
               })
-              .map(key => {
+              .map((key) => {
                 let cache = { [key]: newData[key] };
 
                 if (["vacancies"].includes(key))
@@ -226,7 +226,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
 
                 if (["time"].includes(key))
                   cache = {
-                    [key]: `${newData.time.getHours()}:${newData.time.getMinutes()}`
+                    [key]: `${newData.time.getHours()}:${newData.time.getMinutes()}`,
                   };
                 return cache;
               });
@@ -234,7 +234,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             try {
               // eslint-disable-next-line
               const classUpdated = await client.request(updateClass, {
-                params: Object.assign(...changes, { id: newData.id })
+                params: Object.assign(...changes, { id: newData.id }),
               });
 
               enqueueSnackbar("Class updated", {
@@ -242,8 +242,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 5000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             } catch (error) {
               console.log(error);
@@ -253,8 +253,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 8000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             }
 
@@ -262,11 +262,11 @@ const ListClasses = ({ client, rowDataCourse }) => {
               resolve();
             });
           },
-          onRowDelete: async oldData => {
+          onRowDelete: async (oldData) => {
             try {
               // eslint-disable-next-line
               const classRemoved = await client.request(removeClass, {
-                id: oldData.id
+                id: oldData.id,
               });
 
               enqueueSnackbar("Class removed", {
@@ -274,8 +274,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 5000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             } catch (error) {
               console.log(error);
@@ -285,15 +285,15 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 autoHideDuration: 8000,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right"
-                }
+                  horizontal: "right",
+                },
               });
             }
 
             return new Promise((resolve, reject) => {
               resolve();
             });
-          }
+          },
         }}
       />
     </Box>
@@ -305,13 +305,13 @@ const ListCourses = ({ client }) => {
     <MaterialTable
       title="Courses"
       icons={icons}
-      data={async query => {
-        let filters = query.filters.map(item => {
+      data={async (query) => {
+        let filters = query.filters.map((item) => {
           return {
             [item.column.field]: {
               type: item.column.type,
-              value: item.value
-            }
+              value: item.value,
+            },
           };
         });
 
@@ -319,8 +319,8 @@ const ListCourses = ({ client }) => {
           {
             private: {
               type: "boolean",
-              value: "unchecked"
-            }
+              value: "unchecked",
+            },
           },
           ...filters
         );
@@ -329,7 +329,7 @@ const ListCourses = ({ client }) => {
 
         try {
           courses = await client.request(listAllCourses, {
-            private: filters.private.value === "checked" ? true : false
+            private: filters.private.value === "checked" ? true : false,
           });
         } catch (error) {
           console.log(error);
@@ -338,7 +338,7 @@ const ListCourses = ({ client }) => {
         }
 
         const coursesFiltered = courses.listCourses
-          .filter(course => {
+          .filter((course) => {
             if (filters.title)
               return course.title
                 .toLowerCase()
@@ -346,7 +346,7 @@ const ListCourses = ({ client }) => {
 
             return true;
           })
-          .filter(course => {
+          .filter((course) => {
             if (filters.start)
               return (
                 new Date(course.start).toLocaleDateString() ===
@@ -355,7 +355,7 @@ const ListCourses = ({ client }) => {
 
             return true;
           })
-          .filter(course => {
+          .filter((course) => {
             if (filters.end)
               return (
                 new Date(course.end).toLocaleDateString() ===
@@ -369,7 +369,7 @@ const ListCourses = ({ client }) => {
           resolve({
             data: coursesFiltered,
             page: 0,
-            totalCount: coursesFiltered.length
+            totalCount: coursesFiltered.length,
           });
         });
       }}
@@ -378,7 +378,7 @@ const ListCourses = ({ client }) => {
           title: "Title",
           field: "title",
           type: "string",
-          editable: "never"
+          editable: "never",
         },
         { title: "Start", field: "start", type: "datetime", editable: "never" },
         { title: "End", field: "end", type: "datetime", editable: "never" },
@@ -386,8 +386,8 @@ const ListCourses = ({ client }) => {
           title: "Private",
           field: "private",
           type: "boolean",
-          editable: "never"
-        }
+          editable: "never",
+        },
       ]}
       options={{
         selection: false,
@@ -397,9 +397,9 @@ const ListCourses = ({ client }) => {
         paging: false,
         filtering: true,
         debounceInterval: 50,
-        detailPanelColumnAlignment: "left"
+        detailPanelColumnAlignment: "left",
       }}
-      detailPanel={rowData => {
+      detailPanel={(rowData) => {
         return <ListClasses client={client} rowDataCourse={rowData} />;
       }}
       onRowClick={(event, rowData, togglePanel) => togglePanel()}

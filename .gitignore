@@ -1,5 +1,6 @@
 # Editor
 .vscode
+.idea
 
 # Dependency
 node_modules

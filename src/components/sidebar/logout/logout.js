@@ -11,17 +11,17 @@ import {
   ListItemIcon,
   ListItem,
   ListItemText,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 
 import { ExitToApp } from "@material-ui/icons";
 
 import { logout } from "./utils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
-    color: theme.palette.icon
-  }
+    color: theme.palette.icon,
+  },
 }));
 
 const Logout = () => {
@@ -48,7 +48,7 @@ const Logout = () => {
           <ExitToApp />
         </ListItemIcon>
 
-        <ListItemText primary="Logout" />
+        <ListItemText primary="Sair" />
       </ListItem>
 
       {open && (
@@ -60,17 +60,17 @@ const Logout = () => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Logout"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
 
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure you want to logout?
+              Você tem certeza que deseja encerrar sessão?
             </DialogContentText>
           </DialogContent>
 
           <DialogActions>
             <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancel
+              Cancelar
             </Button>
 
             <Button
@@ -81,7 +81,7 @@ const Logout = () => {
               color="secondary"
               autoFocus
             >
-              Yes
+              Sair
             </Button>
           </DialogActions>
         </Dialog>

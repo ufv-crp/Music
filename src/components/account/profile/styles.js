@@ -1,25 +1,30 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export default makeStyles(theme => ({
-  content: {
-    padding: theme.spacing(3)
+export default makeStyles((theme) => ({
+  cardProfile: {
+    borderRadius: "12px",
+    boxShadow: "0 6px 10px -4px rgba(0,0,0,.15)",
+    backgroundColor: "#fff",
+    color: "#252422",
+    marginBottom: "20px",
+    position: "relative",
+    border: 0,
+    display: "flex",
+    flexDirection: "column",
+    minWidth: 0,
+    wordWrap: "break-word",
   },
-  details: {
-    display: "flex"
+  backgroundCard: {
+    background: theme.palette.boxShadow,
   },
-  avatar: {
-    marginLeft: "auto",
-    height: 80,
-    width: 80,
-    flexShrink: 0,
-    flexGrow: 0,
+  cardAvatar: {
     color: theme.palette.white,
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
+    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
   },
-  progress: {
-    marginTop: theme.spacing(2)
+  cardHeaderText: {
+    color: theme.palette.primary.main,
   },
-  uploadButton: {
-    marginRight: theme.spacing(2)
-  }
+  spacer: {
+    margin: theme.spacing(1),
+  },
 }));

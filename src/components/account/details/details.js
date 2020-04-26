@@ -1,255 +1,34 @@
 import React, { useContext } from "react";
 
-import clsx from "clsx";
+import useStyles from "./styles";
 
-import { makeStyles } from "@material-ui/styles";
-
-import {
-  Avatar,
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
-  Grid,
-  Button,
-  LinearProgress,
-  CardActions,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions
-} from "@material-ui/core";
-
-import { useSnackbar } from "notistack";
-
-import { AccountCircle as AccountCircleIcon } from "@material-ui/icons";
-
-import { Formik, Field } from "formik";
-
-import { TextField } from "formik-material-ui";
+import { Card, CardContent, Avatar } from "@material-ui/core";
 
 import { UserContext } from "../../../states";
 
-import { createAuthenticatedClient } from "../../../authentication";
-
-import { updateUserById } from "../../../pages/account/api";
-
-const useStyles = makeStyles(theme => ({
-  root: {},
-  submit: {
-    marginTop: "10px"
-  }
-}));
-
-const AccountForm = ({
-  classes,
-  user,
-  setUser,
-  open,
-  setOpen,
-  enqueueSnackbar
-}) => (
-  <Formik
-    enableReinitialize
-    initialValues={{ ...user, confirmPassword: "" }}
-    onSubmit={async (values, { setSubmitting, resetForm }) => {
-      setSubmitting(true);
-
-      const client = createAuthenticatedClient();
-
-      const updatedUser = ({
-        email,
-        password,
-        confirmPassword,
-        address,
-        contact,
-        createdAt,
-        updatedAt,
-        creator,
-        ...rest
-      }) => rest;
-
-      if (values.confirmPassword === user.password) {
-        try {
-          const response = await client.request(updateUserById, {
-            params: updatedUser(values)
-          });
-
-          setUser({ ...response.updateUser });
-
-          enqueueSnackbar("Account updated", {
-            variant: "success",
-            autoHideDuration: 5000,
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "right"
-            }
-          });
-
-          resetForm();
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        enqueueSnackbar("Password is wrong", {
-          variant: "error",
-          autoHideDuration: 5000,
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "right"
-          }
-        });
-
-        resetForm();
-      }
-
-      setSubmitting(false);
-
-      setOpen(false);
-    }}
-  >
-    {({ isSubmitting, submitForm, touched }) => (
-      <>
-        <Grid container spacing={1}>
-          <Grid item md={6} xs={12}>
-            <Field
-              name="firstName"
-              label="First Name"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              component={TextField}
-            />
-          </Grid>
-
-          <Grid item md={6} xs={12}>
-            <Field
-              name="secondName"
-              label="Second Name"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              component={TextField}
-            />
-          </Grid>
-
-          <Grid item md={6} xs={12}>
-            <Field
-              name="matriculation"
-              label="Matriculation"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              component={TextField}
-            />
-          </Grid>
-
-          <Grid item md={6} xs={12}>
-            <Field
-              name="cpf"
-              label="CPF"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              component={TextField}
-            />
-          </Grid>
-
-          {isSubmitting && <LinearProgress />}
-
-          <br />
-
-          <Divider />
-        </Grid>
-
-        <CardActions>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            className={classes.submit}
-            onClick={() => setOpen(true)}
-          >
-            Update
-          </Button>
-        </CardActions>
-        {open && (
-          <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle id="form-dialog-title">Confirm Password</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                To update your account, please enter your current password below
-              </DialogContentText>
-              <Field
-                name="confirmPassword"
-                type="password"
-                label="Password"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                component={TextField}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={submitForm} color="primary">
-                Update
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      </>
-    )}
-  </Formik>
-);
-
-const AccountDetails = props => {
-  const { className, ...rest } = props;
-
+const AccountDetails = () => {
   const classes = useStyles();
 
-  const { user, setUser } = useContext(UserContext);
-
-  const [open, setOpen] = React.useState(false);
-
-  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useContext(UserContext);
 
   return (
-    <Card {...rest} className={clsx(classes.root, className)}>
-      <CardHeader
-        title="Personal Data"
-        subheader="Some information can be edited"
-        avatar={
-          <Avatar aria-label="account" variant="rounded">
-            <AccountCircleIcon />
-          </Avatar>
-        }
-        titleTypographyProps={{
-          align: "left",
-          variant: "h5",
-          display: "block"
-        }}
-        subheaderTypographyProps={{
-          align: "left",
-          variant: "body1",
-          display: "block",
-          color: "textSecondary"
-        }}
-      />
-      <Divider />
+    <Card className={classes.cardUser}>
+      <div className={classes.cardUserBackground}></div>
       <CardContent>
-        {AccountForm({
-          classes,
-          user,
-          setUser,
-          open,
-          setOpen,
-          enqueueSnackbar
-        })}
+        <div className={classes.cardPerson}>
+          <Avatar className={classes.cardPersonAvatar}>
+            {!!user.firstName && user.firstName[0]}
+          </Avatar>
+          {/*<img
+            alt="..."
+            src="https://demos.creative-tim.com/paper-dashboard-react/static/media/mike.aab414f7.jpg"
+          />*/}
+          <h5 className={classes.cardPersonTitle}>{user.firstName}</h5>
+          <p className={classes.cardPersonDescription}>
+            @{user.firstName.toLowerCase()}
+          </p>
+        </div>
+        <p className={classes.cardPersonDescription}>{user.matriculation}</p>
       </CardContent>
     </Card>
   );

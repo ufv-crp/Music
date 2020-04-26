@@ -14,7 +14,7 @@ import {
   Container,
   Typography,
   Grid,
-  Box
+  Box,
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -34,22 +34,22 @@ import { useSnackbar } from "notistack";
 import {
   searchUser,
   listAddressById,
-  listContactById
+  listContactById,
 } from "../../pages/account/api";
 
 const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
   return (
     <Formik
       initialValues={{ email: "" }}
-      validate={values => {
+      validate={(values) => {
         const errors = {};
 
         if (!values.email) {
-          errors.email = "Required";
+          errors.email = "E-mail é obrigatório";
         } else if (
           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
         ) {
-          errors.email = "Invalid email address";
+          errors.email = "E-mail inválido";
         }
 
         return errors;
@@ -65,8 +65,8 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
             autoHideDuration: 5000,
             anchorOrigin: {
               vertical: "bottom",
-              horizontal: "right"
-            }
+              horizontal: "right",
+            },
           });
         } catch (error) {
           console.log(error);
@@ -76,18 +76,18 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
             autoHideDuration: 8000,
             anchorOrigin: {
               vertical: "bottom",
-              horizontal: "right"
-            }
+              horizontal: "right",
+            },
           });
         }
       }}
     >
-      {props => (
+      {(props) => (
         <Form className={classes.form}>
           <Field
             name="email"
             type="email"
-            label="Email"
+            label="E-mail"
             variant="outlined"
             margin="normal"
             fullWidth
@@ -107,7 +107,7 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
             disabled={props.isSubmitting}
             onClick={props.submitForm}
           >
-            Send Password
+            Enviar
           </Button>
         </Form>
       )}
@@ -120,26 +120,26 @@ const FormikSign = ({
   setAuthentication,
   setUser,
   enqueueSnackbar,
-  props
+  props,
 }) => (
   <Formik
     initialValues={{
       email: "",
-      password: ""
+      password: "",
     }}
-    validate={values => {
+    validate={(values) => {
       const errors = {};
 
       if (!values.email) {
-        errors.email = "Required";
+        errors.email = "E-mail é obrigatório";
       } else if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
-        errors.email = "Invalid email address";
+        errors.email = "E-mail inválido";
       }
 
       if (!values.password) {
-        errors.password = "Required";
+        errors.password = "Senha é obrigatório";
       }
 
       return errors;
@@ -152,7 +152,7 @@ const FormikSign = ({
       try {
         const response = await authenticate({
           email: values.email,
-          password: values.password
+          password: values.password,
         });
 
         authenticationResponse = response.login;
@@ -168,8 +168,8 @@ const FormikSign = ({
           autoHideDuration: 8000,
           anchorOrigin: {
             vertical: "bottom",
-            horizontal: "right"
-          }
+            horizontal: "right",
+          },
         });
       }
 
@@ -177,19 +177,19 @@ const FormikSign = ({
 
       try {
         const userResponse = await client.request(searchUser, {
-          id: authenticationResponse.userId
+          id: authenticationResponse.userId,
         });
 
         setUser({ ...userResponse.searchUser });
 
         const responseAddress = await client.request(listAddressById, {
-          userId: authenticationResponse.userId
+          userId: authenticationResponse.userId,
         });
 
         setUser({ address: { ...responseAddress.listAddresses[0] } });
 
         const responseContact = await client.request(listContactById, {
-          userId: authenticationResponse.userId
+          userId: authenticationResponse.userId,
         });
 
         setUser({ contact: { ...responseContact.listContacts[0] } });
@@ -200,12 +200,12 @@ const FormikSign = ({
       props.history.push("/dashboard");
     }}
   >
-    {props => (
+    {(props) => (
       <Form className={classes.form}>
         <Field
           name="email"
           type="email"
-          label="Email"
+          label="E-mail"
           variant="outlined"
           margin="normal"
           fullWidth
@@ -216,7 +216,7 @@ const FormikSign = ({
 
         <Field
           type="password"
-          label="Password"
+          label="Senha"
           name="password"
           variant="outlined"
           margin="normal"
@@ -237,14 +237,14 @@ const FormikSign = ({
           disabled={props.isSubmitting}
           onClick={props.submitForm}
         >
-          Sign In
+          Entrar
         </Button>
       </Form>
     )}
   </Formik>
 );
 
-const Login = props => {
+const Login = (props) => {
   const { setAuthentication } = useContext(AuthenticationContext);
 
   const { setUser } = useContext(UserContext);
@@ -266,7 +266,7 @@ const Login = props => {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            {forgotPassword ? "Recover your account" : "Login"}
+            {forgotPassword ? "Recuperar senha" : "Login"}
           </Typography>
 
           {forgotPassword && FormikForgotPassword({ classes, enqueueSnackbar })}
@@ -277,13 +277,13 @@ const Login = props => {
               setAuthentication,
               setUser,
               enqueueSnackbar,
-              props
+              props,
             })}
 
           <Grid container>
             <Grid item xs>
               <Button onClick={() => setForgotPassword(!forgotPassword)}>
-                {forgotPassword ? "Back to Login" : "Forgot Password?"}
+                {forgotPassword ? "Voltar ao Login" : "Esqueci minha senha"}
               </Button>
             </Grid>
           </Grid>
