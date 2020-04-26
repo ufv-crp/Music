@@ -1,25 +1,25 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import {
+  Avatar,
   Box,
-  Grid,
-  Paper,
-  Table,
-  TableContainer,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableRow,
+  Button,
   Card,
   CardHeader,
-  IconButton,
-  Avatar,
-  Button,
-  LinearProgress,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Typography
+  Grid,
+  IconButton,
+  LinearProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
 } from "@material-ui/core";
 
 import { TextField } from "formik-material-ui";
@@ -28,7 +28,7 @@ import useStyles from "./styles";
 
 import { useSnackbar } from "notistack";
 
-import { Formik, Form, ErrorMessage, Field } from "formik";
+import { Field, Form, Formik } from "formik";
 
 import * as Yup from "yup";
 
@@ -36,9 +36,9 @@ import MaterialTable from "material-table";
 
 import {
   createUser,
-  listAllUsers,
   listAddressById,
-  listContactById
+  listAllUsers,
+  listContactById,
 } from "../account/api";
 
 import { createAuthenticatedClient } from "../../authentication";
@@ -48,9 +48,9 @@ import icons from "../../components/materialTable/icons";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import {
+  ArrowBack as ArrowBackIcon,
   ContactPhone as ContactIcon,
   LocationOn as LocationIcon,
-  ArrowBack as ArrowBackIcon
 } from "@material-ui/icons";
 
 import { AuthenticationContext } from "../../states";
@@ -58,10 +58,10 @@ import { AuthenticationContext } from "../../states";
 const _listAllUsers = ({ client, query, setUsers }) => {
   client
     .request(query)
-    .then(response => {
+    .then((response) => {
       setUsers(response.listUsers);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error.response);
 
       setUsers([]);
@@ -73,14 +73,14 @@ const _listContactsById = ({
   query,
   setContacts,
   userId,
-  enqueueSnackbar
+  enqueueSnackbar,
 }) => {
   client
     .request(query, { userId })
-    .then(response => {
+    .then((response) => {
       setContacts(response.listContacts);
     })
-    .catch(error => {
+    .catch((error) => {
       // console.log(error.response);
 
       enqueueSnackbar("No contacts found!", {
@@ -88,8 +88,8 @@ const _listContactsById = ({
         autoHideDuration: 3000,
         anchorOrigin: {
           vertical: "bottom",
-          horizontal: "right"
-        }
+          horizontal: "right",
+        },
       });
 
       setContacts([]);
@@ -101,14 +101,14 @@ const _listAddressesById = ({
   query,
   setAddresses,
   userId,
-  enqueueSnackbar
+  enqueueSnackbar,
 }) => {
   client
     .request(query, { userId })
-    .then(response => {
+    .then((response) => {
       setAddresses(response.listAddresses);
     })
-    .catch(error => {
+    .catch((error) => {
       // console.log(error.response);
 
       enqueueSnackbar("No addresses found!", {
@@ -116,8 +116,8 @@ const _listAddressesById = ({
         autoHideDuration: 3000,
         anchorOrigin: {
           vertical: "bottom",
-          horizontal: "right"
-        }
+          horizontal: "right",
+        },
       });
 
       setAddresses([]);
@@ -130,7 +130,7 @@ const CreateUser = ({
   setUsers,
   createUserState,
   setCreateUserState,
-  authentication
+  authentication,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -144,7 +144,7 @@ const CreateUser = ({
               _listAllUsers({
                 client,
                 setUsers: setUsers,
-                query: listAllUsers
+                query: listAllUsers,
               });
               setCreateUserState(!createUserState);
             }}
@@ -165,7 +165,7 @@ const CreateUser = ({
               matriculation: "",
               cpf: "",
               firstName: "",
-              secondName: ""
+              secondName: "",
             }}
             onSubmit={async (values, actions) => {
               actions.setSubmitting(true);
@@ -176,8 +176,8 @@ const CreateUser = ({
                 responseUser = await client.request(createUser, {
                   params: {
                     ...values,
-                    creator: authentication.userId
-                  }
+                    creator: authentication.userId,
+                  },
                 });
 
                 enqueueSnackbar("User created", {
@@ -185,8 +185,8 @@ const CreateUser = ({
                   autoHideDuration: 5000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
 
                 actions.resetForm();
@@ -196,8 +196,8 @@ const CreateUser = ({
                   autoHideDuration: 8000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
-                  }
+                    horizontal: "right",
+                  },
                 });
 
                 console.log("error", error.response);
@@ -208,9 +208,7 @@ const CreateUser = ({
               actions.setSubmitting(false);
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .email()
-                .required("Email is required"),
+              email: Yup.string().email().required("Email is required"),
               password: Yup.string()
                 .min(6, "At least 6 characteres are required")
                 .required("Password is required"),
@@ -221,10 +219,10 @@ const CreateUser = ({
                 .min(11, "At least 11 characters are required")
                 .max(11, "Maximum 11 characters")
                 .required("CPF is required"),
-              firstName: Yup.string().required("First Name is required")
+              firstName: Yup.string().required("First Name is required"),
             })}
           >
-            {formik => (
+            {(formik) => (
               <Form>
                 <Grid container spacing={4} direction="column">
                   <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -319,7 +317,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
 
   const [contacts, setContacts] = useState([]);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -329,7 +327,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       query: listAddressById,
       setAddresses,
       userId: rowUserData.id,
-      enqueueSnackbar
+      enqueueSnackbar,
     });
 
     _listContactsById({
@@ -337,7 +335,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       query: listContactById,
       setContacts,
       userId: rowUserData.id,
-      enqueueSnackbar
+      enqueueSnackbar,
     });
     return () => {};
   }, [client, enqueueSnackbar, rowUserData.id]);
@@ -365,7 +363,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               titleTypographyProps={{
                 align: "left",
                 variant: "h5",
-                display: "block"
+                display: "block",
               }}
             />
           </Card>
@@ -385,7 +383,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {addresses.map(address => (
+                  {addresses.map((address) => (
                     <TableRow key={address.id}>
                       <TableCell component="th" scope="row" align="right">
                         {address.zipCode}
@@ -434,7 +432,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               titleTypographyProps={{
                 align: "left",
                 variant: "h5",
-                display: "block"
+                display: "block",
               }}
             />
           </Card>
@@ -450,7 +448,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {contacts.map(contact => (
+                  {contacts.map((contact) => (
                     <TableRow key={contact.id}>
                       <TableCell component="th" scope="row" align="center">
                         {contact.email}
@@ -479,7 +477,7 @@ const ListUsers = ({
   createUserState,
   setCreateUserState,
   updateUserState,
-  setUpdateUserState
+  setUpdateUserState,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -488,20 +486,20 @@ const ListUsers = ({
       icon: icons.Edit,
       tooltip: "Edit User",
       onClick: (event, rowData) =>
-        alert("You want do edit " + rowData.firstName)
+        alert("You want do edit " + rowData.firstName),
     },
-    rowData => ({
+    (rowData) => ({
       icon: icons.Delete,
       tooltip: "Delete User",
       onClick: (event, rowData) =>
-        alert("You want to delete " + rowData.firstName)
+        alert("You want to delete " + rowData.firstName),
     }),
     {
       icon: icons.Add,
       tooltip: "Add User",
       isFreeAction: true,
-      onClick: () => setCreateUserState(!createUserState)
-    }
+      onClick: () => setCreateUserState(!createUserState),
+    },
   ];
 
   return (
@@ -521,7 +519,7 @@ const ListUsers = ({
             paging: false,
             filtering: true,
             debounceInterval: 50,
-            detailPanelColumnAlignment: "left"
+            detailPanelColumnAlignment: "left",
           }}
           columns={[
             { title: "Name", field: "firstName" },
@@ -529,10 +527,10 @@ const ListUsers = ({
             { title: "CPF", field: "cpf" },
             {
               title: "Matriculation",
-              field: "matriculation"
-            }
+              field: "matriculation",
+            },
           ]}
-          detailPanel={rowData => {
+          detailPanel={(rowData) => {
             return (
               <ListUserDetails
                 client={client}
@@ -561,14 +559,14 @@ const Users = () => {
 
   const [updateUserState, setUpdateUserState] = useState({
     state: false,
-    user: {}
+    user: {},
   });
 
   useEffect(() => {
     _listAllUsers({
       client,
       setUsers,
-      query: listAllUsers
+      query: listAllUsers,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
