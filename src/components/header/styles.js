@@ -27,8 +27,8 @@ export default makeStyles((theme) => ({
     padding: "0px"
   },
   logo: {
-    marginLeft: "80px",
-    width: "35px",
+    marginLeft: "60px",
+    width: "80px",
     [theme.breakpoints.down("sm")]: {
       marginLeft: "0"
     }

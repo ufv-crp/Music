@@ -57,7 +57,7 @@ const routes = [
   },
   {
     title: "Perfil",
-    path: "/account",
+    path: "/perfil",
     component: <Account />,
     scopes: ["searchUser", "updateUser"],
     sidebar: true,
@@ -66,7 +66,7 @@ const routes = [
   },
   {
     title: "Usuários",
-    path: "/users",
+    path: "/usuarios",
     component: <Users />,
     scopes: [
       "searchUser",
@@ -89,7 +89,7 @@ const routes = [
   },
   {
     title: "Cursos",
-    path: "/courses",
+    path: "/cursos",
     component: <Courses />,
     scopes: [
       "searchCourses",
@@ -107,7 +107,7 @@ const routes = [
   },
   {
     title: "Turmas",
-    path: "/classes",
+    path: "/turmas",
     component: <Classes />,
     scopes: [
       "createClass",
@@ -124,7 +124,7 @@ const routes = [
   },
   {
     title: "Progresso",
-    path: "/progresses",
+    path: "/progresso",
     component: <Progresses />,
     scopes: [
       "listProgresses",

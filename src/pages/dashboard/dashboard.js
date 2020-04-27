@@ -185,7 +185,7 @@ const Counters = ({ client }) => {
           {usersState}
         </Typography>
 
-        <Typography>Users</Typography>
+        <Typography>Usuários</Typography>
       </Grid>
 
       <Grid item xs={12} sm={3} md={3} lg={3} className={classes.itemCounter}>
@@ -198,7 +198,7 @@ const Counters = ({ client }) => {
           {coursesState}
         </Typography>
 
-        <Typography>Courses</Typography>
+        <Typography>Cursos</Typography>
       </Grid>
 
       <Grid item xs={12} sm={3} md={3} lg={3} className={classes.itemCounter}>
@@ -210,7 +210,7 @@ const Counters = ({ client }) => {
           {classesState}
         </Typography>
 
-        <Typography>Classes</Typography>
+        <Typography>Turmas</Typography>
       </Grid>
     </Grid>
   )
@@ -253,7 +253,9 @@ const MyCourses = ({ client }) => {
 
   return (
     <Box className={classes.containerList}>
-      <Typography className={classes.containerListTitle}>My courses</Typography>
+      <Typography className={classes.containerListTitle}>
+        Meus Cursos
+      </Typography>
 
       {courses.length ? (
         <List>
@@ -276,7 +278,7 @@ const MyCourses = ({ client }) => {
       ) : (
         <List>
           <ListItem>
-            <ListItemText primary="No course (s) found" />
+            <ListItemText primary="Nenhum curso encontrado" />
           </ListItem>
         </List>
       )}
@@ -333,7 +335,9 @@ const MyClasses = ({ client }) => {
 
   return (
     <Box className={classes.containerList}>
-      <Typography className={classes.containerListTitle}>My classes</Typography>
+      <Typography className={classes.containerListTitle}>
+        Minhas Turmas
+      </Typography>
 
       {classesState.length ? (
         <List>
@@ -358,7 +362,7 @@ const MyClasses = ({ client }) => {
       ) : (
         <List>
           <ListItem>
-            <ListItemText primary="No class (es) found" />
+            <ListItemText primary="Nenhuma turma encontrada" />
           </ListItem>
         </List>
       )}
@@ -407,7 +411,7 @@ const UsersRegistered = ({ client }) => {
   return (
     <Box className={classes.heatmapBox}>
       <Typography className={classes.containerListTitle}>
-        Users registered
+        Novos usuários
       </Typography>
 
       <CalendarHeatmap

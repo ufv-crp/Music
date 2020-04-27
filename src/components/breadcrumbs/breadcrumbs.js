@@ -36,7 +36,7 @@ export default function RouterBreadcrumbs() {
                 separator={<NavigateNextIcon fontSize="small" />}
                 aria-label="breadcrumb">
                 <RouterLink className={classes.link} color="inherit" to="/">
-                  Dashboard
+                  Início
                 </RouterLink>
                 {pathnames.map((value, index) => {
                   const last = index === pathnames.length - 1
