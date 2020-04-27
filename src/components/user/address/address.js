@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
 import {
   Card,
@@ -12,54 +12,52 @@ import {
   Divider,
   Avatar,
   LinearProgress
-} from "@material-ui/core";
+} from "@material-ui/core"
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles"
 
-import { LocationOn as LocationIcon } from "@material-ui/icons";
+import { LocationOn as LocationIcon } from "@material-ui/icons"
 
-import { Formik, Field } from "formik";
+import { Formik, Field } from "formik"
 
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-material-ui"
 
-import { UserContext } from "../../../states";
+import { UserContext } from "../../../states"
 
-import { createAuthenticatedClient } from "../../../authentication";
+import { createAuthenticatedClient } from "../../../authentication"
 
-import { updateAddressById } from "../../../pages/account/api";
+import { updateAddressById } from "../../../pages/account/api"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   submit: {
     marginTop: "10px"
   }
-}));
+}))
 
 const UserAddressForm = ({ classes, address, setUser }) => (
   <Formik
     enableReinitialize
     initialValues={{ ...address }}
     onSubmit={async (values, { setSubmitting }) => {
-      setSubmitting(true);
+      setSubmitting(true)
 
-      const client = createAuthenticatedClient();
+      const client = createAuthenticatedClient()
 
-      const updatedAddress = ({ userId, createdAt, updatedAt, ...rest }) =>
-        rest;
+      const updatedAddress = ({ userId, createdAt, updatedAt, ...rest }) => rest
 
       try {
         const response = await client.request(updateAddressById, {
           params: updatedAddress(values)
-        });
+        })
 
-        setUser({ address: { ...response.updateAddress } });
+        setUser({ address: { ...response.updateAddress } })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
 
-      setSubmitting(false);
-    }}
-  >
+      setSubmitting(false)
+    }}>
     {({ isSubmitting, submitForm, touched }) => (
       <>
         <Grid container spacing={1}>
@@ -144,24 +142,23 @@ const UserAddressForm = ({ classes, address, setUser }) => (
             color="primary"
             fullWidth
             className={classes.submit}
-            onClick={submitForm}
-          >
+            onClick={submitForm}>
             Update
           </Button>
         </CardActions>
       </>
     )}
   </Formik>
-);
+)
 
-const UserAddress = props => {
-  const { className, ...rest } = props;
+const UserAddress = (props) => {
+  const { className, ...rest } = props
 
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext)
 
-  const address = user.address;
+  const address = user.address
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -190,7 +187,7 @@ const UserAddress = props => {
         {UserAddressForm({ classes, address, setUser })}
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default UserAddress;
+export default UserAddress

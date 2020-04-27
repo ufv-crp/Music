@@ -1,5 +1,5 @@
-import AccountDetails from "./details/details";
+import AccountDetails from "./details/details"
 
-import AccountProfile from "./profile/profile";
+import AccountProfile from "./profile/profile"
 
-export { AccountDetails, AccountProfile };
+export { AccountDetails, AccountProfile }

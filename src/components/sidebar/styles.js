@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles"
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   drawer: {
     width: 240,
     [theme.breakpoints.up("lg")]: {
@@ -21,4 +21,4 @@ export default makeStyles(theme => ({
   nav: {
     marginBottom: theme.spacing(2)
   }
-}));
+}))

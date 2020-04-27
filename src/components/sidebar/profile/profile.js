@@ -1,19 +1,19 @@
-import React, { useContext} from "react";
+import React, { useContext } from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core"
 
-import { UserContext } from "../../../states";
+import { UserContext } from "../../../states"
 
 const Profile = ({ className, ...rest }) => {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext)
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -21,14 +21,12 @@ const Profile = ({ className, ...rest }) => {
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        to="/account"
-      >
+        to="/account">
         {!!user.firstName && user.firstName[0]}
       </Avatar>
 
       <Typography className={classes.name} variant="h5">
         {!!user.firstName && user.firstName}{" "}
-
         {!!user.secondName && user.secondName}
       </Typography>
 
@@ -38,7 +36,7 @@ const Profile = ({ className, ...rest }) => {
         {!!user.matriculation && user.matriculation}
       </Typography>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

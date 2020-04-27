@@ -4,7 +4,7 @@ const listUsersCounter = `
 			id
 		}
 	}
-`;
+`
 
 const listCoursesCounter = `
 	query ListCourses($private: Boolean!) {
@@ -12,7 +12,7 @@ const listCoursesCounter = `
 			id
 		}
 	}
-`;
+`
 
 const listClassesCounter = `
 	query ListClasses($params: ClassSearch!) {
@@ -20,7 +20,7 @@ const listClassesCounter = `
 			id
 		}
 	}
-`;
+`
 
 const listCoursesUsers = `
 	query ListCourseUsers($userId: Int) {
@@ -29,7 +29,7 @@ const listCoursesUsers = `
 			courseId
 		}
 	}
-`;
+`
 
 const searchCourse = `
 	query SearchCourse($params: CourseSearch!) {
@@ -41,7 +41,7 @@ const searchCourse = `
 			private
 		}
 	}
-`;
+`
 
 const listClassUsers = `
 	query ListClassUsers($userId: Int) {
@@ -51,7 +51,7 @@ const listClassUsers = `
 			userId
 		}
 	}
-`;
+`
 
 const classSearch = `
 	query ListClasses($params: ClassSearch!) {
@@ -63,7 +63,7 @@ const classSearch = `
 			shift
 		}
 	}
-`;
+`
 
 const searchClassInstructor = `
 	query SearchUser($id: Int!) {
@@ -72,7 +72,7 @@ const searchClassInstructor = `
 			secondName
 		}
 	}
-`;
+`
 
 const listCoursesCalendar = `
 	query ListUsers($start: String) {
@@ -81,7 +81,7 @@ const listCoursesCalendar = `
 			createdAt
 		}
 	}
-`;
+`
 
 export {
   listUsersCounter,
@@ -93,4 +93,4 @@ export {
   classSearch,
   searchClassInstructor,
   listCoursesCalendar
-};
+}

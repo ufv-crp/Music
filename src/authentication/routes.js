@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 
-import { Route } from "react-router-dom";
+import { Route } from "react-router-dom"
 
 import {
   Dashboard,
@@ -9,10 +9,10 @@ import {
   Courses,
   Classes,
   Progresses,
-  Account,
-} from "../pages";
+  Account
+} from "../pages"
 
-import General from "../layouts/general/general";
+import General from "../layouts/general/general"
 
 import {
   Dashboard as DashboardIcon,
@@ -20,22 +20,22 @@ import {
   SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
   DonutLarge as DonutLargeIcon,
-  AccountCircle as AccountCircleIcon,
-} from "@material-ui/icons";
+  AccountCircle as AccountCircleIcon
+} from "@material-ui/icons"
 
 import {
   ListItem,
   ListItemIcon,
   ListItemText,
   Link,
-  makeStyles,
-} from "@material-ui/core";
+  makeStyles
+} from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    color: theme.palette.icon,
-  },
-}));
+    color: theme.palette.icon
+  }
+}))
 
 const routes = [
   {
@@ -44,7 +44,7 @@ const routes = [
     component: <Login />,
     scopes: null,
     sidebar: false,
-    icon: null,
+    icon: null
   },
   {
     title: "Início",
@@ -53,7 +53,7 @@ const routes = [
     scopes: ["dashboard"],
     sidebar: true,
     icon: <DashboardIcon />,
-    layout: General,
+    layout: General
   },
   {
     title: "Perfil",
@@ -62,7 +62,7 @@ const routes = [
     scopes: ["searchUser", "updateUser"],
     sidebar: true,
     icon: <AccountCircleIcon />,
-    layout: General,
+    layout: General
   },
   {
     title: "Usuários",
@@ -81,11 +81,11 @@ const routes = [
       "listAddresses",
       "createAddress",
       "removeAddress",
-      "updateAddress",
+      "updateAddress"
     ],
     sidebar: true,
     icon: <PeopleIcon />,
-    layout: General,
+    layout: General
   },
   {
     title: "Cursos",
@@ -99,11 +99,11 @@ const routes = [
       "updateCourse",
       "listCourseUsers",
       "createCourseUser",
-      "removeCourseUser",
+      "removeCourseUser"
     ],
     sidebar: true,
     icon: <SortByAlphaIcon />,
-    layout: General,
+    layout: General
   },
   {
     title: "Turmas",
@@ -116,11 +116,11 @@ const routes = [
       "listClasses",
       "listClassUsers",
       "createClassUser",
-      "removeClassUser",
+      "removeClassUser"
     ],
     sidebar: true,
     icon: <SchoolIcon />,
-    layout: General,
+    layout: General
   },
   {
     title: "Progresso",
@@ -130,22 +130,22 @@ const routes = [
       "listProgresses",
       "createProgress",
       "removeProgress",
-      "updateProgress",
+      "updateProgress"
     ],
     sidebar: true,
     icon: <DonutLargeIcon />,
-    layout: General,
-  },
-];
+    layout: General
+  }
+]
 
 const filterRoutes = ({ routes, scopes }) => {
   return routes.filter((route) => {
     if (route.scopes)
-      for (let scope of route.scopes) if (!scopes.includes(scope)) return null;
+      for (let scope of route.scopes) if (!scopes.includes(scope)) return null
 
-    return route;
-  });
-};
+    return route
+  })
+}
 
 const createRoutesComponents = ({ routes }) => {
   return routes.map((route, index) => {
@@ -154,17 +154,17 @@ const createRoutesComponents = ({ routes }) => {
         path={route.path}
         render={() => {
           if (route.layout)
-            return <route.layout>{route.component}</route.layout>;
-          else return route.component;
+            return <route.layout>{route.component}</route.layout>
+          else return route.component
         }}
         key={index}
       />
-    );
-  });
-};
+    )
+  })
+}
 
 const CreateRoutesSidebarLinks = ({ routes }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return routes.map((route, index) => {
     if (route.sidebar)
@@ -173,8 +173,7 @@ const CreateRoutesSidebarLinks = ({ routes }) => {
           href={route.path}
           color="textPrimary"
           underline="none"
-          key={index}
-        >
+          key={index}>
           <ListItem button>
             {route.icon && (
               <ListItemIcon className={classes.icon}>{route.icon}</ListItemIcon>
@@ -183,15 +182,15 @@ const CreateRoutesSidebarLinks = ({ routes }) => {
             <ListItemText primary={route.title} />
           </ListItem>
         </Link>
-      );
+      )
 
-    return null;
-  });
-};
+    return null
+  })
+}
 
 export {
   routes,
   filterRoutes,
   createRoutesComponents,
-  CreateRoutesSidebarLinks,
-};
+  CreateRoutesSidebarLinks
+}

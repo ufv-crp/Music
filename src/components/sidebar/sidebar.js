@@ -1,17 +1,17 @@
-import React from "react";
+import React from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Divider, Drawer } from "@material-ui/core";
+import { Divider, Drawer } from "@material-ui/core"
 
-import { Profile, SidebarRoutes, Logout } from "./index";
+import { Profile, SidebarRoutes, Logout } from "./index"
 
-import { Footer } from '../index'
+import { Footer } from "../index"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 const Sidebar = ({ open, variant, onClose, className, ...rest }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Drawer
@@ -19,8 +19,7 @@ const Sidebar = ({ open, variant, onClose, className, ...rest }) => {
       classes={{ paper: classes.drawer }}
       onClose={onClose}
       open={open}
-      variant={variant}
-    >
+      variant={variant}>
       <div {...rest} className={clsx(classes.root, className)}>
         <Profile />
 
@@ -34,10 +33,10 @@ const Sidebar = ({ open, variant, onClose, className, ...rest }) => {
 
         <Divider className={classes.divider} />
 
-        <Footer/>
+        <Footer />
       </div>
     </Drawer>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

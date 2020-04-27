@@ -10,7 +10,7 @@ const listClasses = `
 			time
 		}
 	}
-`;
+`
 
 const listAllCourses = `
     query ListCourses($private: Boolean!) {
@@ -23,7 +23,7 @@ const listAllCourses = `
 			creator
         }
     }
-`;
+`
 
 const searchClassInstructor = `
 	query SearchUser($id: Int) {
@@ -32,7 +32,7 @@ const searchClassInstructor = `
 			secondName
 		}
 	}
-`;
+`
 
 const listAllClassUsers = `
 	query ListClassUsers($classId: Int!) {
@@ -41,7 +41,7 @@ const listAllClassUsers = `
 			userId
 		}
 	}
-`;
+`
 
 const searchClassUser = `
 	query SearchUser($id: Int) {
@@ -52,7 +52,7 @@ const searchClassUser = `
 			matriculation
 		}
 	}
-`;
+`
 
 const listProgresses = `
 	query ListProgresses($params: ProgressSearch!) {
@@ -62,7 +62,7 @@ const listProgresses = `
 			grade
 		}
 	}
-`;
+`
 
 const createProgress = `
 	mutation CreateProgress($params: ProgressInput!) {
@@ -73,7 +73,7 @@ const createProgress = `
 			classUserId
 		}
 	}
-`;
+`
 
 const updateProgress = `
 	mutation UpdateProgress($params: ProgressUpdateInput!) {
@@ -84,13 +84,13 @@ const updateProgress = `
 			classUserId
 		}
 	}
-`;
+`
 
 const removeProgress = `
 	mutation RemoveProgress($id: Int!) {
 		removeProgress(id: $id)
 	}
-`;
+`
 
 export {
   listClasses,
@@ -102,4 +102,4 @@ export {
   createProgress,
   updateProgress,
   removeProgress
-};
+}

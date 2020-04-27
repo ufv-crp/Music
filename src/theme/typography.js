@@ -1,4 +1,4 @@
-import palette from "./palette";
+import palette from "./palette"
 
 const typography = {
   h1: {
@@ -98,6 +98,6 @@ const typography = {
     lineHeight: "13px",
     textTransform: "uppercase"
   }
-};
+}
 
-export default typography;
+export default typography

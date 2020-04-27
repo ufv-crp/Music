@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { Card, CardContent, Avatar } from "@material-ui/core";
+import { Card, CardContent, Avatar } from "@material-ui/core"
 
-import { UserContext } from "../../../states";
+import { UserContext } from "../../../states"
 
 const AccountDetails = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext)
 
   return (
     <Card className={classes.cardUser}>
@@ -31,7 +31,7 @@ const AccountDetails = () => {
         <p className={classes.cardPersonDescription}>{user.matriculation}</p>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default AccountDetails;
+export default AccountDetails

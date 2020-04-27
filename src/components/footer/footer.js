@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { Typography, Link } from "@material-ui/core";
+import { Typography, Link } from "@material-ui/core"
 
-const Footer = props => {
-  const { className, ...rest } = props;
+const Footer = (props) => {
+  const { className, ...rest } = props
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -17,7 +17,7 @@ const Footer = props => {
         &copy; Copyright • {new Date().getFullYear()}
       </Typography>
       <Typography variant="body2" className={classes.typo}>
-        {"</>"} by {" "}
+        {"</>"} by{" "}
         <Link component="a" href="https://github.com/iguit0" target="_blank">
           @iguit0
         </Link>{" "}
@@ -27,7 +27,7 @@ const Footer = props => {
         </Link>{" "}
       </Typography>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

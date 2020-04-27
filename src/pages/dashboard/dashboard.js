@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react"
 
 import {
   Grid,
@@ -9,18 +9,18 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon
-} from "@material-ui/core";
+} from "@material-ui/core"
 
 import {
   People as PeopleIcon,
   SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
   LabelImportant as LabelImportantIcon
-} from "@material-ui/icons";
+} from "@material-ui/icons"
 
-import { createAuthenticatedClient } from "../../authentication";
+import { createAuthenticatedClient } from "../../authentication"
 
-import { AuthenticationContext } from "../../states";
+import { AuthenticationContext } from "../../states"
 
 import {
   listUsersCounter,
@@ -32,15 +32,15 @@ import {
   classSearch,
   searchClassInstructor,
   listCoursesCalendar
-} from "./api";
+} from "./api"
 
-import moment from "moment";
+import moment from "moment"
 
-import CalendarHeatmap from "react-calendar-heatmap";
+import CalendarHeatmap from "react-calendar-heatmap"
 
-import "./dashboard.css";
+import "./dashboard.css"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   containerCounters: {
     padding: `${theme.spacing(2)} 0`,
     marginBottom: theme.spacing(2)
@@ -121,53 +121,53 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.divider}`,
     height: "340px"
   }
-}));
+}))
 
 const Counters = ({ client }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const [usersState, setUsersState] = useState(0);
+  const [usersState, setUsersState] = useState(0)
 
-  const [coursesState, setCoursesState] = useState(0);
+  const [coursesState, setCoursesState] = useState(0)
 
-  const [classesState, setClassesState] = useState(0);
+  const [classesState, setClassesState] = useState(0)
 
   useEffect(() => {
     client
       .request(listUsersCounter, { all: true })
-      .then(response => {
-        setUsersState(response.listUsers.length);
+      .then((response) => {
+        setUsersState(response.listUsers.length)
       })
-      .catch(error => {
-        setUsersState(0);
+      .catch((error) => {
+        setUsersState(0)
 
-        console.log(error);
-      });
+        console.log(error)
+      })
 
     client
       .request(listCoursesCounter, { private: true })
-      .then(response => {
-        setCoursesState(response.listCourses.length);
+      .then((response) => {
+        setCoursesState(response.listCourses.length)
       })
-      .catch(error => {
-        setCoursesState(0);
+      .catch((error) => {
+        setCoursesState(0)
 
-        console.log(error);
-      });
+        console.log(error)
+      })
 
     client
       .request(listClassesCounter, { params: {} })
-      .then(response => {
-        setClassesState(response.listClasses.length);
+      .then((response) => {
+        setClassesState(response.listClasses.length)
       })
-      .catch(error => {
-        setClassesState(0);
+      .catch((error) => {
+        setClassesState(0)
 
-        console.log(error);
-	  });
-	
+        console.log(error)
+      })
+
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   return (
     <Grid
@@ -175,8 +175,7 @@ const Counters = ({ client }) => {
       direction="row"
       justify="space-between"
       alignItems="stretch"
-      className={classes.containerCounters}
-    >
+      className={classes.containerCounters}>
       <Grid item xs={12} sm={3} md={3} lg={3} className={classes.itemCounter}>
         <span className={classes.itemCounterIconSpan}>
           <PeopleIcon className={classes.itemCounterIcon} />
@@ -191,8 +190,7 @@ const Counters = ({ client }) => {
 
       <Grid item xs={12} sm={3} md={3} lg={3} className={classes.itemCounter}>
         <span
-          className={`${classes.itemCounterIconSpan} ${classes.itemCounterIconSpanMiddle}`}
-        >
+          className={`${classes.itemCounterIconSpan} ${classes.itemCounterIconSpanMiddle}`}>
           <SortByAlphaIcon className={classes.itemCounterIcon} />
         </span>
 
@@ -215,43 +213,43 @@ const Counters = ({ client }) => {
         <Typography>Classes</Typography>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
 const MyCourses = ({ client }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext)
 
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([])
 
   useEffect(() => {
     client
       .request(listCoursesUsers, { userId: authentication.userId })
-      .then(response => {
-        const coursesPromises = response.listCourseUsers.map(userCourse => {
+      .then((response) => {
+        const coursesPromises = response.listCourseUsers.map((userCourse) => {
           return client
             .request(searchCourse, {
               params: { id: userCourse.courseId }
             })
-            .then(response => {
-              return response.searchCourses[0];
+            .then((response) => {
+              return response.searchCourses[0]
             })
-            .catch(error => {
-              console.log(error);
-            });
-        });
+            .catch((error) => {
+              console.log(error)
+            })
+        })
 
-        Promise.all(coursesPromises).then(response => {
-          setCourses(response);
-        });
+        Promise.all(coursesPromises).then((response) => {
+          setCourses(response)
+        })
       })
-      .catch(error => {
-        console.log(error);
-	  });
+      .catch((error) => {
+        console.log(error)
+      })
 
-	  // eslint-disable-next-line
-  }, []);
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Box className={classes.containerList}>
@@ -259,7 +257,7 @@ const MyCourses = ({ client }) => {
 
       {courses.length ? (
         <List>
-          {courses.map(course => (
+          {courses.map((course) => (
             <ListItem key={course.id}>
               <ListItemIcon className={classes.icon}>
                 <LabelImportantIcon />
@@ -283,55 +281,55 @@ const MyCourses = ({ client }) => {
         </List>
       )}
     </Box>
-  );
-};
+  )
+}
 
 const MyClasses = ({ client }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext)
 
-  const [classesState, setClassesState] = useState([]);
+  const [classesState, setClassesState] = useState([])
 
   useEffect(() => {
     client
       .request(listClassUsers, { userId: authentication.userId })
-      .then(response => {
-        const classesPromisses = response.listClassUsers.map(classUser => {
+      .then((response) => {
+        const classesPromisses = response.listClassUsers.map((classUser) => {
           return client
             .request(classSearch, {
               params: { id: classUser.classId }
             })
-            .then(response => {
-              return response.listClasses[0];
+            .then((response) => {
+              return response.listClasses[0]
             })
-            .catch(error => {
-              console.log(error);
-            });
-        });
+            .catch((error) => {
+              console.log(error)
+            })
+        })
 
-        Promise.all(classesPromisses).then(response => {
-          return response.map(classUser => {
+        Promise.all(classesPromisses).then((response) => {
+          return response.map((classUser) => {
             return client
               .request(searchClassInstructor, { id: classUser.instructor })
-              .then(response => {
-                setClassesState(oldArray => [
+              .then((response) => {
+                setClassesState((oldArray) => [
                   ...oldArray,
                   Object.assign({}, classUser, response.searchUser)
-                ]);
+                ])
               })
-              .catch(error => {
-                console.log(error);
-              });
-          });
-        });
+              .catch((error) => {
+                console.log(error)
+              })
+          })
+        })
       })
-      .catch(error => {
-        console.log(error);
-	  });
-	  
-	  // eslint-disable-next-line
-  }, []);
+      .catch((error) => {
+        console.log(error)
+      })
+
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Box className={classes.containerList}>
@@ -339,7 +337,7 @@ const MyClasses = ({ client }) => {
 
       {classesState.length ? (
         <List>
-          {classesState.map(classUser => (
+          {classesState.map((classUser) => (
             <ListItem key={classUser.id}>
               <ListItemIcon className={classes.icon}>
                 <LabelImportantIcon />
@@ -365,43 +363,46 @@ const MyClasses = ({ client }) => {
         </List>
       )}
     </Box>
-  );
-};
+  )
+}
 
 const UsersRegistered = ({ client }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const [datesState, setDatesState] = useState([]);
+  const [datesState, setDatesState] = useState([])
 
-  const startDate = moment()
-    .subtract(365, "days")
-    .calendar();
+  const startDate = moment().subtract(365, "days").calendar()
 
   useEffect(() => {
-    client.request(listCoursesCalendar, { start: startDate }).then(response => {
-      let datesFormated = {};
+    client
+      .request(listCoursesCalendar, { start: startDate })
+      .then((response) => {
+        let datesFormated = {}
 
-      for (let date of response.listUsers) {
-        const dateExtracted = moment(date.createdAt).format("L");
+        for (let date of response.listUsers) {
+          const dateExtracted = moment(date.createdAt).format("L")
 
-        if (dateExtracted in datesFormated) {
-          if (datesFormated[dateExtracted] >= 4) {
-            continue;
+          if (dateExtracted in datesFormated) {
+            if (datesFormated[dateExtracted] >= 4) {
+              continue
+            } else {
+              datesFormated[dateExtracted] += 1
+            }
           } else {
-            datesFormated[dateExtracted] += 1;
+            datesFormated[dateExtracted] = 0
           }
-        } else {
-          datesFormated[dateExtracted] = 0;
         }
-      }
 
-      setDatesState(
-        Object.entries(datesFormated).map(([date, count]) => ({ date, count }))
-      );
-	});
-	
-	// eslint-disable-next-line
-  }, []);
+        setDatesState(
+          Object.entries(datesFormated).map(([date, count]) => ({
+            date,
+            count
+          }))
+        )
+      })
+
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Box className={classes.heatmapBox}>
@@ -412,19 +413,19 @@ const UsersRegistered = ({ client }) => {
       <CalendarHeatmap
         startDate={new Date(startDate)}
         values={datesState}
-        classForValue={value => {
+        classForValue={(value) => {
           if (!value) {
-            return "color-empty";
+            return "color-empty"
           }
-          return `color-scale-${value.count}`;
+          return `color-scale-${value.count}`
         }}
       />
     </Box>
-  );
-};
+  )
+}
 
 const Dashboard = () => {
-  const client = createAuthenticatedClient();
+  const client = createAuthenticatedClient()
 
   return (
     <Grid container spacing={1}>
@@ -444,7 +445,7 @@ const Dashboard = () => {
         <UsersRegistered client={client} />
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

@@ -10,7 +10,7 @@ const listAllCourses = `
             private
         }
     }
-`;
+`
 
 const searchCourseCreator = `
 	query SearchUser($id: Int!) {
@@ -19,7 +19,7 @@ const searchCourseCreator = `
 			secondName
 		}
 	}
-`;
+`
 
 const updateCourseById = `
     mutation UpdateCourse($params: CourseUpdate!) {
@@ -27,13 +27,13 @@ const updateCourseById = `
             id
         }
   }
-`;
+`
 
 const removeCourseById = `
     mutation RemoveCourse($id: Int!) {
         removeCourse(id: $id)
     }
-`;
+`
 
 const createCourse = `
     mutation CreateCourse($params: CourseInput!) {
@@ -41,13 +41,13 @@ const createCourse = `
             id
         }
   	}
-`;
+`
 
 const userCourse = `
 	mutation CreateCourseUser($courseId: Int!, $userId: Int!) {
 		createCourseUser(courseId: $courseId, userId: $userId)
  	}
-`;
+`
 
 export {
   listAllCourses,
@@ -56,4 +56,4 @@ export {
   createCourse,
   searchCourseCreator,
   userCourse
-};
+}

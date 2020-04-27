@@ -1,5 +1,5 @@
-import UserAddress from "./address/address";
+import UserAddress from "./address/address"
 
-import UserContact from './contact/contact'
+import UserContact from "./contact/contact"
 
-export { UserAddress, UserContact };
+export { UserAddress, UserContact }

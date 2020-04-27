@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 
 export default makeStyles((theme) => ({
   cardUser: {
@@ -12,18 +12,18 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     minWidth: 0,
-    wordWrap: "break-word",
+    wordWrap: "break-word"
   },
   cardUserBackground: {
     overflow: "hidden",
     height: "134px",
     position: "relative",
-    background: `linear-gradient(60deg, ${theme.palette.error.light}, ${theme.palette.warning.main})`,
+    background: `linear-gradient(60deg, ${theme.palette.error.light}, ${theme.palette.warning.main})`
   },
   cardPerson: {
     textAlign: "center",
     textTransform: "none",
-    marginTop: "-77px",
+    marginTop: "-77px"
   },
   cardPersonAvatar: {
     marginBottom: theme.spacing(3),
@@ -33,22 +33,22 @@ export default makeStyles((theme) => ({
     margin: "auto",
     textDecoration: "none",
     color: theme.palette.white,
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
   },
   cardPersonTitle: {
     fontSize: "1.57em",
     fontWeight: 700,
     lineHeight: "1.4em",
-    marginBottom: "15px",
+    marginBottom: "15px"
   },
   cardPersonDescription: {
     marginTop: theme.spacing(4),
     textAlign: "center",
     fontSize: "1.14em",
     color: "#9a9a9a",
-    fontWeight: 300,
+    fontWeight: 300
   },
   submit: {
-    marginTop: "10px",
-  },
-}));
+    marginTop: "10px"
+  }
+}))

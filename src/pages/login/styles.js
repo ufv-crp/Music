@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
@@ -30,4 +30,4 @@ export default makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
-}));
+}))

@@ -1,3 +1,3 @@
-import { createClient } from "./graphql";
+import { createClient } from "./graphql"
 
-export { createClient };
+export { createClient }

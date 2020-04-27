@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 import {
   Avatar,
@@ -17,20 +17,20 @@ import {
   Divider,
   Grid,
   LinearProgress,
-  Typography,
-} from "@material-ui/core";
+  Typography
+} from "@material-ui/core"
 
-import { AccountCircle as AccountCircleIcon } from "@material-ui/icons";
+import { AccountCircle as AccountCircleIcon } from "@material-ui/icons"
 
-import { UserContext } from "../../../states";
+import { UserContext } from "../../../states"
 
-import { Field, Formik } from "formik";
+import { Field, Formik } from "formik"
 
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-material-ui"
 
-import { updateUserById } from "../../../pages/account/api";
+import { updateUserById } from "../../../pages/account/api"
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from "notistack"
 
 const ProfileForm = ({
   classes,
@@ -39,14 +39,14 @@ const ProfileForm = ({
   setUser,
   open,
   setOpen,
-  enqueueSnackbar,
+  enqueueSnackbar
 }) => {
   return (
     <Formik
       enableReinitialize
       initialValues={{ ...user, confirmPassword: "" }}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
-        setSubmitting(true);
+        setSubmitting(true)
 
         const updatedUser = ({
           email,
@@ -58,26 +58,26 @@ const ProfileForm = ({
           updatedAt,
           creator,
           ...rest
-        }) => rest;
+        }) => rest
 
         if (values.confirmPassword === user.password) {
           try {
             const response = await client.request(updateUserById, {
-              params: updatedUser(values),
-            });
+              params: updatedUser(values)
+            })
 
-            setUser({ ...response.updateUser });
+            setUser({ ...response.updateUser })
 
             enqueueSnackbar("Account updated", {
               variant: "success",
               autoHideDuration: 5000,
               anchorOrigin: {
                 vertical: "bottom",
-                horizontal: "right",
-              },
-            });
+                horizontal: "right"
+              }
+            })
           } catch (error) {
-            console.log(error);
+            console.log(error)
           }
         } else {
           enqueueSnackbar("Password is wrong", {
@@ -85,18 +85,17 @@ const ProfileForm = ({
             autoHideDuration: 5000,
             anchorOrigin: {
               vertical: "bottom",
-              horizontal: "right",
-            },
-          });
+              horizontal: "right"
+            }
+          })
         }
 
-        resetForm();
+        resetForm()
 
-        setSubmitting(false);
+        setSubmitting(false)
 
-        setOpen(false);
-      }}
-    >
+        setOpen(false)
+      }}>
       {({ dirty, values, isSubmitting, submitForm }) => (
         <CardContent>
           <pre>{dirty}</pre>
@@ -256,8 +255,7 @@ const ProfileForm = ({
               variant="contained"
               color="primary"
               disabled={isSubmitting}
-              onClick={() => setOpen(true)}
-            >
+              onClick={() => setOpen(true)}>
               {isSubmitting ? "Enviando..." : "Salvar Alterações"}
             </Button>
           </CardActions>
@@ -292,32 +290,32 @@ const ProfileForm = ({
         </CardContent>
       )}
     </Formik>
-  );
-};
+  )
+}
 
 const AccountProfile = ({ client }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleChange = (event) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
+      [event.target.name]: event.target.value
+    })
+  }
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext)
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   const [values, setValues] = useState({
     email: user.email,
     firstName: user.firstName,
     secondName: user.secondName,
     matriculation: user.matriculation,
-    cpf: user.cpf,
-  });
+    cpf: user.cpf
+  })
 
   return (
     <Card className={classes.cardProfile}>
@@ -342,10 +340,10 @@ const AccountProfile = ({ client }) => {
         setUser,
         open,
         setOpen,
-        enqueueSnackbar,
+        enqueueSnackbar
       })}
     </Card>
-  );
-};
+  )
+}
 
-export default AccountProfile;
+export default AccountProfile

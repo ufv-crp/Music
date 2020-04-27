@@ -10,7 +10,7 @@ const createClass = `
 			time
 		}
 	}
-`;
+`
 
 const updateClass = `
 	mutation UpdateClass($params: ClassUpdateInput!) {
@@ -24,13 +24,13 @@ const updateClass = `
 			time
 		}
 	}
-`;
+`
 
 const removeClass = `
 	mutation RemoveClass($id: Int!) {
 		removeClass(id: $id)
 	}
-`;
+`
 
 const listClasses = `
 	query ListClasses($params: ClassSearch!) {
@@ -44,7 +44,7 @@ const listClasses = `
 			time
 		}
 	}
-`;
+`
 
 const listAllCourses = `
     query ListCourses($private: Boolean!) {
@@ -57,7 +57,7 @@ const listAllCourses = `
 			creator
         }
     }
-`;
+`
 
 const searchClassInstructor = `
 	query SearchUser($id: Int!) {
@@ -66,13 +66,13 @@ const searchClassInstructor = `
 			secondName
 		}
 	}
-`;
+`
 
 const createClassUser = `
 	mutation CreateClassUser($classId: Int!, $userId: Int!) {
 		createClassUser(classId: $classId, userId: $userId)
 	}
-`;
+`
 
 export {
   createClass,
@@ -82,4 +82,4 @@ export {
   listAllCourses,
   searchClassInstructor,
   createClassUser
-};
+}

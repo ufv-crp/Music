@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -103,6 +103,6 @@ const useStyles = makeStyles(theme => ({
   iconColor: {
     color: theme.palette.icon
   }
-}));
+}))
 
-export default useStyles;
+export default useStyles

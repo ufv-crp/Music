@@ -6,11 +6,16 @@ import {
   redirectWrapperNotFound,
   resetPassword,
   checkScope
-} from "./authenticate";
+} from "./authenticate"
 
-import { createAuthenticatedClient } from "./client";
+import { createAuthenticatedClient } from "./client"
 
-import { routes, filterRoutes, createRoutesComponents, CreateRoutesSidebarLinks } from "./routes";
+import {
+  routes,
+  filterRoutes,
+  createRoutesComponents,
+  CreateRoutesSidebarLinks
+} from "./routes"
 
 export {
   authenticate,
@@ -25,4 +30,4 @@ export {
   createRoutesComponents,
   CreateRoutesSidebarLinks,
   checkScope
-};
+}

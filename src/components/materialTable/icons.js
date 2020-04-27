@@ -1,32 +1,32 @@
-import Search from "@material-ui/icons/Search";
+import Search from "@material-ui/icons/Search"
 
-import ViewColumn from "@material-ui/icons/ViewColumn";
+import ViewColumn from "@material-ui/icons/ViewColumn"
 
-import SaveAlt from "@material-ui/icons/SaveAlt";
+import SaveAlt from "@material-ui/icons/SaveAlt"
 
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronLeft from "@material-ui/icons/ChevronLeft"
 
-import ChevronRight from "@material-ui/icons/ChevronRight";
+import ChevronRight from "@material-ui/icons/ChevronRight"
 
-import FirstPage from "@material-ui/icons/FirstPage";
+import FirstPage from "@material-ui/icons/FirstPage"
 
-import LastPage from "@material-ui/icons/LastPage";
+import LastPage from "@material-ui/icons/LastPage"
 
-import Add from "@material-ui/icons/Add";
+import Add from "@material-ui/icons/Add"
 
-import Check from "@material-ui/icons/Check";
+import Check from "@material-ui/icons/Check"
 
-import FilterList from "@material-ui/icons/FilterList";
+import FilterList from "@material-ui/icons/FilterList"
 
-import Remove from "@material-ui/icons/Remove";
+import Remove from "@material-ui/icons/Remove"
 
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import ArrowDownward from "@material-ui/icons/ArrowDownward"
 
-import Clear from "@material-ui/icons/Clear";
+import Clear from "@material-ui/icons/Clear"
 
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import DeleteOutline from "@material-ui/icons/DeleteOutline"
 
-import Edit from "@material-ui/icons/Edit";
+import Edit from "@material-ui/icons/Edit"
 
 export default {
   Check: Check,
@@ -45,4 +45,4 @@ export default {
   Clear: Clear,
   Edit: Edit,
   ViewColumn: ViewColumn
-};
+}

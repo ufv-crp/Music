@@ -1,17 +1,17 @@
-import React from "react";
+import React from "react"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core"
 
-import { createAuthenticatedClient } from "../../authentication";
+import { createAuthenticatedClient } from "../../authentication"
 
-import { AccountDetails, AccountProfile } from "../../components";
+import { AccountDetails, AccountProfile } from "../../components"
 
 const Account = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const client = createAuthenticatedClient();
+  const client = createAuthenticatedClient()
 
   return (
     <div className={classes.root}>
@@ -24,7 +24,7 @@ const Account = () => {
         </Grid>
       </Grid>
     </div>
-  );
-};
+  )
+}
 
-export default Account;
+export default Account

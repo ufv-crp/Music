@@ -1,35 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/styles"
 
-import theme from "./theme";
+import theme from "./theme"
 
-import "./assets/index.scss";
+import "./assets/index.scss"
 
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom"
 
-import { AuthenticationContext } from "./states";
+import { AuthenticationContext } from "./states"
 
-import { SnackbarProvider } from "notistack";
+import { SnackbarProvider } from "notistack"
 
 import {
   authenticationMiddleware,
   checkTokenExpiration,
   redirectWrapperNotLogged,
-  redirectWrapperNotFound,
-} from "./authentication";
+  redirectWrapperNotFound
+} from "./authentication"
 
 const Application = () => {
   const { authentication, setAuthentication } = useContext(
     AuthenticationContext
-  );
+  )
 
   const tokenExpiration = checkTokenExpiration({
-    expireAt: authentication.expireAt,
-  });
+    expireAt: authentication.expireAt
+  })
 
   if (tokenExpiration.expired || tokenExpiration.invalid)
-    setAuthentication(null);
+    setAuthentication(null)
 
   return (
     <ThemeProvider theme={theme}>
@@ -43,19 +43,19 @@ const Application = () => {
               pathname: "/login",
               state: {
                 expired: tokenExpiration.expired,
-                invalid: tokenExpiration.invalid,
-              },
+                invalid: tokenExpiration.invalid
+              }
             })}
             {redirectWrapperNotFound({
               pathname: "/dashboard",
-              state: {},
+              state: {}
             })}
             />
           </Switch>
         </Router>
       </SnackbarProvider>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Application;
+export default Application

@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 
-import MaterialTable from "material-table";
+import MaterialTable from "material-table"
 
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core"
 
-import { createAuthenticatedClient } from "../../authentication";
+import { createAuthenticatedClient } from "../../authentication"
 
-import { AuthenticationContext } from "../../states";
+import { AuthenticationContext } from "../../states"
 
 import {
   listAllCourses,
@@ -18,13 +18,13 @@ import {
   createProgress,
   updateProgress,
   removeProgress
-} from "./api";
+} from "./api"
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from "notistack"
 
-import icons from "../../components/materialTable/icons";
+import icons from "../../components/materialTable/icons"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   classesTable: {
     padding: theme.spacing(2),
     "& > *": {
@@ -34,14 +34,14 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.background.default,
     border: `6px solid ${theme.palette.white}`
   }
-}));
+}))
 
 const ListUsers = ({ client, rowDataClass }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext)
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Box className={classes.classesTable}>
@@ -49,70 +49,70 @@ const ListUsers = ({ client, rowDataClass }) => {
         title="Users"
         icons={icons}
         data={async () => {
-          let classUsers;
+          let classUsers
 
           try {
             classUsers = await client.request(listAllClassUsers, {
               classId: rowDataClass.id
-            });
+            })
           } catch (error) {
-            console.log(error);
+            console.log(error)
 
-            classUsers = { listClassUsers: [] };
+            classUsers = { listClassUsers: [] }
           }
 
           const users = classUsers.listClassUsers
-            .map(user => {
+            .map((user) => {
               return client
                 .request(searchClassUser, { id: user.userId })
-                .then(response => ({
+                .then((response) => ({
                   ...response.searchUser,
                   classUserId: user.id
                 }))
-                .catch(error => {
-                  console.log(error);
+                .catch((error) => {
+                  console.log(error)
 
-                  return null;
-                });
+                  return null
+                })
             })
-            .filter(user => (user ? true : false));
+            .filter((user) => (user ? true : false))
 
-          let usersData;
+          let usersData
 
           try {
-            usersData = await Promise.all(users);
+            usersData = await Promise.all(users)
 
             usersData = usersData.map((userData, index) => {
               return {
                 ...userData,
                 name: `${userData.firstName || ""} ${userData.secondName || ""}`
-              };
-            });
+              }
+            })
           } catch (error) {
-            console.log(error);
+            console.log(error)
 
-            usersData = [];
+            usersData = []
           }
 
-          const usersProgresses = usersData.map(user => {
+          const usersProgresses = usersData.map((user) => {
             return client
               .request(listProgresses, {
                 params: { classUserId: user.classUserId }
               })
-              .then(response => {
-                return Object.assign(user, ...response.listProgresses);
+              .then((response) => {
+                return Object.assign(user, ...response.listProgresses)
               })
-              .catch(error => user);
-          });
+              .catch((error) => user)
+          })
 
-          let usersProgressesData;
+          let usersProgressesData
 
           try {
-            usersProgressesData = await Promise.all(usersProgresses);
+            usersProgressesData = await Promise.all(usersProgresses)
           } catch (error) {
-            console.log(error);
+            console.log(error)
 
-            usersProgressesData = [];
+            usersProgressesData = []
           }
 
           return new Promise((resolve, reject) => {
@@ -120,8 +120,8 @@ const ListUsers = ({ client, rowDataClass }) => {
               data: usersProgressesData,
               page: 0,
               totalCount: usersProgressesData.length
-            });
-          });
+            })
+          })
         }}
         columns={[
           {
@@ -158,11 +158,11 @@ const ListUsers = ({ client, rowDataClass }) => {
           detailPanelColumnAlignment: "left"
         }}
         editable={{
-          isEditable: rowData => {
-            return authentication.userId === rowDataClass.instructorId;
+          isEditable: (rowData) => {
+            return authentication.userId === rowDataClass.instructorId
           },
-          isDeletable: rowData => {
-            return authentication.userId === rowDataClass.instructorId;
+          isDeletable: (rowData) => {
+            return authentication.userId === rowDataClass.instructorId
           },
           onRowUpdate: async (newData, oldData) => {
             if (!oldData.attendance && !oldData.grade) {
@@ -174,7 +174,7 @@ const ListUsers = ({ client, rowDataClass }) => {
                     grade: parseFloat(newData.grade),
                     classUserId: newData.classUserId
                   }
-                });
+                })
 
                 enqueueSnackbar("Progress created", {
                   variant: "success",
@@ -183,9 +183,9 @@ const ListUsers = ({ client, rowDataClass }) => {
                     vertical: "bottom",
                     horizontal: "right"
                   }
-                });
+                })
               } catch (error) {
-                console.log(error);
+                console.log(error)
 
                 enqueueSnackbar(
                   "Error on progress create, check if all fields are filled",
@@ -197,7 +197,7 @@ const ListUsers = ({ client, rowDataClass }) => {
                       horizontal: "right"
                     }
                   }
-                );
+                )
               }
             } else {
               try {
@@ -209,7 +209,7 @@ const ListUsers = ({ client, rowDataClass }) => {
                     grade: parseFloat(newData.grade),
                     classUserId: newData.classUserId
                   }
-                });
+                })
 
                 enqueueSnackbar("Progress updated", {
                   variant: "success",
@@ -218,9 +218,9 @@ const ListUsers = ({ client, rowDataClass }) => {
                     vertical: "bottom",
                     horizontal: "right"
                   }
-                });
+                })
               } catch (error) {
-                console.log(error);
+                console.log(error)
 
                 enqueueSnackbar("Error on progress update", {
                   variant: "error",
@@ -229,20 +229,20 @@ const ListUsers = ({ client, rowDataClass }) => {
                     vertical: "bottom",
                     horizontal: "right"
                   }
-                });
+                })
               }
             }
 
             return new Promise((resolve, reject) => {
-              resolve();
-            });
+              resolve()
+            })
           },
-          onRowDelete: async oldData => {
+          onRowDelete: async (oldData) => {
             try {
               // eslint-disable-next-line
               const progressRemoved = await client.request(removeProgress, {
                 id: oldData.id
-              });
+              })
 
               enqueueSnackbar("Progress removed", {
                 variant: "success",
@@ -251,9 +251,9 @@ const ListUsers = ({ client, rowDataClass }) => {
                   vertical: "bottom",
                   horizontal: "right"
                 }
-              });
+              })
             } catch (error) {
-              console.log(error);
+              console.log(error)
 
               enqueueSnackbar("Error on progress remove", {
                 variant: "error",
@@ -262,21 +262,21 @@ const ListUsers = ({ client, rowDataClass }) => {
                   vertical: "bottom",
                   horizontal: "right"
                 }
-              });
+              })
             }
 
             return new Promise((resolve, reject) => {
-              resolve();
-            });
+              resolve()
+            })
           }
         }}
       />
     </Box>
-  );
-};
+  )
+}
 
 const ListClasses = ({ client, rowDataCourse }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Box className={classes.classesTable}>
@@ -284,34 +284,34 @@ const ListClasses = ({ client, rowDataCourse }) => {
         title="Classes"
         icons={icons}
         data={async () => {
-          let _listClassesRaw;
+          let _listClassesRaw
 
           try {
             _listClassesRaw = await client.request(listClasses, {
               params: { courseId: rowDataCourse.id }
-            });
+            })
           } catch (error) {
-            console.log(error);
+            console.log(error)
 
-            _listClassesRaw = { listClasses: [] };
+            _listClassesRaw = { listClasses: [] }
           }
 
-          let _listClasses;
+          let _listClasses
 
           try {
             let classesInstructors = _listClassesRaw.listClasses.map(
               ({ instructor, ...rest }) => {
                 return client.request(searchClassInstructor, {
                   id: instructor
-                });
+                })
               }
-            );
+            )
 
-            classesInstructors = await Promise.all(classesInstructors);
+            classesInstructors = await Promise.all(classesInstructors)
 
-            classesInstructors = classesInstructors.map(instructorData => {
-              return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`;
-            });
+            classesInstructors = classesInstructors.map((instructorData) => {
+              return `${instructorData.searchUser.firstName} ${instructorData.searchUser.secondName}`
+            })
 
             _listClasses = _listClassesRaw.listClasses.map(
               ({ instructor, ...rest }, index) => {
@@ -319,13 +319,13 @@ const ListClasses = ({ client, rowDataCourse }) => {
                   ...rest,
                   instructor: classesInstructors[index],
                   instructorId: instructor
-                };
+                }
               }
-            );
+            )
           } catch (error) {
-            console.log(error);
+            console.log(error)
 
-            _listClasses = [];
+            _listClasses = []
           }
 
           return new Promise((resolve, reject) => {
@@ -333,8 +333,8 @@ const ListClasses = ({ client, rowDataCourse }) => {
               data: _listClasses,
               page: 0,
               totalCount: _listClasses.length
-            });
-          });
+            })
+          })
         }}
         columns={[
           {
@@ -367,29 +367,29 @@ const ListClasses = ({ client, rowDataCourse }) => {
           paging: false,
           detailPanelColumnAlignment: "left"
         }}
-        detailPanel={rowData => {
-          return <ListUsers client={client} rowDataClass={rowData} />;
+        detailPanel={(rowData) => {
+          return <ListUsers client={client} rowDataClass={rowData} />
         }}
         onRowClick={(event, rowData, togglePanel) => togglePanel()}
       />
     </Box>
-  );
-};
+  )
+}
 
 const ListCourses = ({ client }) => {
   return (
     <MaterialTable
       title="Courses"
       icons={icons}
-      data={async query => {
-        let filters = query.filters.map(item => {
+      data={async (query) => {
+        let filters = query.filters.map((item) => {
           return {
             [item.column.field]: {
               type: item.column.type,
               value: item.value
             }
-          };
-        });
+          }
+        })
 
         filters = Object.assign(
           {
@@ -399,55 +399,55 @@ const ListCourses = ({ client }) => {
             }
           },
           ...filters
-        );
+        )
 
-        let courses;
+        let courses
 
         try {
           courses = await client.request(listAllCourses, {
             private: filters.private.value === "checked" ? true : false
-          });
+          })
         } catch (error) {
-          console.log(error);
+          console.log(error)
 
-          courses = { listCourses: [] };
+          courses = { listCourses: [] }
         }
 
         const coursesFiltered = courses.listCourses
-          .filter(course => {
+          .filter((course) => {
             if (filters.title)
               return course.title
                 .toLowerCase()
-                .includes(filters.title.value.toLowerCase());
+                .includes(filters.title.value.toLowerCase())
 
-            return true;
+            return true
           })
-          .filter(course => {
+          .filter((course) => {
             if (filters.start)
               return (
                 new Date(course.start).toLocaleDateString() ===
                 new Date(filters.start.value).toLocaleDateString()
-              );
+              )
 
-            return true;
+            return true
           })
-          .filter(course => {
+          .filter((course) => {
             if (filters.end)
               return (
                 new Date(course.end).toLocaleDateString() ===
                 new Date(filters.end.value).toLocaleDateString()
-              );
+              )
 
-            return true;
-          });
+            return true
+          })
 
         return new Promise((resolve, reject) => {
           resolve({
             data: coursesFiltered,
             page: 0,
             totalCount: coursesFiltered.length
-          });
-        });
+          })
+        })
       }}
       columns={[
         {
@@ -475,22 +475,22 @@ const ListCourses = ({ client }) => {
         debounceInterval: 50,
         detailPanelColumnAlignment: "left"
       }}
-      detailPanel={rowData => {
-        return <ListClasses client={client} rowDataCourse={rowData} />;
+      detailPanel={(rowData) => {
+        return <ListClasses client={client} rowDataCourse={rowData} />
       }}
       onRowClick={(event, rowData, togglePanel) => togglePanel()}
     />
-  );
-};
+  )
+}
 
 const Progresses = () => {
-  const client = createAuthenticatedClient();
+  const client = createAuthenticatedClient()
 
   return (
     <>
       <ListCourses client={client} />
     </>
-  );
-};
+  )
+}
 
-export default Progresses;
+export default Progresses

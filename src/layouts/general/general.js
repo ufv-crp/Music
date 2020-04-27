@@ -1,37 +1,37 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/styles"
 
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core"
 
-import { Header, Sidebar, RouterBreadcrumbs } from "../../components";
+import { Header, Sidebar, RouterBreadcrumbs } from "../../components"
 
-const General = props => {
-  const { children } = props;
+const General = (props) => {
+  const { children } = props
 
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"), {
     defaultMatches: true
-  });
+  })
 
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false)
 
   const handleSidebarOpen = () => {
-    setOpenSidebar(true);
-  };
+    setOpenSidebar(true)
+  }
 
   const handleSidebarClose = () => {
-    setOpenSidebar(false);
-  };
+    setOpenSidebar(false)
+  }
 
-  const shouldOpenSidebar = isDesktop ? true : openSidebar;
+  const shouldOpenSidebar = isDesktop ? true : openSidebar
 
   return (
     <div
@@ -39,8 +39,7 @@ const General = props => {
         [classes.root]: true,
         [classes.shiftContent]: isDesktop,
         [classes.containerTheme]: true
-      })}
-    >
+      })}>
       <Header openSidebar={openSidebar} onSidebarOpen={handleSidebarOpen} />
 
       <RouterBreadcrumbs />
@@ -53,7 +52,7 @@ const General = props => {
 
       <main className={classes.content}>{children}</main>
     </div>
-  );
-};
+  )
+}
 
-export default General;
+export default General

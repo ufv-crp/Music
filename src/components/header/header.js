@@ -1,10 +1,10 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef } from "react"
 
-import clsx from "clsx";
+import clsx from "clsx"
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 import {
   Dialog,
@@ -17,38 +17,38 @@ import {
   AppBar,
   Toolbar,
   Hidden,
-  IconButton,
-} from "@material-ui/core";
+  IconButton
+} from "@material-ui/core"
 
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  Input as InputIcon,
-} from "@material-ui/icons";
+  Input as InputIcon
+} from "@material-ui/icons"
 
-import { logout } from "../sidebar/logout";
+import { logout } from "../sidebar/logout"
 
 // Font Made Evolve Sans
-import logo from "../../assets/images/logo2.png";
+import logo from "../../assets/images/logo2.png"
 
 const Header = (props) => {
-  const { className, openSidebar, onSidebarOpen, ...rest } = props;
+  const { className, openSidebar, onSidebarOpen, ...rest } = props
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const Transition = forwardRef((props, ref) => {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
+    return <Slide direction="up" ref={ref} {...props} />
+  })
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <>
@@ -62,8 +62,7 @@ const Header = (props) => {
             <IconButton
               color="inherit"
               onClick={handleClickOpen}
-              className={`${classes.signOutButton} ${classes.iconTheme}`}
-            >
+              className={`${classes.signOutButton} ${classes.iconTheme}`}>
               <InputIcon />
             </IconButton>
           </Hidden>
@@ -72,8 +71,7 @@ const Header = (props) => {
             <IconButton
               color="inherit"
               onClick={onSidebarOpen}
-              className={classes.iconTheme}
-            >
+              className={classes.iconTheme}>
               {openSidebar ? <CloseIcon /> : <MenuIcon />}
             </IconButton>
           </Hidden>
@@ -87,8 +85,7 @@ const Header = (props) => {
           open={open}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+          aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
 
           <DialogContent>
@@ -104,19 +101,18 @@ const Header = (props) => {
 
             <Button
               onClick={() => {
-                logout();
-                setOpen(false);
+                logout()
+                setOpen(false)
               }}
               color="primary"
-              autoFocus
-            >
+              autoFocus>
               Sair
             </Button>
           </DialogActions>
         </Dialog>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

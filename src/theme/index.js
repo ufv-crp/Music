@@ -1,10 +1,10 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core"
 
-import palette from "./palette";
+import palette from "./palette"
 
-import typography from "./typography";
+import typography from "./typography"
 
-import overrides from "./overrides";
+import overrides from "./overrides"
 
 const theme = createMuiTheme({
   palette,
@@ -15,6 +15,6 @@ const theme = createMuiTheme({
     drawer: 1100
   },
   shadows: ["none"]
-});
+})
 
-export default theme;
+export default theme

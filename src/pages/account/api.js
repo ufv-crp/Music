@@ -9,7 +9,7 @@ const listAllUsers = `
             secondName
         }
     }
-`;
+`
 
 const createUser = `
     mutation CreateUser($params: UserInput!) {
@@ -17,7 +17,7 @@ const createUser = `
             id
         }
   	}
-`;
+`
 
 const searchUser = `
     query SearchUser($id: Int!) {
@@ -38,7 +38,7 @@ const searchUser = `
             updatedAt
         }
     }
-`;
+`
 
 const updateUserById = `
     mutation UpdateUser($params: UserUpdateInput!) {
@@ -51,7 +51,7 @@ const updateUserById = `
             secondName
         }
     }
-`;
+`
 
 const listAddressById = `
     query ListAddresses($userId: Int!) {
@@ -65,7 +65,7 @@ const listAddressById = `
           zipCode
         }
     }
-`;
+`
 
 const updateAddressById = `
     mutation UpdateAddress($params: AddressUpdate!) {
@@ -79,7 +79,7 @@ const updateAddressById = `
             zipCode
         }
   }
-`;
+`
 
 const listContactById = `
     query ListContacts($userId: Int!) {
@@ -90,7 +90,7 @@ const listContactById = `
             userId
         }
     }
-`;
+`
 
 const updateContactById = `
     mutation UpdateContact($params: ContactUpdate!) {
@@ -103,7 +103,7 @@ const updateContactById = `
             userId
         }
     }
-`;
+`
 
 export {
   listAllUsers,
@@ -114,4 +114,4 @@ export {
   updateAddressById,
   listContactById,
   updateContactById
-};
+}

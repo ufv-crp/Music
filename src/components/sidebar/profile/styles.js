@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
@@ -17,4 +17,4 @@ export default makeStyles(theme => ({
   name: {
     marginTop: theme.spacing(1)
   }
-}));
+}))

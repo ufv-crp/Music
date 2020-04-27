@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 
-import { render } from "@testing-library/react";
+import { render } from "@testing-library/react"
 
-import Application from "./application";
+import Application from "./application"
 
-import { AuthenticationProvider } from "./states";
+import { AuthenticationProvider } from "./states"
 
 test("renders application", () => {
   render(
     <AuthenticationProvider>
       <Application />
     </AuthenticationProvider>
-  );
-});
+  )
+})

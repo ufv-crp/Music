@@ -1,47 +1,53 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect } from "react"
 
 import {
   setLocalStorageItem,
   getLocalStorageItem,
   removeLocalStorageItem
-} from "./utils";
+} from "./utils"
 
-const localStorageAuthenticationKey = "authentication";
+const localStorageAuthenticationKey = "authentication"
 
-const initialStateAuthentication = { scopes: [], token: "" };
+const initialStateAuthentication = { scopes: [], token: "" }
 
 const reducer = (previousState, newState) => {
   if (newState === null) {
-    removeLocalStorageItem({ key: localStorageAuthenticationKey });
+    removeLocalStorageItem({ key: localStorageAuthenticationKey })
 
-    return initialStateAuthentication;
+    return initialStateAuthentication
   }
 
-  return { ...previousState, ...newState };
-};
+  return { ...previousState, ...newState }
+}
 
-const AuthenticationContext = createContext(initialStateAuthentication);
+const AuthenticationContext = createContext(initialStateAuthentication)
 
 const AuthenticationProvider = ({ children }) => {
   const [authentication, setAuthentication] = useReducer(
     reducer,
-    getLocalStorageItem({ key: localStorageAuthenticationKey, initialState: initialStateAuthentication })
-  );
+    getLocalStorageItem({
+      key: localStorageAuthenticationKey,
+      initialState: initialStateAuthentication
+    })
+  )
 
   useEffect(() => {
     setLocalStorageItem({
       key: localStorageAuthenticationKey,
       data: authentication
-    });
-  }, [authentication]);
+    })
+  }, [authentication])
 
   return (
     <AuthenticationContext.Provider
-      value={{ authentication, setAuthentication }}
-    >
+      value={{ authentication, setAuthentication }}>
       {children}
     </AuthenticationContext.Provider>
-  );
-};
+  )
+}
 
-export { AuthenticationContext, AuthenticationProvider, initialStateAuthentication };
+export {
+  AuthenticationContext,
+  AuthenticationProvider,
+  initialStateAuthentication
+}

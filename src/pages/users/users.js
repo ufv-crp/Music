@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react"
 
 import {
   Avatar,
@@ -19,66 +19,66 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-} from "@material-ui/core";
+  Typography
+} from "@material-ui/core"
 
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-material-ui"
 
-import useStyles from "./styles";
+import useStyles from "./styles"
 
-import { useSnackbar } from "notistack";
+import { useSnackbar } from "notistack"
 
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik"
 
-import * as Yup from "yup";
+import * as Yup from "yup"
 
-import MaterialTable from "material-table";
+import MaterialTable from "material-table"
 
 import {
   createUser,
   listAddressById,
   listAllUsers,
-  listContactById,
-} from "../account/api";
+  listContactById
+} from "../account/api"
 
-import { createAuthenticatedClient } from "../../authentication";
+import { createAuthenticatedClient } from "../../authentication"
 
-import icons from "../../components/materialTable/icons";
+import icons from "../../components/materialTable/icons"
 
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 
 import {
   ArrowBack as ArrowBackIcon,
   ContactPhone as ContactIcon,
-  LocationOn as LocationIcon,
-} from "@material-ui/icons";
+  LocationOn as LocationIcon
+} from "@material-ui/icons"
 
-import { AuthenticationContext } from "../../states";
+import { AuthenticationContext } from "../../states"
 
 const _listAllUsers = ({ client, query, setUsers }) => {
   client
     .request(query)
     .then((response) => {
-      setUsers(response.listUsers);
+      setUsers(response.listUsers)
     })
     .catch((error) => {
-      console.log(error.response);
+      console.log(error.response)
 
-      setUsers([]);
-    });
-};
+      setUsers([])
+    })
+}
 
 const _listContactsById = ({
   client,
   query,
   setContacts,
   userId,
-  enqueueSnackbar,
+  enqueueSnackbar
 }) => {
   client
     .request(query, { userId })
     .then((response) => {
-      setContacts(response.listContacts);
+      setContacts(response.listContacts)
     })
     .catch((error) => {
       // console.log(error.response);
@@ -88,25 +88,25 @@ const _listContactsById = ({
         autoHideDuration: 3000,
         anchorOrigin: {
           vertical: "bottom",
-          horizontal: "right",
-        },
-      });
+          horizontal: "right"
+        }
+      })
 
-      setContacts([]);
-    });
-};
+      setContacts([])
+    })
+}
 
 const _listAddressesById = ({
   client,
   query,
   setAddresses,
   userId,
-  enqueueSnackbar,
+  enqueueSnackbar
 }) => {
   client
     .request(query, { userId })
     .then((response) => {
-      setAddresses(response.listAddresses);
+      setAddresses(response.listAddresses)
     })
     .catch((error) => {
       // console.log(error.response);
@@ -116,13 +116,13 @@ const _listAddressesById = ({
         autoHideDuration: 3000,
         anchorOrigin: {
           vertical: "bottom",
-          horizontal: "right",
-        },
-      });
+          horizontal: "right"
+        }
+      })
 
-      setAddresses([]);
-    });
-};
+      setAddresses([])
+    })
+}
 
 const CreateUser = ({
   classes,
@@ -130,9 +130,9 @@ const CreateUser = ({
   setUsers,
   createUserState,
   setCreateUserState,
-  authentication,
+  authentication
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   return (
     <Box p={5} bgcolor="white" className={classes.boxCreateUser}>
@@ -144,11 +144,10 @@ const CreateUser = ({
               _listAllUsers({
                 client,
                 setUsers: setUsers,
-                query: listAllUsers,
-              });
-              setCreateUserState(!createUserState);
-            }}
-          >
+                query: listAllUsers
+              })
+              setCreateUserState(!createUserState)
+            }}>
             <ArrowBackIcon />
           </IconButton>
 
@@ -165,47 +164,47 @@ const CreateUser = ({
               matriculation: "",
               cpf: "",
               firstName: "",
-              secondName: "",
+              secondName: ""
             }}
             onSubmit={async (values, actions) => {
-              actions.setSubmitting(true);
+              actions.setSubmitting(true)
 
-              let responseUser = {};
+              let responseUser = {}
 
               try {
                 responseUser = await client.request(createUser, {
                   params: {
                     ...values,
-                    creator: authentication.userId,
-                  },
-                });
+                    creator: authentication.userId
+                  }
+                })
 
                 enqueueSnackbar("User created", {
                   variant: "success",
                   autoHideDuration: 5000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right",
-                  },
-                });
+                    horizontal: "right"
+                  }
+                })
 
-                actions.resetForm();
+                actions.resetForm()
               } catch (error) {
                 enqueueSnackbar("Error on user create", {
                   variant: "error",
                   autoHideDuration: 8000,
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right",
-                  },
-                });
+                    horizontal: "right"
+                  }
+                })
 
-                console.log("error", error.response);
+                console.log("error", error.response)
               }
 
               // TO DO: ASSOCIATE USER TO SCOPE
 
-              actions.setSubmitting(false);
+              actions.setSubmitting(false)
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string().email().required("Email is required"),
@@ -219,9 +218,8 @@ const CreateUser = ({
                 .min(11, "At least 11 characters are required")
                 .max(11, "Maximum 11 characters")
                 .required("CPF is required"),
-              firstName: Yup.string().required("First Name is required"),
-            })}
-          >
+              firstName: Yup.string().required("First Name is required")
+            })}>
             {(formik) => (
               <Form>
                 <Grid container spacing={4} direction="column">
@@ -307,19 +305,19 @@ const CreateUser = ({
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
 const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
-  const [addresses, setAddresses] = useState([]);
+  const [addresses, setAddresses] = useState([])
 
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState([])
 
   const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+    setExpanded(isExpanded ? panel : false)
+  }
 
   useEffect(() => {
     _listAddressesById({
@@ -327,31 +325,29 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       query: listAddressById,
       setAddresses,
       userId: rowUserData.id,
-      enqueueSnackbar,
-    });
+      enqueueSnackbar
+    })
 
     _listContactsById({
       client,
       query: listContactById,
       setContacts,
       userId: rowUserData.id,
-      enqueueSnackbar,
-    });
-    return () => {};
-  }, [client, enqueueSnackbar, rowUserData.id]);
+      enqueueSnackbar
+    })
+    return () => {}
+  }, [client, enqueueSnackbar, rowUserData.id])
 
   return (
     <>
       {/* Address Panel */}
       <ExpansionPanel
         expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
+        onChange={handleChange("panel1")}>
         <ExpansionPanelSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
+          id="panel1bh-header">
           <Card>
             <CardHeader
               title={`Address (${addresses.length ? addresses.length : 0})`}
@@ -363,7 +359,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               titleTypographyProps={{
                 align: "left",
                 variant: "h5",
-                display: "block",
+                display: "block"
               }}
             />
           </Card>
@@ -414,13 +410,11 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       {/* Contact Panel */}
       <ExpansionPanel
         expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-      >
+        onChange={handleChange("panel2")}>
         <ExpansionPanelSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
+          id="panel2bh-header">
           <Card>
             <CardHeader
               title={`Contact (${contacts.length ? contacts.length : 0})`}
@@ -432,7 +426,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               titleTypographyProps={{
                 align: "left",
                 variant: "h5",
-                display: "block",
+                display: "block"
               }}
             />
           </Card>
@@ -466,8 +460,8 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       </ExpansionPanel>
       {/* ./Contact Panel */}
     </>
-  );
-};
+  )
+}
 
 const ListUsers = ({
   classes,
@@ -477,30 +471,30 @@ const ListUsers = ({
   createUserState,
   setCreateUserState,
   updateUserState,
-  setUpdateUserState,
+  setUpdateUserState
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   const actions = [
     {
       icon: icons.Edit,
       tooltip: "Edit User",
       onClick: (event, rowData) =>
-        alert("You want do edit " + rowData.firstName),
+        alert("You want do edit " + rowData.firstName)
     },
     (rowData) => ({
       icon: icons.Delete,
       tooltip: "Delete User",
       onClick: (event, rowData) =>
-        alert("You want to delete " + rowData.firstName),
+        alert("You want to delete " + rowData.firstName)
     }),
     {
       icon: icons.Add,
       tooltip: "Add User",
       isFreeAction: true,
-      onClick: () => setCreateUserState(!createUserState),
-    },
-  ];
+      onClick: () => setCreateUserState(!createUserState)
+    }
+  ]
 
   return (
     <Grid container spacing={4}>
@@ -519,7 +513,7 @@ const ListUsers = ({
             paging: false,
             filtering: true,
             debounceInterval: 50,
-            detailPanelColumnAlignment: "left",
+            detailPanelColumnAlignment: "left"
           }}
           columns={[
             { title: "Name", field: "firstName" },
@@ -527,8 +521,8 @@ const ListUsers = ({
             { title: "CPF", field: "cpf" },
             {
               title: "Matriculation",
-              field: "matriculation",
-            },
+              field: "matriculation"
+            }
           ]}
           detailPanel={(rowData) => {
             return (
@@ -537,40 +531,40 @@ const ListUsers = ({
                 rowUserData={rowData}
                 enqueueSnackbar={enqueueSnackbar}
               />
-            );
+            )
           }}
           onRowClick={(event, rowData, togglePanel) => togglePanel()}
         />
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
 const Users = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext)
 
-  const client = createAuthenticatedClient();
+  const client = createAuthenticatedClient()
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([])
 
-  const [createUserState, setCreateUserState] = useState(false);
+  const [createUserState, setCreateUserState] = useState(false)
 
   const [updateUserState, setUpdateUserState] = useState({
     state: false,
-    user: {},
-  });
+    user: {}
+  })
 
   useEffect(() => {
     _listAllUsers({
       client,
       setUsers,
-      query: listAllUsers,
-    });
+      query: listAllUsers
+    })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   return (
     <Box>
@@ -598,7 +592,7 @@ const Users = () => {
         />
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

@@ -1,6 +1,6 @@
-const white = "#FFFFFF";
+const white = "#FFFFFF"
 
-const black = "#000000";
+const black = "#000000"
 
 const palette = {
   black,
@@ -53,6 +53,6 @@ const palette = {
   },
   icon: "#CDD2D9",
   divider: "#eff0f3"
-};
+}
 
-export default palette;
+export default palette

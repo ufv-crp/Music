@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
-import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom"
 
-import { request } from "graphql-request";
+import { request } from "graphql-request"
 
-import { routes, createRoutesComponents, filterRoutes } from "./routes";
+import { routes, createRoutesComponents, filterRoutes } from "./routes"
 
-import { getLocalStorageItem, initialStateAuthentication } from "../states";
+import { getLocalStorageItem, initialStateAuthentication } from "../states"
 
 const authenticate = async ({ email, password }) => {
   const query = `
@@ -21,76 +21,76 @@ const authenticate = async ({ email, password }) => {
         firstName
 			}
 	  }
-	`;
+	`
 
   try {
     return await request(process.env.REACT_APP_GRAPHQL_URL, query, {
       email,
       password
-    });
+    })
   } catch (error) {
-    throw JSON.stringify(error);
+    throw JSON.stringify(error)
   }
-};
+}
 
 const checkTokenExpiration = ({ expireAt }) => {
-  if (expireAt === undefined) return { invalid: true };
+  if (expireAt === undefined) return { invalid: true }
 
-  const dateTimeNow = new Date();
+  const dateTimeNow = new Date()
 
-  const dateTimeTokenExpire = new Date(expireAt);
+  const dateTimeTokenExpire = new Date(expireAt)
 
-  return { expired: dateTimeNow >= dateTimeTokenExpire };
-};
+  return { expired: dateTimeNow >= dateTimeTokenExpire }
+}
 
 const authenticationMiddleware = ({ authentication }) => {
   const filteredRoutes = filterRoutes({
     routes,
     scopes: authentication.scopes
-  });
+  })
 
   return createRoutesComponents({
     routes: filteredRoutes
-  });
-};
+  })
+}
 
 const redirectWrapperNotLogged = ({ expired, invalid, pathname, state }) => {
   if (expired || invalid)
-    return <Redirect to={{ pathname: pathname, state: state }} />;
+    return <Redirect to={{ pathname: pathname, state: state }} />
 
-  return null;
-};
+  return null
+}
 
 const redirectWrapperNotFound = ({ pathname, state }) => {
-  return <Redirect to={{ pathname: pathname, state: state }} />;
-};
+  return <Redirect to={{ pathname: pathname, state: state }} />
+}
 
 const resetPassword = async ({ email }) => {
   const query = `
     mutation ResetUserPassword($email: String!) {
       resetUserPassword(email: $email)
     }
-  `;
+  `
 
   try {
     return await request(process.env.REACT_APP_GRAPHQL_URL, query, {
       email
-    });
+    })
   } catch (error) {
-    throw JSON.stringify(error);
+    throw JSON.stringify(error)
   }
-};
+}
 
 const checkScope = ({ scope }) => {
   const authenticationState = getLocalStorageItem({
     key: "authentication",
     initialState: initialStateAuthentication
-  });
+  })
 
   return (
     authenticationState.scopes && authenticationState.scopes.includes(scope)
-  );
-};
+  )
+}
 
 export {
   authenticate,
@@ -100,4 +100,4 @@ export {
   redirectWrapperNotFound,
   resetPassword,
   checkScope
-};
+}

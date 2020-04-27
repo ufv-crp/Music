@@ -1,3 +1,3 @@
-import { logout } from "./utils";
+import { logout } from "./utils"
 
-export { logout };
+export { logout }

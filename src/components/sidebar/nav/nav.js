@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext } from "react"
 
 import {
   routes,
   filterRoutes,
   CreateRoutesSidebarLinks
-} from "../../../authentication";
+} from "../../../authentication"
 
-import { AuthenticationContext } from "../../../states";
+import { AuthenticationContext } from "../../../states"
 
 const SidebarRoutes = () => {
-  const { authentication } = useContext(AuthenticationContext);
+  const { authentication } = useContext(AuthenticationContext)
 
   return (
     <div>
@@ -17,7 +17,7 @@ const SidebarRoutes = () => {
         routes: filterRoutes({ routes, scopes: authentication.scopes })
       })}
     </div>
-  );
-};
+  )
+}
 
-export default SidebarRoutes;
+export default SidebarRoutes

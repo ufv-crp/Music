@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   backItemText: {
     fontSize: "1.1rem",
     fontWeight: "500"
@@ -20,6 +20,6 @@ const useStyles = makeStyles(theme => ({
   linearProgress: {
     margin: "16px"
   }
-}));
+}))
 
-export default useStyles;
+export default useStyles

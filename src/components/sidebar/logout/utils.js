@@ -1,13 +1,13 @@
-import { removeAllLocalStorage } from "../../../states";
+import { removeAllLocalStorage } from "../../../states"
 
-import { createHashHistory } from "history";
+import { createHashHistory } from "history"
 
 const logout = () => {
-  removeAllLocalStorage();
+  removeAllLocalStorage()
 
-  const history = createHashHistory();
+  const history = createHashHistory()
 
-  history.go("/login");
-};
+  history.go("/login")
+}
 
-export { logout };
+export { logout }

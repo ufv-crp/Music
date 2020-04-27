@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
 
 export default makeStyles((theme) => ({
   cardProfile: {
@@ -12,19 +12,19 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     minWidth: 0,
-    wordWrap: "break-word",
+    wordWrap: "break-word"
   },
   backgroundCard: {
-    background: theme.palette.boxShadow,
+    background: theme.palette.boxShadow
   },
   cardAvatar: {
     color: theme.palette.white,
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`
   },
   cardHeaderText: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.main
   },
   spacer: {
-    margin: theme.spacing(1),
-  },
-}));
+    margin: theme.spacing(1)
+  }
+}))

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState } from "react"
 
 import {
   Dialog,
@@ -11,35 +11,35 @@ import {
   ListItemIcon,
   ListItem,
   ListItemText,
-  makeStyles,
-} from "@material-ui/core";
+  makeStyles
+} from "@material-ui/core"
 
-import { ExitToApp } from "@material-ui/icons";
+import { ExitToApp } from "@material-ui/icons"
 
-import { logout } from "./utils";
+import { logout } from "./utils"
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    color: theme.palette.icon,
-  },
-}));
+    color: theme.palette.icon
+  }
+}))
 
 const Logout = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
+    return <Slide direction="up" ref={ref} {...props} />
+  })
 
   return (
     <>
@@ -58,8 +58,7 @@ const Logout = () => {
           open={open}
           onClose={handleClose}
           aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+          aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
 
           <DialogContent>
@@ -75,19 +74,18 @@ const Logout = () => {
 
             <Button
               onClick={() => {
-                logout();
-                setOpen(false);
+                logout()
+                setOpen(false)
               }}
               color="secondary"
-              autoFocus
-            >
+              autoFocus>
               Sair
             </Button>
           </DialogActions>
         </Dialog>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Logout;
+export default Logout

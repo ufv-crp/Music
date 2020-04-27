@@ -1,14 +1,14 @@
-import Header from "./header/header";
+import Header from "./header/header"
 
-import Sidebar from "./sidebar/sidebar";
+import Sidebar from "./sidebar/sidebar"
 
-import Footer from "./footer/footer";
+import Footer from "./footer/footer"
 
-import RouterBreadcrumbs from "./breadcrumbs/breadcrumbs";
+import RouterBreadcrumbs from "./breadcrumbs/breadcrumbs"
 
-import { AccountDetails, AccountProfile } from "./account";
+import { AccountDetails, AccountProfile } from "./account"
 
-import { UserAddress, UserContact } from "./user";
+import { UserAddress, UserContact } from "./user"
 
 export {
   Header,
@@ -19,4 +19,4 @@ export {
   UserAddress,
   UserContact,
   RouterBreadcrumbs
-};
+}

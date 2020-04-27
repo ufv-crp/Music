@@ -1,5 +1,5 @@
-import MuiButton from "./muiButton";
+import MuiButton from "./muiButton"
 
 export default {
   MuiButton
-};
+}
