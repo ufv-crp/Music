@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
     wordWrap: "break-word"
   },
   backgroundCard: {
-    background: theme.palette.boxShadow
+    background: theme.palette.divider
   },
   cardAvatar: {
     color: theme.palette.white,
@@ -26,5 +26,11 @@ export default makeStyles((theme) => ({
   },
   spacer: {
     margin: theme.spacing(1)
+  },
+  divider: {
+    flexGrow: 1
+  },
+  form: {
+    padding: theme.spacing(2)
   }
 }))

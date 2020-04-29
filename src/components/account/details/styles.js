@@ -18,7 +18,7 @@ export default makeStyles((theme) => ({
     overflow: "hidden",
     height: "134px",
     position: "relative",
-    background: `linear-gradient(60deg, ${theme.palette.error.light}, ${theme.palette.warning.main})`
+    backgroundColor: theme.palette.divider
   },
   cardPerson: {
     textAlign: "center",

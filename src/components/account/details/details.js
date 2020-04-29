@@ -19,14 +19,11 @@ const AccountDetails = () => {
           <Avatar className={classes.cardPersonAvatar}>
             {!!user.firstName && user.firstName[0]}
           </Avatar>
-          {/*<img
-            alt="..."
-            src="https://demos.creative-tim.com/paper-dashboard-react/static/media/mike.aab414f7.jpg"
-          />*/}
-          <h5 className={classes.cardPersonTitle}>{user.firstName}</h5>
-          <p className={classes.cardPersonDescription}>
-            @{user.firstName.toLowerCase()}
-          </p>
+          <h5 className={classes.cardPersonTitle}>
+            {!!user.firstName && user.firstName}{" "}
+            {!!user.secondName && user.secondName}
+          </h5>
+          <p className={classes.cardPersonDescription}>{user.email}</p>
         </div>
         <p className={classes.cardPersonDescription}>{user.matriculation}</p>
       </CardContent>

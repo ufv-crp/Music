@@ -16,10 +16,10 @@ const Account = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item lg={8} md={6} xl={8} xs={12}>
+        <Grid item xs={12} md={6} lg={8} xl={8}>
           <AccountProfile client={client} />
         </Grid>
-        <Grid item lg={4} md={6} xl={4} xs={12}>
+        <Grid item xs={12} md={6} lg={4} xl={4}>
           <AccountDetails />
         </Grid>
       </Grid>

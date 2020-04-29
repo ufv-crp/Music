@@ -98,9 +98,6 @@ const updateContactById = `
             id
             email
             phone
-            createdAt
-            updatedAt
-            userId
         }
     }
 `

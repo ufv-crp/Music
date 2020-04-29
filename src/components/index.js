@@ -8,15 +8,11 @@ import RouterBreadcrumbs from "./breadcrumbs/breadcrumbs"
 
 import { AccountDetails, AccountProfile } from "./account"
 
-import { UserAddress, UserContact } from "./user"
-
 export {
   Header,
   Sidebar,
   Footer,
   AccountDetails,
   AccountProfile,
-  UserAddress,
-  UserContact,
   RouterBreadcrumbs
 }
