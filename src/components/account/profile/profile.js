@@ -1,22 +1,12 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState } from "react"
 
 import useStyles from "./styles"
 
 import {
   Avatar,
-  Button,
   Card,
-  CardActions,
-  CardContent,
   CardHeader,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Divider,
-  Grid,
-  LinearProgress,
   Typography
 } from "@material-ui/core"
 
