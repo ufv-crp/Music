@@ -8,11 +8,14 @@ import RouterBreadcrumbs from "./breadcrumbs/breadcrumbs"
 
 import { AccountDetails, AccountProfile } from "./account"
 
+import LogoutDialog from "./dialogs/logout"
+
 export {
   Header,
   Sidebar,
   Footer,
   AccountDetails,
   AccountProfile,
-  RouterBreadcrumbs
+  RouterBreadcrumbs,
+  LogoutDialog
 }

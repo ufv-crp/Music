@@ -31,6 +31,8 @@ import { logout } from "../sidebar/logout"
 // Font Made Evolve Sans
 import logo from "../../assets/images/logo-azul-1.png"
 
+import LogoutDialog from "../dialogs/logout"
+
 const Header = (props) => {
   const { className, openSidebar, onSidebarOpen, ...rest } = props
 
@@ -79,37 +81,18 @@ const Header = (props) => {
       </AppBar>
 
       {open && (
-        <Dialog
-          fullWidth
-          TransitionComponent={Transition}
+        <LogoutDialog
+          dialogTitle="Encerrar Sessão"
+          dialogContentText="Você tem certeza que deseja encerrar sessão?"
+          cancelButton="Cancelar"
+          actionButton="Sair"
           open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
-
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Você tem certeza que deseja encerrar sessão?
-            </DialogContentText>
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancelar
-            </Button>
-
-            <Button
-              onClick={() => {
-                logout()
-                setOpen(false)
-              }}
-              color="primary"
-              autoFocus>
-              Sair
-            </Button>
-          </DialogActions>
-        </Dialog>
+          handleClose={handleClose}
+          handleAction={() => {
+            logout()
+            setOpen(false)
+          }}
+        />
       )}
     </>
   )

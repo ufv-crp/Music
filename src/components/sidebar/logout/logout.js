@@ -17,6 +17,7 @@ import {
 import { ExitToApp } from "@material-ui/icons"
 
 import { logout } from "./utils"
+import LogoutDialog from "../../dialogs/logout"
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -37,10 +38,6 @@ const Logout = () => {
     setOpen(false)
   }
 
-  const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />
-  })
-
   return (
     <>
       <ListItem button onClick={handleClickOpen}>
@@ -52,37 +49,18 @@ const Logout = () => {
       </ListItem>
 
       {open && (
-        <Dialog
-          fullWidth
-          TransitionComponent={Transition}
+        <LogoutDialog
+          dialogTitle="Encerrar Sessão"
+          dialogContentText="Você tem certeza que deseja encerrar sessão?"
+          cancelButton="Cancelar"
+          actionButton="Sair"
           open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title">{"Sair"}</DialogTitle>
-
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Você tem certeza que deseja encerrar sessão?
-            </DialogContentText>
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancelar
-            </Button>
-
-            <Button
-              onClick={() => {
-                logout()
-                setOpen(false)
-              }}
-              color="secondary"
-              autoFocus>
-              Sair
-            </Button>
-          </DialogActions>
-        </Dialog>
+          handleClose={handleClose}
+          handleAction={() => {
+            logout()
+            setOpen(false)
+          }}
+        />
       )}
     </>
   )
