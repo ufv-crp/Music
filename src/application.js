@@ -33,7 +33,7 @@ const Application = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider maxSnack={1}>
         <Router>
           <Switch>
             {authenticationMiddleware({ authentication })}
