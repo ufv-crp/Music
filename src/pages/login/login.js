@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react"
 
 import useStyles from "./styles"
 
+import * as Yup from "yup"
+
 import { Formik, Field, Form } from "formik"
 
 import { TextField } from "formik-material-ui"
@@ -37,23 +39,24 @@ import {
   listContactById
 } from "../../pages/account/api"
 
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Digite um e-mail válido")
+    .required("E-mail é obrigatório"),
+  password: Yup.string().required("Senha é obrigatório")
+})
+
+const forgotSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Digite um e-mail válido")
+    .required("E-mail é obrigatório")
+})
+
 const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
   return (
     <Formik
       initialValues={{ email: "" }}
-      validate={(values) => {
-        const errors = {}
-
-        if (!values.email) {
-          errors.email = "E-mail é obrigatório"
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-        ) {
-          errors.email = "E-mail inválido"
-        }
-
-        return errors
-      }}
+      validationSchema={forgotSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setSubmitting(true)
 
@@ -68,9 +71,7 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
               horizontal: "right"
             }
           })
-        } catch (error) {
-          console.log(error)
-
+        } catch {
           enqueueSnackbar("Este e-mail não existe em nossa base de dados", {
             variant: "error",
             autoHideDuration: 8000,
@@ -118,84 +119,118 @@ const FormikSign = ({
   setAuthentication,
   setUser,
   enqueueSnackbar,
-  props
+  props,
+  user
 }) => (
   <Formik
     initialValues={{
       email: "admin@gmail.com",
       password: "123456"
     }}
-    validate={(values) => {
-      const errors = {}
-
-      if (!values.email) {
-        errors.email = "E-mail é obrigatório"
-      } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-      ) {
-        errors.email = "E-mail inválido"
-      }
-
-      if (!values.password) {
-        errors.password = "Senha é obrigatório"
-      }
-
-      return errors
-    }}
+    validationSchema={loginSchema}
     onSubmit={async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
 
-      let authenticationResponse = {}
+      let authenticationId = undefined
 
-      try {
-        const response = await authenticate({
-          email: values.email,
-          password: values.password
+      // Authenticate
+      await authenticate({
+        email: values.email,
+        password: values.password
+      })
+        .then((response) => {
+          setAuthentication({ ...response.login })
+
+          authenticationId = response.login.userId
         })
-
-        authenticationResponse = response.login
-
-        setAuthentication({ ...response.login })
-
-        resetForm()
-      } catch (error) {
-        console.log(error)
-
-        enqueueSnackbar("E-mail ou senha incorretos", {
-          variant: "error",
-          autoHideDuration: 8000,
-          anchorOrigin: {
-            vertical: "bottom",
-            horizontal: "right"
-          }
+        .catch(() => {
+          enqueueSnackbar("E-mail ou senha incorretos", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
         })
-      }
+        .finally(() => {
+          setSubmitting(false)
+          resetForm()
+        })
 
       const client = createAuthenticatedClient()
 
-      try {
-        const userResponse = await client.request(searchUser, {
-          id: authenticationResponse.userId
+      let firstName = undefined
+
+      // Retrieve user info
+      await client
+        .request(searchUser, {
+          id: authenticationId
+        })
+        .then((response) => {
+          firstName = response.searchUser.firstName
+
+          setUser({ ...response.searchUser })
+        })
+        .catch(() => {
+          enqueueSnackbar("Erro inesperado", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
         })
 
-        setUser({ ...userResponse.searchUser })
-
-        const responseAddress = await client.request(listAddressById, {
-          userId: authenticationResponse.userId
+      // Retrieve user address
+      await client
+        .request(listAddressById, {
+          userId: authenticationId
+        })
+        .then((response) => {
+          setUser({ address: { ...response.listAddresses[0] } })
+        })
+        .catch(() => {
+          enqueueSnackbar("Erro inesperado", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
         })
 
-        setUser({ address: { ...responseAddress.listAddresses[0] } })
-
-        const responseContact = await client.request(listContactById, {
-          userId: authenticationResponse.userId
+      // Retrieve user contact
+      await client
+        .request(listContactById, {
+          userId: authenticationId
         })
+        .then((response) => {
+          setUser({ contact: { ...response.listContacts[0] } })
 
-        setUser({ contact: { ...responseContact.listContacts[0] } })
-      } catch (error) {
-        console.log(error)
-      }
+          enqueueSnackbar(`Bem Vindo(a), ${firstName}`, {
+            variant: "info",
+            autoHideDuration: 3500,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
 
-      props.history.push("/dashboard")
+          props.history.push("/dashboard")
+        })
+        .catch(() => {
+          enqueueSnackbar("Erro inesperado", {
+            variant: "error",
+            autoHideDuration: 5000,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
+        })
     }}>
     {(props) => (
       <Form className={classes.form}>
@@ -243,7 +278,7 @@ const FormikSign = ({
 const Login = (props) => {
   const { setAuthentication } = useContext(AuthenticationContext)
 
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
 
   const [forgotPassword, setForgotPassword] = useState(false)
 
@@ -273,7 +308,8 @@ const Login = (props) => {
               setAuthentication,
               setUser,
               enqueueSnackbar,
-              props
+              props,
+              user
             })}
 
           <Grid container>
