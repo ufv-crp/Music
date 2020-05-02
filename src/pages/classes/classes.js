@@ -44,7 +44,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
   return (
     <Box className={classes.classesTable}>
       <MaterialTable
-        title="Courses"
+        title={`Turmas de ${rowDataCourse.title}`}
         icons={icons}
         data={async () => {
           let _listClassesRaw
@@ -101,25 +101,26 @@ const ListClasses = ({ client, rowDataCourse }) => {
         }}
         columns={[
           {
-            title: "Vacancies",
+            title: "Vagas",
             field: "vacancies",
             type: "numeric"
           },
-          { title: "Room", field: "room", type: "string" },
-          { title: "Shift", field: "shift", type: "string" },
+          { title: "Sala", field: "room", type: "string" },
+          { title: "Turno", field: "shift", type: "string" },
           {
-            title: "Time",
+            title: "Horário",
             field: "time",
             type: "time"
           },
           {
-            title: "Instructor",
+            title: "Professor",
             field: "instructor",
             type: "string",
             editable: "never"
           }
         ]}
         options={{
+          actionsColumnIndex: -1,
           selection: false,
           search: false,
           // header: false,
@@ -129,6 +130,30 @@ const ListClasses = ({ client, rowDataCourse }) => {
           exportButton: true,
           paging: false,
           detailPanelColumnAlignment: "left"
+        }}
+        localization={{
+          body: {
+            addTooltip: "Adicionar",
+            emptyDataSourceMessage: "Não há registros",
+            filterRow: {
+              filterTooltip: "Filtrar"
+            },
+            editTooltip: "Editar",
+            deleteTooltip: "Excluir",
+            editRow: {
+              cancelTooltip: "Cancelar",
+              saveTooltip: "Salvar",
+              deleteText: "Tem certeza que deseja excluir?"
+            }
+          },
+          header: {
+            actions: "Ações",
+            export: "Exportar"
+          },
+          toolbar: {
+            exportTitle: "Exportar",
+            exportName: "Exportar como CSV"
+          }
         }}
         editable={{
           isEditable: (rowData) => {
@@ -157,7 +182,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 }
               })
 
-              enqueueSnackbar("Class created", {
+              enqueueSnackbar("Turma criada", {
                 variant: "success",
                 autoHideDuration: 5000,
                 anchorOrigin: {
@@ -169,7 +194,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
               console.log(error)
 
               enqueueSnackbar(
-                "Error on class create, check if all fields are filled",
+                "Erro ao criar turma, verifique se todos os campos estão preenchidos",
                 {
                   variant: "error",
                   autoHideDuration: 8000,
@@ -188,7 +213,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 userId: authentication.userId
               })
 
-              enqueueSnackbar("Class associated with the user", {
+              enqueueSnackbar("Turma associada com aluno", {
                 variant: "success",
                 autoHideDuration: 5000,
                 anchorOrigin: {
@@ -199,7 +224,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             } catch (error) {
               console.log(error)
 
-              enqueueSnackbar("Unable to associate the class and the user", {
+              enqueueSnackbar("Erro ao associar turma ao aluno", {
                 variant: "error",
                 autoHideDuration: 8000,
                 anchorOrigin: {
@@ -237,7 +262,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 params: Object.assign(...changes, { id: newData.id })
               })
 
-              enqueueSnackbar("Class updated", {
+              enqueueSnackbar("Turma atualizada", {
                 variant: "success",
                 autoHideDuration: 5000,
                 anchorOrigin: {
@@ -248,7 +273,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             } catch (error) {
               console.log(error)
 
-              enqueueSnackbar("Error on class update", {
+              enqueueSnackbar("Erro ao atualizar turma", {
                 variant: "error",
                 autoHideDuration: 8000,
                 anchorOrigin: {
@@ -269,7 +294,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
                 id: oldData.id
               })
 
-              enqueueSnackbar("Class removed", {
+              enqueueSnackbar("Turma excluída", {
                 variant: "success",
                 autoHideDuration: 5000,
                 anchorOrigin: {
@@ -280,7 +305,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
             } catch (error) {
               console.log(error)
 
-              enqueueSnackbar("Error on class remove", {
+              enqueueSnackbar("Erro ao excluir turma", {
                 variant: "error",
                 autoHideDuration: 8000,
                 anchorOrigin: {
@@ -303,7 +328,7 @@ const ListClasses = ({ client, rowDataCourse }) => {
 const ListCourses = ({ client }) => {
   return (
     <MaterialTable
-      title="Courses"
+      title="Cursos"
       icons={icons}
       data={async (query) => {
         let filters = query.filters.map((item) => {
@@ -375,21 +400,27 @@ const ListCourses = ({ client }) => {
       }}
       columns={[
         {
-          title: "Title",
+          title: "Nome",
           field: "title",
           type: "string",
           editable: "never"
         },
-        { title: "Start", field: "start", type: "datetime", editable: "never" },
-        { title: "End", field: "end", type: "datetime", editable: "never" },
         {
-          title: "Private",
+          title: "Início",
+          field: "start",
+          type: "datetime",
+          editable: "never"
+        },
+        { title: "Fim", field: "end", type: "datetime", editable: "never" },
+        {
+          title: "Privado",
           field: "private",
           type: "boolean",
           editable: "never"
         }
       ]}
       options={{
+        actionsColumnIndex: -1,
         selection: false,
         search: false,
         exportButton: true,
@@ -398,6 +429,29 @@ const ListCourses = ({ client }) => {
         filtering: true,
         debounceInterval: 50,
         detailPanelColumnAlignment: "left"
+      }}
+      localization={{
+        body: {
+          emptyDataSourceMessage: "Não há registros",
+          filterRow: {
+            filterTooltip: "Filtrar"
+          },
+          editTooltip: "Editar",
+          deleteTooltip: "Excluir",
+          editRow: {
+            cancelTooltip: "Cancelar",
+            saveTooltip: "Salvar",
+            deleteText: "Tem certeza que deseja excluir?"
+          }
+        },
+        header: {
+          actions: "Ações",
+          export: "Exportar"
+        },
+        toolbar: {
+          exportTitle: "Exportar",
+          exportName: "Exportar como CSV"
+        }
       }}
       detailPanel={(rowData) => {
         return <ListClasses client={client} rowDataCourse={rowData} />
