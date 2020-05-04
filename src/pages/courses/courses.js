@@ -40,8 +40,8 @@ import { TextField } from "formik-material-ui"
 import {
   EventAvailable as EventAvailableIcon,
   EventBusy as EventBusyIcon,
-  RemoveCircleOutline as RemoveCircleOutlineIcon,
-  Update as UpdateIcon,
+  DeleteOutlineOutlined as DeleteIcon,
+  EditOutlined as EditIcon,
   ExpandMore as ExpandMoreIcon,
   Search as SearchIcon,
   Add as AddIcon,
@@ -148,7 +148,7 @@ const ListCourses = ({
                   }}
                 />
               }
-              label="Private"
+              label="Privado"
             />
           </Grid>
 
@@ -343,7 +343,7 @@ const CardCourse = ({
         </CardContent>
 
         <CardActions>
-          <Tooltip title={(expanded && "Retract") || "Expand"}>
+          <Tooltip title={(expanded && "Ocultar") || "Detalhes"}>
             <IconButton
               className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded
@@ -364,11 +364,24 @@ const CardCourse = ({
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Remove">
+          <Tooltip title="Atualizar">
+            <IconButton
+              className={classes.updateIcon}
+              onClick={() =>
+                setUpdateCourseState({
+                  state: !updateCourseState.state,
+                  course
+                })
+              }>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Excluir">
             <IconButton
               className={classes.deleteIcon}
               onClick={handleDialogClick}>
-              <RemoveCircleOutlineIcon />
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
 
@@ -413,18 +426,6 @@ const CardCourse = ({
               </Button>
             </DialogActions>
           </Dialog>
-          <Tooltip title="Update">
-            <IconButton
-              className={classes.updateIcon}
-              onClick={() =>
-                setUpdateCourseState({
-                  state: !updateCourseState.state,
-                  course
-                })
-              }>
-              <UpdateIcon />
-            </IconButton>
-          </Tooltip>
         </CardActions>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -442,7 +443,7 @@ const CardCourse = ({
               className={`${classes.marginSvgIcon} ${classes.centerIconText}`}
               color="textSecondary">
               <DescriptionIcon className={classes.iconColor} />
-              Complete description
+              Descrição
             </Typography>
 
             {course.description

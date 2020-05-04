@@ -32,7 +32,7 @@ const ProfileSchema = Yup.object().shape({
     .required("Matrícula é obrigatório"),
   firstName: Yup.string().required(),
   secondName: Yup.string(),
-  cpf: Yup.string(),
+  cpf: Yup.string().matches(/(^[0-9]+$)/, "Apenas dígitos"),
   address: Yup.object().shape({
     zipCode: Yup.string(),
     street: Yup.string(),

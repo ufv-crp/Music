@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main
   },
   updateIcon: {
-    color: theme.palette.success.main
+    color: theme.palette.text.primary
   },
   removeCourseDisagree: {
     color: theme.palette.error.main

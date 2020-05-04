@@ -3,15 +3,12 @@ import React, { useContext, useEffect, useState } from "react"
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardHeader,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Grid,
-  IconButton,
-  LinearProgress,
   Paper,
   Table,
   TableBody,
@@ -22,24 +19,13 @@ import {
   Typography
 } from "@material-ui/core"
 
-import { TextField } from "formik-material-ui"
-
 import useStyles from "./styles"
 
 import { useSnackbar } from "notistack"
 
-import { Field, Form, Formik } from "formik"
-
-import * as Yup from "yup"
-
 import MaterialTable from "material-table"
 
-import {
-  createUser,
-  listAddressById,
-  listAllUsers,
-  listContactById
-} from "../account/api"
+import { listAddressById, listAllUsers, listContactById } from "../account/api"
 
 import { createAuthenticatedClient } from "../../authentication"
 
@@ -48,12 +34,13 @@ import icons from "../../components/materialTable/icons"
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 
 import {
-  ArrowBack as ArrowBackIcon,
   ContactPhone as ContactIcon,
   LocationOn as LocationIcon
 } from "@material-ui/icons"
 
 import { AuthenticationContext } from "../../states"
+
+import CreateUser from "./create"
 
 const _listAllUsers = ({ client, query, setUsers }) => {
   client
@@ -68,244 +55,22 @@ const _listAllUsers = ({ client, query, setUsers }) => {
     })
 }
 
-const _listContactsById = ({
-  client,
-  query,
-  setContacts,
-  userId,
-  enqueueSnackbar
-}) => {
+const _listContactsById = ({ client, query, setContacts, userId }) => {
   client
     .request(query, { userId })
     .then((response) => {
       setContacts(response.listContacts)
     })
-    .catch((error) => {
-      // console.log(error.response);
-
-      enqueueSnackbar("No contacts found!", {
-        variant: "error",
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "right"
-        }
-      })
-
-      setContacts([])
-    })
+    .catch(() => setContacts([]))
 }
 
-const _listAddressesById = ({
-  client,
-  query,
-  setAddresses,
-  userId,
-  enqueueSnackbar
-}) => {
+const _listAddressesById = ({ client, query, setAddresses, userId }) => {
   client
     .request(query, { userId })
     .then((response) => {
       setAddresses(response.listAddresses)
     })
-    .catch((error) => {
-      // console.log(error.response);
-
-      enqueueSnackbar("No addresses found!", {
-        variant: "error",
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: "bottom",
-          horizontal: "right"
-        }
-      })
-
-      setAddresses([])
-    })
-}
-
-const CreateUser = ({
-  classes,
-  client,
-  setUsers,
-  createUserState,
-  setCreateUserState,
-  authentication
-}) => {
-  const { enqueueSnackbar } = useSnackbar()
-
-  return (
-    <Box p={5} bgcolor="white" className={classes.boxCreateUser}>
-      <Grid container spacing={4}>
-        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
-          <IconButton
-            aria-label="add"
-            onClick={() => {
-              _listAllUsers({
-                client,
-                setUsers: setUsers,
-                query: listAllUsers
-              })
-              setCreateUserState(!createUserState)
-            }}>
-            <ArrowBackIcon />
-          </IconButton>
-
-          <Typography className={classes.backItemText}>Create User</Typography>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={4} direction="column">
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-              matriculation: "",
-              cpf: "",
-              firstName: "",
-              secondName: ""
-            }}
-            onSubmit={async (values, actions) => {
-              actions.setSubmitting(true)
-
-              let responseUser = {}
-
-              try {
-                responseUser = await client.request(createUser, {
-                  params: {
-                    ...values,
-                    creator: authentication.userId
-                  }
-                })
-
-                enqueueSnackbar("User created", {
-                  variant: "success",
-                  autoHideDuration: 5000,
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "right"
-                  }
-                })
-
-                actions.resetForm()
-              } catch (error) {
-                enqueueSnackbar("Error on user create", {
-                  variant: "error",
-                  autoHideDuration: 8000,
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "right"
-                  }
-                })
-
-                console.log("error", error.response)
-              }
-
-              // TO DO: ASSOCIATE USER TO SCOPE
-
-              actions.setSubmitting(false)
-            }}
-            validationSchema={Yup.object().shape({
-              email: Yup.string().email().required("Email is required"),
-              password: Yup.string()
-                .min(6, "At least 6 characteres are required")
-                .required("Password is required"),
-              matriculation: Yup.string()
-                .max(5, "Maximum 5 characters")
-                .required("Matriculation is required"),
-              cpf: Yup.string()
-                .min(11, "At least 11 characters are required")
-                .max(11, "Maximum 11 characters")
-                .required("CPF is required"),
-              firstName: Yup.string().required("First Name is required")
-            })}>
-            {(formik) => (
-              <Form>
-                <Grid container spacing={4} direction="column">
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="createUserEmail"
-                      type="email"
-                      label="Email"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="createUserPassword"
-                      type="password"
-                      label="Password"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="matriculation"
-                      type="text"
-                      label="Matriculation"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="cpf"
-                      type="text"
-                      label="CPF"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="firstname"
-                      type="text"
-                      label="First Name"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Field
-                      component={TextField}
-                      name="secondname"
-                      type="text"
-                      label="Second Name"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  {formik.isSubmitting && (
-                    <LinearProgress className={classes.linearProgress} />
-                  )}
-
-                  <Grid item xs={12} sm={4} md={4} lg={4}>
-                    <Button variant="outlined" color="primary" type="submit">
-                      Submit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Form>
-            )}
-          </Formik>
-        </Grid>
-      </Grid>
-    </Box>
-  )
+    .catch(() => setAddresses([]))
 }
 
 const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
@@ -324,16 +89,14 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
       client,
       query: listAddressById,
       setAddresses,
-      userId: rowUserData.id,
-      enqueueSnackbar
+      userId: rowUserData.id
     })
 
     _listContactsById({
       client,
       query: listContactById,
       setContacts,
-      userId: rowUserData.id,
-      enqueueSnackbar
+      userId: rowUserData.id
     })
     return () => {}
   }, [client, enqueueSnackbar, rowUserData.id])
@@ -350,7 +113,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
           id="panel1bh-header">
           <Card>
             <CardHeader
-              title={`Address (${addresses.length ? addresses.length : 0})`}
+              title={`Endereços (${addresses.length ? addresses.length : 0})`}
               avatar={
                 <Avatar aria-label="address" variant="rounded">
                   <LocationIcon />
@@ -370,38 +133,38 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               <Table size="small" aria-label="address">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="right">ZIP Code</TableCell>
-                    <TableCell align="right">City</TableCell>
-                    <TableCell align="right">State</TableCell>
-                    <TableCell align="right">Street</TableCell>
-                    <TableCell align="right">Number</TableCell>
-                    <TableCell align="right">Complement</TableCell>
+                    <TableCell align="center">CEP</TableCell>
+                    <TableCell align="center">Endereço</TableCell>
+                    <TableCell align="center">Número</TableCell>
+                    <TableCell align="center">Complemento</TableCell>
+                    <TableCell align="center">Cidade</TableCell>
+                    <TableCell align="center">Estado</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {addresses.map((address) => (
                     <TableRow key={address.id}>
-                      <TableCell component="th" scope="row" align="right">
-                        {address.zipCode}
+                      <TableCell align="center">{address.zipCode}</TableCell>
+                      <TableCell align="center">{address.street}</TableCell>
+                      <TableCell align="center">{address.number}</TableCell>
+                      <TableCell align="center">
+                        {address.complement ? (
+                          <TableCell align="center">
+                            {address.complement}
+                          </TableCell>
+                        ) : (
+                          "Não possui"
+                        )}
                       </TableCell>
-                      <TableCell align="right">{address.city}</TableCell>
-                      <TableCell align="right">{address.state}</TableCell>
-                      <TableCell align="right">{address.street}</TableCell>
-                      <TableCell align="right">{address.number}</TableCell>
-                      {address.complement ? (
-                        <TableCell align="right">
-                          {address.complement}
-                        </TableCell>
-                      ) : (
-                        "-"
-                      )}
+                      <TableCell align="center">{address.city}</TableCell>
+                      <TableCell align="center">{address.state}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           ) : (
-            <Typography variant="h5">No addresses found!</Typography>
+            <Typography variant="h5">Nenhum endereço encontrado!</Typography>
           )}
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -417,7 +180,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
           id="panel2bh-header">
           <Card>
             <CardHeader
-              title={`Contact (${contacts.length ? contacts.length : 0})`}
+              title={`Contatos (${contacts.length ? contacts.length : 0})`}
               avatar={
                 <Avatar aria-label="contact" variant="rounded">
                   <ContactIcon />
@@ -437,16 +200,14 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               <Table aria-label="contacts">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Email</TableCell>
-                    <TableCell align="center">Phone</TableCell>
+                    <TableCell align="center">E-mail</TableCell>
+                    <TableCell align="center">Telefone</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {contacts.map((contact) => (
                     <TableRow key={contact.id}>
-                      <TableCell component="th" scope="row" align="center">
-                        {contact.email}
-                      </TableCell>
+                      <TableCell align="center">{contact.email}</TableCell>
                       <TableCell align="center">{contact.phone}</TableCell>
                     </TableRow>
                   ))}
@@ -454,7 +215,7 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               </Table>
             </TableContainer>
           ) : (
-            <Typography variant="h5">No contacts found!</Typography>
+            <Typography variant="h5">Nenhum contato encontrado!</Typography>
           )}
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -478,19 +239,19 @@ const ListUsers = ({
   const actions = [
     {
       icon: icons.Edit,
-      tooltip: "Edit User",
+      tooltip: "Editar",
       onClick: (event, rowData) =>
         alert("You want do edit " + rowData.firstName)
     },
     (rowData) => ({
       icon: icons.Delete,
-      tooltip: "Delete User",
+      tooltip: "Excluir",
       onClick: (event, rowData) =>
         alert("You want to delete " + rowData.firstName)
     }),
     {
       icon: icons.Add,
-      tooltip: "Add User",
+      tooltip: "Adicionar",
       isFreeAction: true,
       onClick: () => setCreateUserState(!createUserState)
     }
@@ -500,10 +261,26 @@ const ListUsers = ({
     <Grid container spacing={4}>
       <Grid item xs={12}>
         <MaterialTable
-          title="Users"
+          title="Usuários"
           icons={icons}
           data={users}
           actions={actions}
+          localization={{
+            body: {
+              emptyDataSourceMessage: "Não há registros",
+              filterRow: {
+                filterTooltip: "Filtrar"
+              }
+            },
+            header: {
+              actions: "Ações",
+              export: "Exportar"
+            },
+            toolbar: {
+              exportTitle: "Exportar",
+              exportName: "Exportar como CSV"
+            }
+          }}
           options={{
             actionsColumnIndex: -1,
             selection: false,
@@ -516,11 +293,11 @@ const ListUsers = ({
             detailPanelColumnAlignment: "left"
           }}
           columns={[
-            { title: "Name", field: "firstName" },
-            { title: "Surname", field: "secondName" },
+            { title: "Nome", field: "firstName" },
+            { title: "Sobrenome", field: "secondName" },
             { title: "CPF", field: "cpf" },
             {
-              title: "Matriculation",
+              title: "Matrícula",
               field: "matriculation"
             }
           ]}

@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react"
+import React, { useState } from "react"
 
 import clsx from "clsx"
 
@@ -6,19 +6,7 @@ import { Link as RouterLink } from "react-router-dom"
 
 import useStyles from "./styles"
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Slide,
-  AppBar,
-  Toolbar,
-  Hidden,
-  IconButton
-} from "@material-ui/core"
+import { AppBar, Toolbar, Hidden, IconButton } from "@material-ui/core"
 
 import {
   Menu as MenuIcon,
@@ -45,10 +33,6 @@ const Header = (props) => {
   const handleClose = () => {
     setOpen(false)
   }
-
-  const Transition = forwardRef((props, ref) => {
-    return <Slide direction="up" ref={ref} {...props} />
-  })
 
   const classes = useStyles()
 
