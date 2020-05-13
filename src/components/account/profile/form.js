@@ -59,7 +59,7 @@ const ProfileForm = ({
   return (
     <Formik
       enableReinitialize
-      initialValues={{ ...user, confirmPassword: "123456" }}
+      initialValues={{ ...user, confirmPassword: "" }}
       validationSchema={ProfileSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setSubmitting(true)
