@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react"
 import {
   Avatar,
   Box,
+  Button,
+  IconButton,
   Card,
   CardHeader,
   ExpansionPanel,
@@ -16,31 +18,52 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  LinearProgress
 } from "@material-ui/core"
 
 import useStyles from "./styles"
+
+import { Formik, Form, Field } from "formik"
+
+import * as Yup from "yup"
 
 import { useSnackbar } from "notistack"
 
 import MaterialTable from "material-table"
 
-import { listAddressById, listAllUsers, listContactById } from "../account/api"
+import {
+  listAddressById,
+  listAllUsers,
+  listContactById,
+  updateUserById
+} from "../account/api"
 
 import { createAuthenticatedClient } from "../../authentication"
 
 import icons from "../../components/materialTable/icons"
 
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
-
 import {
   ContactPhone as ContactIcon,
-  LocationOn as LocationIcon
+  LocationOn as LocationIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  ArrowBack as ArrowBackIcon
 } from "@material-ui/icons"
 
 import { AuthenticationContext } from "../../states"
 
 import CreateUser from "./create"
+
+import { TextField } from "formik-material-ui"
+
+const UserSchema = Yup.object().shape({
+  firstName: Yup.string().required("Nome é obrigatório"),
+  matriculation: Yup.string()
+    .min(4, "Digite uma matrícula válida")
+    .max(5, "Máximo 5 dígitos")
+    .required("Matrícula é obrigatório"),
+  cpf: Yup.string().matches(/(^[0-9]+$)/, "Apenas dígitos")
+})
 
 const _listAllUsers = ({ client, query, setUsers }) => {
   client
@@ -224,6 +247,145 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
   )
 }
 
+const UpdateUser = ({
+  classes,
+  client,
+  setUsers,
+  setUpdateUserState,
+  updateUserState
+}) => {
+  const { enqueueSnackbar } = useSnackbar()
+
+  return (
+    <Box p={5} bgcolor="white">
+      <Grid container spacing={4}>
+        <Grid item lg={12} md={12} sm={12} xs={12} className={classes.backItem}>
+          <IconButton
+            onClick={() => {
+              _listAllUsers({
+                client,
+                setUsers: setUsers,
+                query: listAllUsers
+              })
+              setUpdateUserState(!updateUserState)
+            }}>
+            <ArrowBackIcon />
+          </IconButton>
+
+          <Typography className={classes.backItemText}>
+            Atualizar Usuário
+          </Typography>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={4} direction="column">
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <Formik
+            enableReinitialize
+            validationSchema={UserSchema}
+            initialValues={{
+              id: updateUserState.user.id,
+              cpf: updateUserState.user.cpf,
+              firstName: updateUserState.user.firstName,
+              secondName: updateUserState.user.secondName,
+              matriculation: updateUserState.user.matriculation
+            }}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              setSubmitting(true)
+
+              await client
+                .request(updateUserById, {
+                  params: values
+                })
+                .then(() => {
+                  _listAllUsers({
+                    client,
+                    setUsers: setUsers,
+                    query: listAllUsers
+                  })
+                  setUpdateUserState(!updateUserState)
+                  enqueueSnackbar("Usuário editado com sucesso", {
+                    variant: "success",
+                    autoHideDuration: 4500,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }
+                  })
+                })
+                .catch(() =>
+                  enqueueSnackbar("Erro ao editar usuário", {
+                    variant: "error",
+                    autoHideDuration: 4500,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }
+                  })
+                )
+            }}>
+            {({ dirty, isValid, isSubmitting }) => (
+              <Form>
+                <Grid container spacing={4} direction="column">
+                  <Grid item>
+                    <Field
+                      name="firstName"
+                      label="Nome"
+                      variant="outlined"
+                      component={TextField}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <Field
+                      name="secondName"
+                      label="Sobrenome"
+                      variant="outlined"
+                      component={TextField}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <Field
+                      name="cpf"
+                      label="CPF"
+                      variant="outlined"
+                      component={TextField}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <Field
+                      name="matriculation"
+                      label="Matrícula"
+                      variant="outlined"
+                      component={TextField}
+                    />
+                  </Grid>
+
+                  {isSubmitting && (
+                    <LinearProgress className={classes.linearProgress} />
+                  )}
+
+                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      disabled={!dirty || !isValid || isSubmitting}>
+                      {isSubmitting ? "Enviando..." : "Atualizar"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            )}
+          </Formik>
+        </Grid>
+      </Grid>
+    </Box>
+  )
+}
+
 const ListUsers = ({
   classes,
   client,
@@ -241,7 +403,7 @@ const ListUsers = ({
       icon: icons.Edit,
       tooltip: "Editar",
       onClick: (event, rowData) =>
-        alert("You want do edit " + rowData.firstName)
+        setUpdateUserState({ state: !updateUserState.state, user: rowData })
     },
     (rowData) => ({
       icon: icons.Delete,
@@ -366,6 +528,16 @@ const Users = () => {
           createUserState={createUserState}
           setCreateUserState={setCreateUserState}
           authentication={authentication}
+        />
+      )}
+
+      {updateUserState.state && (
+        <UpdateUser
+          classes={classes}
+          client={client}
+          setUsers={setUsers}
+          updateUserState={updateUserState}
+          setUpdateUserState={setUpdateUserState}
         />
       )}
     </Box>

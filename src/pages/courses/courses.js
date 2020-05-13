@@ -205,9 +205,7 @@ const ListCourses = ({
             })) || (
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <Paper className={classes.notFoundCourses}>
-              <Typography>
-                No course (s) added or private course (s) are not listed
-              </Typography>
+              <Typography>Não há nenhum curso cadastrado</Typography>
             </Paper>
           </Grid>
         )}
@@ -886,7 +884,7 @@ const UpdateCourse = ({
 
                   <Grid item xs={12} sm={4} md={4} lg={4}>
                     <Button variant="outlined" color="primary" type="submit">
-                      Submit
+                      Enviar
                     </Button>
                   </Grid>
                 </Grid>
