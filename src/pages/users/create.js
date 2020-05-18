@@ -6,7 +6,8 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography
+  Typography,
+  FormControlLabel
 } from "@material-ui/core"
 
 import { TextField } from "formik-material-ui"
@@ -55,6 +56,12 @@ const CreateUser = ({
   authentication
 }) => {
   const { enqueueSnackbar } = useSnackbar()
+
+  const [userScopes, setUserScopes] = useState([])
+
+  const handleUserScopes = () => {
+    setUserScopes([])
+  }
 
   return (
     <Box p={5} bgcolor="white" className={classes.boxCreateUser}>
@@ -225,6 +232,38 @@ const CreateUser = ({
                       variant="outlined"
                       fullWidth
                     />
+                  </Grid>
+
+                  <Grid item>
+                    <Box className={classes.checkedBox}>
+                      <FormControlLabel
+                        control={
+                          <Select
+          multiple
+          value={personName}
+          onChange={handleChange}
+          input={<Input />}
+          MenuProps={MenuProps}
+        >
+          {names.map((name) => (
+            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+                          <Checkbox
+                            checked={privateCourse}
+                            onChange={handlePrivateCourse}
+                            value={privateCourse}
+                          />
+                        }
+                        label="Private"
+                      />
+
+                      <span className={classes.checkedError}>
+                        <ErrorMessage name="private" />
+                      </span>
+                    </Box>
                   </Grid>
 
                   {isSubmitting && (

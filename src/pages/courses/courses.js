@@ -497,9 +497,7 @@ const CreateCourse = ({
             <ArrowBackIcon />
           </IconButton>
 
-          <Typography className={classes.backItemText}>
-            Create course
-          </Typography>
+          <Typography className={classes.backItemText}>Criar Curso</Typography>
         </Grid>
       </Grid>
 
@@ -529,7 +527,7 @@ const CreateCourse = ({
                   }
                 })
 
-                enqueueSnackbar("Course created", {
+                enqueueSnackbar("Curso Criado", {
                   variant: "success",
                   autoHideDuration: 5000,
                   anchorOrigin: {
@@ -540,7 +538,7 @@ const CreateCourse = ({
 
                 actions.resetForm()
               } catch (error) {
-                enqueueSnackbar("Error on course create", {
+                enqueueSnackbar("Erro ao criar curso", {
                   variant: "error",
                   autoHideDuration: 8000,
                   anchorOrigin: {
@@ -561,7 +559,7 @@ const CreateCourse = ({
                   userId: authentication.userId
                 })
 
-                enqueueSnackbar("Course associated with the user", {
+                enqueueSnackbar("Curso associado ao usuário", {
                   variant: "success",
                   autoHideDuration: 5000,
                   anchorOrigin: {
@@ -570,7 +568,7 @@ const CreateCourse = ({
                   }
                 })
               } catch (error) {
-                enqueueSnackbar("Unable to associate the course and the user", {
+                enqueueSnackbar("Erro ao associar curso ao usuário", {
                   variant: "error",
                   autoHideDuration: 8000,
                   anchorOrigin: {
