@@ -142,6 +142,8 @@ const FormikSign = ({
           setAuthentication({ ...response.login })
 
           authenticationId = response.login.userId
+
+          props.history.push("/dashboard")
         })
         .catch(() => {
           enqueueSnackbar("E-mail ou senha incorretos", {
@@ -191,16 +193,7 @@ const FormikSign = ({
         .then((response) => {
           setUser({ address: { ...response.listAddresses[0] } })
         })
-        .catch(() => {
-          enqueueSnackbar("Erro inesperado", {
-            variant: "error",
-            autoHideDuration: 5000,
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "right"
-            }
-          })
-        })
+        .catch(() => {})
 
       // Retrieve user contact
       await client
@@ -221,16 +214,7 @@ const FormikSign = ({
 
           props.history.push("/dashboard")
         })
-        .catch(() => {
-          enqueueSnackbar("Erro inesperado", {
-            variant: "error",
-            autoHideDuration: 5000,
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "right"
-            }
-          })
-        })
+        .catch(() => {})
     }}>
     {(props) => (
       <Form className={classes.form}>
