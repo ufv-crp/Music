@@ -305,7 +305,8 @@ const MyClasses = ({ client }) => {
             })
         })
 
-        Promise.all(classesPromisses).then((response) => {
+        const PromiseConstructor = Promise.all(classesPromisses).then
+        PromiseConstructor((response) => {
           return response.map((classUser) => {
             return client
               .request(searchClassInstructor, { id: classUser.instructor })
