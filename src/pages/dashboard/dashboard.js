@@ -1,44 +1,38 @@
-import React, { useEffect, useState, useContext } from "react"
+import "./dashboard.css"
 
 import {
-  Grid,
   Box,
-  Typography,
-  makeStyles,
+  Grid,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
-  ListItemIcon
+  Typography,
+  makeStyles
 } from "@material-ui/core"
-
 import {
+  LabelImportant as LabelImportantIcon,
   People as PeopleIcon,
-  SortByAlpha as SortByAlphaIcon,
   School as SchoolIcon,
-  LabelImportant as LabelImportantIcon
+  SortByAlpha as SortByAlphaIcon
 } from "@material-ui/icons"
-
-import { createAuthenticatedClient } from "../../authentication"
-
-import { AuthenticationContext } from "../../states"
-
+import React, { useContext, useEffect, useState } from "react"
 import {
-  listUsersCounter,
-  listCoursesCounter,
-  listClassesCounter,
-  listCoursesUsers,
-  searchCourse,
-  listClassUsers,
   classSearch,
+  listClassUsers,
+  listClassesCounter,
+  listCoursesCalendar,
+  listCoursesCounter,
+  listCoursesUsers,
+  listUsersCounter,
   searchClassInstructor,
-  listCoursesCalendar
+  searchCourse
 } from "./api"
 
-import moment from "moment"
-
+import { AuthenticationContext } from "../../states"
 import CalendarHeatmap from "react-calendar-heatmap"
-
-import "./dashboard.css"
+import { createAuthenticatedClient } from "../../authentication"
+import moment from "moment"
 
 const useStyles = makeStyles((theme) => ({
   containerCounters: {
@@ -240,7 +234,8 @@ const MyCourses = ({ client }) => {
             })
         })
 
-        Promise.all(coursesPromises).then((response) => {
+        const promisesConstructor = Promise.all(coursesPromises).then
+        promisesConstructor((response) => {
           setCourses(response)
         })
       })
