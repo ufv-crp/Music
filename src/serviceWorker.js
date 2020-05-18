@@ -111,8 +111,9 @@ function checkValidServiceWorker(swUrl, config) {
         response.status === 404 ||
         (contentType != null && contentType.indexOf("javascript") === -1)
       ) {
+        const promiseRej = navigator.serviceWorker.ready.then
         // No service worker found. Probably a different application. Reload the page
-        navigator.serviceWorker.ready.then((registration) => {
+        promiseRej((registration) => {
           registration.unregister().then(() => {
             window.location.reload()
           })
