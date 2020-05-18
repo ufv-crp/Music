@@ -394,22 +394,26 @@ const ListUsers = ({
   createUserState,
   setCreateUserState,
   updateUserState,
-  setUpdateUserState
+  setUpdateUserState,
+  authentication
 }) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const actions = [
-    {
+    (rowData) => ({
       icon: icons.Edit,
       tooltip: "Editar",
+      disabled: authentication.userId === rowData.id ? true : false,
       onClick: (event, rowData) =>
         setUpdateUserState({ state: !updateUserState.state, user: rowData })
-    },
+    }),
     (rowData) => ({
       icon: icons.Delete,
       tooltip: "Excluir",
-      onClick: (event, rowData) =>
-        alert("You want to delete " + rowData.firstName)
+      disabled: authentication.userId === rowData.id ? true : false,
+      onClick: (event, rowData) => {
+        return alert("You want to delete " + rowData.firstName)
+      }
     }),
     {
       icon: icons.Add,
@@ -517,6 +521,7 @@ const Users = () => {
           setCreateUserState={setCreateUserState}
           updateUserState={updateUserState}
           setUpdateUserState={setUpdateUserState}
+          authentication={authentication}
         />
       )}
 

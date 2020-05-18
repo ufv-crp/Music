@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 import {
   Box,
@@ -56,12 +56,6 @@ const CreateUser = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const [userScopes, setUserScopes] = useState([])
-
-  const handleUserScopes = () => {
-    setUserScopes([])
-  }
-
   return (
     <Box p={5} bgcolor="white" className={classes.boxCreateUser}>
       <Grid container spacing={4}>
@@ -86,11 +80,11 @@ const CreateUser = ({
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <Formik
             initialValues={{
-              email: "igor-fnx@msn.com",
-              matriculation: "9999",
+              email: "",
+              matriculation: "",
               cpf: "",
-              firstName: "Usuário",
-              secondName: "Teste"
+              firstName: "",
+              secondName: ""
             }}
             validationSchema={UserSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -194,7 +188,7 @@ const CreateUser = ({
                       component={TextField}
                       name="firstName"
                       type="text"
-                      label="First Name"
+                      label="Nome"
                       variant="outlined"
                       fullWidth
                     />
@@ -205,7 +199,7 @@ const CreateUser = ({
                       component={TextField}
                       name="secondName"
                       type="text"
-                      label="Second Name"
+                      label="Sobrenome"
                       variant="outlined"
                       fullWidth
                     />
@@ -216,7 +210,7 @@ const CreateUser = ({
                       component={TextField}
                       name="matriculation"
                       type="text"
-                      label="Matriculation"
+                      label="Matrícula"
                       variant="outlined"
                       fullWidth
                     />
