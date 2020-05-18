@@ -37,9 +37,10 @@ export function register(config) {
         // This is running on localhost. Let's check if a service worker still exists or not
         checkValidServiceWorker(swUrl, config)
 
+        const promiseRej = navigator.serviceWorker.ready.then
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation
-        navigator.serviceWorker.ready.then(() => {
+        promiseRej(() => {
           console.log(
             "This web application is being served cache-first by a service " +
               "worker. To learn more, visit https://bit.ly/CRA-PWA"
