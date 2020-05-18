@@ -160,61 +160,63 @@ const FormikSign = ({
           resetForm()
         })
 
-      const client = createAuthenticatedClient()
+      if (authenticationId) {
+        const client = createAuthenticatedClient()
 
-      let firstName = undefined
+        let firstName = undefined
 
-      // Retrieve user info
-      await client
-        .request(searchUser, {
-          id: authenticationId
-        })
-        .then((response) => {
-          firstName = response.searchUser.firstName
-
-          setUser({ ...response.searchUser })
-        })
-        .catch(() => {
-          enqueueSnackbar("Erro inesperado", {
-            variant: "error",
-            autoHideDuration: 5000,
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "right"
-            }
+        // Retrieve user info
+        await client
+          .request(searchUser, {
+            id: authenticationId
           })
-        })
+          .then((response) => {
+            firstName = response.searchUser.firstName
 
-      // Retrieve user address
-      await client
-        .request(listAddressById, {
-          userId: authenticationId
-        })
-        .then((response) => {
-          setUser({ address: { ...response.listAddresses[0] } })
-        })
-        .catch(() => {})
-
-      // Retrieve user contact
-      await client
-        .request(listContactById, {
-          userId: authenticationId
-        })
-        .then((response) => {
-          setUser({ contact: { ...response.listContacts[0] } })
-
-          enqueueSnackbar(`Bem Vindo(a), ${firstName}`, {
-            variant: "info",
-            autoHideDuration: 3500,
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "right"
-            }
+            setUser({ ...response.searchUser })
+          })
+          .catch(() => {
+            enqueueSnackbar("Erro inesperado", {
+              variant: "error",
+              autoHideDuration: 5000,
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "right"
+              }
+            })
           })
 
-          props.history.push("/dashboard")
-        })
-        .catch(() => {})
+        // Retrieve user address
+        await client
+          .request(listAddressById, {
+            userId: authenticationId
+          })
+          .then((response) => {
+            setUser({ address: { ...response.listAddresses[0] } })
+          })
+          .catch(() => {})
+
+        // Retrieve user contact
+        await client
+          .request(listContactById, {
+            userId: authenticationId
+          })
+          .then((response) => {
+            setUser({ contact: { ...response.listContacts[0] } })
+
+            enqueueSnackbar(`Bem Vindo(a), ${firstName}`, {
+              variant: "info",
+              autoHideDuration: 3500,
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "right"
+              }
+            })
+
+            props.history.push("/dashboard")
+          })
+          .catch(() => {})
+      }
     }}>
     {(props) => (
       <Form className={classes.form}>

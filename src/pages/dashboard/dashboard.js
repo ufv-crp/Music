@@ -267,7 +267,7 @@ const MyCourses = ({ client }) => {
 
               <ListItemText primary={`${course.title.substring(0, 8)}...`} />
 
-              <ListItemText primary={course.private ? "Private" : "Public"} />
+              <ListItemText primary={course.private ? "Privado" : "Público"} />
 
               <ListItemText primary={moment(course.start).format("L h:mm a")} />
 
@@ -349,12 +349,12 @@ const MyClasses = ({ client }) => {
 
               <ListItemText primary={classUser.shift} />
 
-              <ListItemText primary={`Vacancies ${classUser.vacancies}`} />
+              <ListItemText primary={`${classUser.vacancies} vagas`} />
 
               <ListItemText primary={classUser.room} />
 
               <ListItemText
-                primary={`Instrocutor ${classUser.firstName} ${classUser.secondName}`}
+                primary={`Prof.: ${classUser.firstName} ${classUser.secondName}`}
               />
             </ListItem>
           ))}
@@ -415,6 +415,31 @@ const UsersRegistered = ({ client }) => {
       </Typography>
 
       <CalendarHeatmap
+        showWeekdayLabels
+        horizontal
+        monthLabels={[
+          "Jan.",
+          "Fev.",
+          "Mar.",
+          "Abr.",
+          "Maio",
+          "Jun.",
+          "Jul.",
+          "Ago.",
+          "Set.",
+          "Out.",
+          "Nov.",
+          "Dez."
+        ]}
+        weekdayLabels={[
+          "Seg.",
+          "Terç.",
+          "Qua.",
+          "Qui.",
+          "Sex.",
+          "Sáb.",
+          "Dom."
+        ]}
         startDate={new Date(startDate)}
         values={datesState}
         classForValue={(value) => {
