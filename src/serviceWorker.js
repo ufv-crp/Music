@@ -114,7 +114,7 @@ function checkValidServiceWorker(swUrl, config) {
         const promiseRej = navigator.serviceWorker.ready.then
         // No service worker found. Probably a different application. Reload the page
         promiseRej((registration) => {
-          registration.unregister().then(() => {
+          checkServiceWk(registration)(() => {
             window.location.reload()
           })
         })
@@ -128,6 +128,10 @@ function checkValidServiceWorker(swUrl, config) {
         "No internet connection found. Application is running in offline mode."
       )
     })
+
+  function checkServiceWk(registration) {
+    return registration.unregister().then
+  }
 }
 
 export function unregister() {
