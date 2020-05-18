@@ -332,7 +332,7 @@ const CardCourse = ({
             color="textSecondary"
             className={`${classes.marginSvgIcon} ${classes.centerIconText}`}>
             <LockOpenIcon className={classes.iconColor} />{" "}
-            {(course.private && "Private") || "Public"}
+            {(course.private && "Privado") || "Público"}
           </Typography>
 
           <Typography variant="h5" component="h2" color="textSecondary">
@@ -388,13 +388,11 @@ const CardCourse = ({
             onClose={handleDialogClick}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">
-              {`Are you sure you want to remove the course`}
-            </DialogTitle>
+            <DialogTitle id="alert-dialog-title">{`Remover Curso`}</DialogTitle>
 
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                When you remove a course you can't access the course anymore
+                Tem certeza que deseja remover este curso?
               </DialogContentText>
             </DialogContent>
 
@@ -402,7 +400,7 @@ const CardCourse = ({
               <Button
                 onClick={handleDialogClick}
                 className={classes.removeCourseDisagree}>
-                Disagree
+                Cancelar
               </Button>
 
               <Button
@@ -420,7 +418,7 @@ const CardCourse = ({
                 }}
                 className={classes.removeCourseAgree}
                 autoFocus>
-                Agree
+                Remover
               </Button>
             </DialogActions>
           </Dialog>
@@ -497,7 +495,9 @@ const CreateCourse = ({
             <ArrowBackIcon />
           </IconButton>
 
-          <Typography className={classes.backItemText}>Criar Curso</Typography>
+          <Typography className={classes.backItemText}>
+            Cadastrar Curso
+          </Typography>
         </Grid>
       </Grid>
 
@@ -527,7 +527,7 @@ const CreateCourse = ({
                   }
                 })
 
-                enqueueSnackbar("Curso Criado", {
+                enqueueSnackbar("Curso cadastrado", {
                   variant: "success",
                   autoHideDuration: 5000,
                   anchorOrigin: {
@@ -538,7 +538,7 @@ const CreateCourse = ({
 
                 actions.resetForm()
               } catch (error) {
-                enqueueSnackbar("Erro ao criar curso", {
+                enqueueSnackbar("Erro ao cadastrar curso", {
                   variant: "error",
                   autoHideDuration: 8000,
                   anchorOrigin: {
@@ -584,14 +584,14 @@ const CreateCourse = ({
             }}
             validationSchema={Yup.object().shape({
               title: Yup.string()
-                .min(10, "At least 10 characteres are required")
-                .required("Title is required"),
+                .min(10, "Mínimo 10 caracteres")
+                .required("Título é obrigatório"),
               description: Yup.string()
-                .min(30, "At least 30 characteres are required")
-                .required("Description is required"),
-              start: Yup.date().required("Start date is required"),
-              end: Yup.date().required("End date is required"),
-              private: Yup.bool().oneOf([true, false], "Invalid value")
+                .min(30, "Mínimo 30 caracteres")
+                .required("Descrição é obrigatória"),
+              start: Yup.date().required("Data de início é obrigatória"),
+              end: Yup.date().required("Data de término é obrigatória"),
+              private: Yup.bool().oneOf([true, false], "Valor Inválido")
             })}>
             {(formik) => (
               <Form>
@@ -601,7 +601,7 @@ const CreateCourse = ({
                       component={TextField}
                       name="title"
                       type="text"
-                      label="Title"
+                      label="Título"
                       variant="outlined"
                       fullWidth
                     />
@@ -612,7 +612,7 @@ const CreateCourse = ({
                       component={TextField}
                       name="description"
                       type="textarea"
-                      label="Description"
+                      label="Descrição"
                       variant="outlined"
                       multiline
                       rows="4"
@@ -625,7 +625,7 @@ const CreateCourse = ({
                       component={TextField}
                       name="start"
                       type="datetime-local"
-                      label="Start"
+                      label="Data de início"
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -639,7 +639,7 @@ const CreateCourse = ({
                       component={TextField}
                       name="end"
                       type="datetime-local"
-                      label="End"
+                      label="Data de término"
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -658,7 +658,7 @@ const CreateCourse = ({
                             value={privateCourse}
                           />
                         }
-                        label="Private"
+                        label="Privado"
                       />
 
                       <span className={classes.checkedError}>
@@ -673,7 +673,7 @@ const CreateCourse = ({
 
                   <Grid item xs={12} sm={4} md={4} lg={4}>
                     <Button variant="outlined" color="primary" type="submit">
-                      Submit
+                      Cadastrar
                     </Button>
                   </Grid>
                 </Grid>
@@ -731,7 +731,7 @@ const UpdateCourse = ({
           </IconButton>
 
           <Typography className={classes.backItemText}>
-            Update course
+            Atualizar Curso
           </Typography>
         </Grid>
       </Grid>
@@ -763,8 +763,8 @@ const UpdateCourse = ({
                     end: new Date(values.end).toISOString()
                   }
                 })
-                .then((response) => {
-                  enqueueSnackbar("Course updated", {
+                .then(() => {
+                  enqueueSnackbar("Curso atualizado", {
                     variant: "success",
                     autoHideDuration: 5000,
                     anchorOrigin: {
@@ -773,34 +773,29 @@ const UpdateCourse = ({
                     }
                   })
                 })
-                .catch((error) => {
-                  enqueueSnackbar(
-                    "Error on course update, check if you have made changes",
-                    {
-                      variant: "error",
-                      autoHideDuration: 8000,
-                      anchorOrigin: {
-                        vertical: "bottom",
-                        horizontal: "right"
-                      }
+                .catch(() => {
+                  enqueueSnackbar("Erro ao atualizar curso", {
+                    variant: "error",
+                    autoHideDuration: 8000,
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "right"
                     }
-                  )
-
-                  console.log("error", error.response)
+                  })
                 })
 
               actions.setSubmitting(false)
             }}
             validationSchema={Yup.object().shape({
               title: Yup.string()
-                .min(10, "At least 10 characteres are required")
-                .required("Title is required"),
+                .min(10, "Mínimo 10 caracteres")
+                .required("Título é obrigatório"),
               description: Yup.string()
-                .min(30, "At least 30 characteres are required")
-                .required("Description is required"),
-              start: Yup.date().required("Start date is required"),
-              end: Yup.date().required("End date is required"),
-              private: Yup.bool().oneOf([true, false], "Invalid value")
+                .min(30, "Mínimo 30 caracteres")
+                .required("Descrição é obrigatória"),
+              start: Yup.date().required("Data de início é obrigatória"),
+              end: Yup.date().required("Data de término é obrigatória"),
+              private: Yup.bool().oneOf([true, false], "Valor inválido")
             })}>
             {(formik) => (
               <Form>
@@ -810,7 +805,7 @@ const UpdateCourse = ({
                       component={TextField}
                       name="title"
                       type="text"
-                      label="Title"
+                      label="Título"
                       variant="outlined"
                       fullWidth
                     />
@@ -821,7 +816,7 @@ const UpdateCourse = ({
                       component={TextField}
                       name="description"
                       type="textarea"
-                      label="Description"
+                      label="Descrição"
                       variant="outlined"
                       multiline
                       rows="4"
@@ -834,7 +829,7 @@ const UpdateCourse = ({
                       component={TextField}
                       name="start"
                       type="datetime-local"
-                      label="Start"
+                      label="Data de início"
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -848,7 +843,7 @@ const UpdateCourse = ({
                       component={TextField}
                       name="end"
                       type="datetime-local"
-                      label="End"
+                      label="Data de término"
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -867,7 +862,7 @@ const UpdateCourse = ({
                             value={privateCourse}
                           />
                         }
-                        label="Private"
+                        label="Privado"
                       />
 
                       <span className={classes.checkedError}>
