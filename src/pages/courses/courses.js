@@ -275,7 +275,7 @@ const CardCourse = ({
     client
       .request(query, { id })
       .then((response) => {
-        enqueueSnackbar("Course removed", {
+        enqueueSnackbar("Curso removido", {
           variant: "success",
           autoHideDuration: 5000,
           anchorOrigin: {
@@ -294,7 +294,7 @@ const CardCourse = ({
         })
       })
       .catch((error) => {
-        enqueueSnackbar("Error on course remove", {
+        enqueueSnackbar("Erro ao remover curso", {
           variant: "error",
           autoHideDuration: 8000,
           anchorOrigin: {
