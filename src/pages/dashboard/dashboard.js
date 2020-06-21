@@ -138,10 +138,8 @@ const Counters = ({ client }) => {
       .then((response) => {
         setUsersState(response.listUsers.length)
       })
-      .catch((error) => {
+      .catch(() => {
         setUsersState(0)
-
-        console.log(error)
       })
 
     client
@@ -149,10 +147,10 @@ const Counters = ({ client }) => {
       .then((response) => {
         setCoursesState(response.listCourses.length)
       })
-      .catch((error) => {
+      .catch(() => {
         setCoursesState(0)
 
-        console.log(error)
+        // console.log(error)
       })
 
     client
@@ -160,10 +158,10 @@ const Counters = ({ client }) => {
       .then((response) => {
         setClassesState(response.listClasses.length)
       })
-      .catch((error) => {
+      .catch(() => {
         setClassesState(0)
 
-        console.log(error)
+        // console.log(error)
       })
 
     // eslint-disable-next-line
@@ -235,8 +233,8 @@ const MyCourses = ({ client }) => {
             .then((response) => {
               return response.searchCourses[0]
             })
-            .catch((error) => {
-              console.log(error)
+            .catch(() => {
+              // console.log(error)
             })
         })
 
@@ -244,8 +242,8 @@ const MyCourses = ({ client }) => {
           setCourses(response)
         })
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
+        // console.log(error)
       })
 
     // eslint-disable-next-line
@@ -305,9 +303,6 @@ const MyClasses = ({ client }) => {
             .then((response) => {
               return response.listClasses[0]
             })
-            .catch((error) => {
-              console.log(error)
-            })
         })
 
         Promise.all(classesPromisses).then((response) => {
@@ -320,14 +315,8 @@ const MyClasses = ({ client }) => {
                   Object.assign({}, classUser, response.searchUser)
                 ])
               })
-              .catch((error) => {
-                console.log(error)
-              })
           })
         })
-      })
-      .catch((error) => {
-        console.log(error)
       })
 
     // eslint-disable-next-line
