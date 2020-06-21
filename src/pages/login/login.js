@@ -124,8 +124,8 @@ const FormikSign = ({
 }) => (
   <Formik
     initialValues={{
-      email: "admin@gmail.com",
-      password: "123456"
+      email: "",
+      password: ""
     }}
     validationSchema={loginSchema}
     onSubmit={async (values, { setSubmitting, resetForm }) => {
