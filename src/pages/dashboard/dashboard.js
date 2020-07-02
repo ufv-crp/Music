@@ -407,27 +407,27 @@ const UsersRegistered = ({ client }) => {
         showWeekdayLabels
         horizontal
         monthLabels={[
-          "Jan.",
-          "Fev.",
-          "Mar.",
-          "Abr.",
-          "Maio",
-          "Jun.",
-          "Jul.",
-          "Ago.",
-          "Set.",
-          "Out.",
-          "Nov.",
-          "Dez."
+          "Jan",
+          "Fev",
+          "Mar",
+          "Abr",
+          "Mai",
+          "Jun",
+          "Jul",
+          "Ago",
+          "Set",
+          "Out",
+          "Nov",
+          "Dez"
         ]}
         weekdayLabels={[
-          "Seg.",
-          "Terç.",
-          "Qua.",
-          "Qui.",
-          "Sex.",
-          "Sáb.",
-          "Dom."
+          "Seg",
+          "Ter",
+          "Qua",
+          "Qui",
+          "Sex",
+          "Sáb",
+          "Dom"
         ]}
         startDate={new Date(startDate)}
         values={datesState}
