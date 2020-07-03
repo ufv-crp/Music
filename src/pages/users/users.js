@@ -285,6 +285,7 @@ const UpdateUser = ({
             validationSchema={UserSchema}
             initialValues={{
               id: updateUserState.user.id,
+              email: updateUserState.user.email,
               cpf: updateUserState.user.cpf,
               firstName: updateUserState.user.firstName,
               secondName: updateUserState.user.secondName,
@@ -327,6 +328,16 @@ const UpdateUser = ({
             {({ dirty, isValid, isSubmitting }) => (
               <Form>
                 <Grid container spacing={4} direction="column">
+                  <Grid item>
+                    <Field
+                      name="email"
+                      label="Email"
+                      variant="outlined"
+                      component={TextField}
+                      disabled
+                    />
+                  </Grid>
+
                   <Grid item>
                     <Field
                       name="firstName"
