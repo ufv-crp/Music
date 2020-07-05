@@ -104,8 +104,7 @@ const FormikForgotPassword = ({ classes, enqueueSnackbar }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={props.isSubmitting}
-            onClick={props.submitForm}>
+            disabled={props.isSubmitting}>
             Enviar
           </Button>
         </Form>
@@ -143,7 +142,6 @@ const FormikSign = ({
 
           authenticationId = response.login.userId
 
-          props.history.push("/dashboard")
         })
         .catch(() => {
           enqueueSnackbar("E-mail ou senha incorretos", {
@@ -203,19 +201,19 @@ const FormikSign = ({
           })
           .then((response) => {
             setUser({ contact: { ...response.listContacts[0] } })
-
-            enqueueSnackbar(`Bem Vindo(a), ${firstName}`, {
-              variant: "info",
-              autoHideDuration: 3500,
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "right"
-              }
-            })
-
-            props.history.push("/dashboard")
           })
           .catch(() => {})
+
+          enqueueSnackbar(`Bem Vindo(a), ${firstName}`, {
+            variant: "info",
+            autoHideDuration: 3500,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "right"
+            }
+          })
+
+          props.history.push("/dashboard")
       }
     }}>
     {(props) => (
@@ -252,8 +250,7 @@ const FormikSign = ({
           variant="contained"
           color="primary"
           className={classes.submit}
-          disabled={props.isSubmitting}
-          onClick={props.submitForm}>
+          disabled={props.isSubmitting}>
           Entrar
         </Button>
       </Form>

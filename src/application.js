@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 
 import { ThemeProvider } from "@material-ui/core/styles"
 
@@ -28,8 +28,10 @@ const Application = () => {
     expireAt: authentication.expireAt
   })
 
-  if (tokenExpiration.expired || tokenExpiration.invalid)
-    setAuthentication(null)
+  useEffect(() => {
+    if (tokenExpiration.expired || tokenExpiration.invalid)
+    setAuthentication({ scopes: [], token: "" })
+  }, [setAuthentication, tokenExpiration.expired, tokenExpiration.invalid])
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,7 +52,6 @@ const Application = () => {
               pathname: "/dashboard",
               state: {}
             })}
-            />
           </Switch>
         </Router>
       </SnackbarProvider>
