@@ -318,6 +318,9 @@ const MyClasses = ({ client }) => {
           })
         })
       })
+      .catch(() => {
+        setClassesState([])
+      })
 
     // eslint-disable-next-line
   }, [])
