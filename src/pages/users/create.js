@@ -6,7 +6,9 @@ import {
   Grid,
   IconButton,
   LinearProgress,
-  Typography
+  Typography,
+  MenuItem,
+  TextField as SelectField
 } from "@material-ui/core"
 
 import { TextField } from "formik-material-ui"
@@ -21,6 +23,8 @@ import * as Yup from "yup"
 
 import { createUser, listAllUsers } from "../account/api"
 
+import scopesList from "./scopesList"
+
 const UserSchema = Yup.object().shape({
   firstName: Yup.string().required("Nome é obrigatório"),
   email: Yup.string()
@@ -30,7 +34,8 @@ const UserSchema = Yup.object().shape({
     .min(4, "Digite uma matrícula válida")
     .max(5, "Máximo 5 dígitos")
     .required("Matrícula é obrigatório"),
-  cpf: Yup.string().matches(/(^[0-9]+$)/, "Apenas dígitos")
+  cpf: Yup.string().matches(/(^[0-9]+$)/, "Apenas dígitos"),
+  scopes: Yup.array().required("Selecione pelo menos uma permissão")
 })
 
 const _listAllUsers = ({ client, query, setUsers }) => {
@@ -39,9 +44,7 @@ const _listAllUsers = ({ client, query, setUsers }) => {
     .then((response) => {
       setUsers(response.listUsers)
     })
-    .catch((error) => {
-      console.log(error.response)
-
+    .catch(() => {
       setUsers([])
     })
 }
@@ -84,7 +87,8 @@ const CreateUser = ({
               matriculation: "",
               cpf: "",
               firstName: "",
-              secondName: ""
+              secondName: "",
+              scopes: []
             }}
             validationSchema={UserSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -109,7 +113,7 @@ const CreateUser = ({
                 creator
               })
 
-              await client
+              /*await client
                 .request(createUser, {
                   params: {
                     cpf,
@@ -121,7 +125,7 @@ const CreateUser = ({
                   }
                 })
                 .then((response) => console.log(response))
-                .catch(() => {})
+                .catch(() => {})*/
 
               enqueueSnackbar("Usuário cadastrado", {
                 variant: "success",
@@ -132,12 +136,16 @@ const CreateUser = ({
                 }
               })
 
-              /*let responseUser = {}
+              let responseUser = {}
 
               try {
                 responseUser = await client.request(createUser, {
                   params: {
-                    ...values,
+                    cpf: values.cpf,
+                    email: values.email,
+                    firstName: values.firstName,
+                    secondName: values.secondName,
+                    matriculation: values.matriculation,
                     creator: authentication.userId
                   }
                 })
@@ -161,15 +169,28 @@ const CreateUser = ({
                     horizontal: "right"
                   }
                 })
+              }
+
+              /*try {
+                await client.request(createUserScope, {
+                  params: {
+                    scopesNames: values.scopes
+                    userId: 
+                  }
+                })
+
+
+              } catch {
+                console.error("error")
               }*/
 
-              // TO DO: ASSOCIATE USER TO SCOPE
+              console.log(responseUser)
 
               resetForm()
 
               setSubmitting(false)
             }}>
-            {({ isSubmitting }) => (
+            {({ values, handleChange, isSubmitting }) => (
               <Form>
                 <Grid container spacing={4} direction="column">
                   <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -225,6 +246,27 @@ const CreateUser = ({
                       variant="outlined"
                       fullWidth
                     />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <SelectField
+                      select
+                      fullWidth
+                      name="scopes"
+                      id="scopes"
+                      variant="outlined"
+                      label="Permissões"
+                      SelectProps={{
+                        multiple: true,
+                        value: values.scopes,
+                        onChange: handleChange
+                      }}>
+                      {scopesList.map((option) => (
+                        <MenuItem key={option.id} value={option.name}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </SelectField>
                   </Grid>
 
                   {isSubmitting && (
