@@ -7,9 +7,9 @@ import {
   IconButton,
   Card,
   CardHeader,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Grid,
   Paper,
   Table,
@@ -127,10 +127,10 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
   return (
     <>
       {/* Address Panel */}
-      <ExpansionPanel
+      <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}>
-        <ExpansionPanelSummary
+        <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header">
@@ -149,8 +149,8 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               }}
             />
           </Card>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           {addresses.length ? (
             <TableContainer component={Paper}>
               <Table size="small" aria-label="address">
@@ -189,15 +189,15 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
           ) : (
             <Typography variant="h5">Nenhum endereço encontrado!</Typography>
           )}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
       {/* ./Address Panel */}
 
       {/* Contact Panel */}
-      <ExpansionPanel
+      <Accordion
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}>
-        <ExpansionPanelSummary
+        <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="panel2bh-content"
           id="panel2bh-header">
@@ -216,8 +216,8 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
               }}
             />
           </Card>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        </AccordionSummary>
+        <AccordionDetails>
           {contacts.length ? (
             <TableContainer component={Paper}>
               <Table aria-label="contacts">
@@ -240,8 +240,8 @@ const ListUserDetails = ({ client, rowUserData, enqueueSnackbar }) => {
           ) : (
             <Typography variant="h5">Nenhum contato encontrado!</Typography>
           )}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
       {/* ./Contact Panel */}
     </>
   )
