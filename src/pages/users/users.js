@@ -296,7 +296,13 @@ const UpdateUser = ({
 
               await client
                 .request(updateUserById, {
-                  params: values
+                  params: {
+                    id: values.id,
+                    cpf: values.cpf,
+                    firstName: values.firstName,
+                    secondName: values.secondName,
+                    matriculation: values.matriculation 
+                  }
                 })
                 .then(() => {
                   _listAllUsers({

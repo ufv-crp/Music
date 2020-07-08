@@ -66,6 +66,8 @@ import {
 
 import useStyles from "./styles"
 
+import localization from "moment/locale/pt-br"
+
 const _listAllCourses = ({
   client,
   query,
@@ -323,9 +325,9 @@ const CardCourse = ({
             color="textSecondary"
             className={`${classes.date} ${classes.centerIconText}`}>
             <EventAvailableIcon className={classes.iconColor} />
-            Star {moment(course.start).format("MMMM Do YYYY h:mm a")}
+            {moment(course.start).format("L hh:mm")}
             <EventBusyIcon className={classes.iconColor} />
-            End {moment(course.end).format("MMMM Do YYYY h:mm a")}
+            {moment(course.end).format("L hh:mm")}
           </Typography>
 
           <Typography
@@ -909,6 +911,8 @@ const Courses = () => {
   })
 
   const [searchCourse, setSearchCourse] = useState("")
+
+  moment.locale("pt-br", localization)
 
   useEffect(() => {
     _listAllCourses({

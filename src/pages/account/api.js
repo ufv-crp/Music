@@ -12,7 +12,7 @@ const listAllUsers = `
 `
 
 const createUserScope = `
-    mutation CreateUserScopeBulk($params: $scopesNames: String!, $userId: Int!) {
+    mutation CreateUserScopeBulk($scopesNames: [String!]!, $userId: Int!) {
         createUserScopeBulk(scopesNames: $scopesNames, userId: $userId)
   }
 `
@@ -22,6 +22,12 @@ const createUser = `
         createUser(params: $params) {
             id
         }
+  	}
+`
+
+const removeUser = `
+    mutation RemoveUser($id: Int!) {
+        removeUser(id: $id)
   	}
 `
 
@@ -113,6 +119,7 @@ export {
   createUser,
   createUserScope,
   searchUser,
+  removeUser,
   updateUserById,
   listAddressById,
   updateAddressById,

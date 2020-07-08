@@ -267,9 +267,9 @@ const MyCourses = ({ client }) => {
 
               <ListItemText primary={course.private ? "Privado" : "Público"} />
 
-              <ListItemText primary={moment(course.start).format("L h:mm a")} />
+              <ListItemText primary={moment(course.start).format("L hh:mm")} />
 
-              <ListItemText primary={moment(course.end).format("L h:mm a")} />
+              <ListItemText primary={moment(course.end).format("L hh:mm")} />
             </ListItem>
           ))}
         </List>
@@ -395,6 +395,9 @@ const UsersRegistered = ({ client }) => {
             count
           }))
         )
+      })
+      .catch((error) => {
+        console.warn(error)
       })
 
     // eslint-disable-next-line

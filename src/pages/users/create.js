@@ -21,7 +21,12 @@ import { Field, Form, Formik } from "formik"
 
 import * as Yup from "yup"
 
-import { createUser, listAllUsers } from "../account/api"
+import {
+  createUser,
+  createUserScope,
+  listAllUsers,
+  removeUser
+} from "../account/api"
 
 import scopesList from "./scopesList"
 
@@ -88,11 +93,27 @@ const CreateUser = ({
               cpf: "",
               firstName: "",
               secondName: "",
-              scopes: []
+              scopes: [
+                "dashboard",
+                "searchUser",
+                "listContacts",
+                "createContact",
+                "updateContact",
+                "listAddresses",
+                "updateAddress",
+                "updateUser",
+                "listUsers",
+                "listClasses",
+                "listCourses",
+                "listCourseUsers",
+                "listClassUsers"
+              ]
             }}
             validationSchema={UserSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               setSubmitting(true)
+
+              let responseUser = {}
 
               const {
                 cpf,
@@ -104,17 +125,8 @@ const CreateUser = ({
 
               const creator = authentication.userId
 
-              console.log("values => ", {
-                cpf,
-                email,
-                firstName,
-                secondName,
-                matriculation,
-                creator
-              })
-
-              /*await client
-                .request(createUser, {
+              try {
+                responseUser = await client.request(createUser, {
                   params: {
                     cpf,
                     email,
@@ -122,31 +134,6 @@ const CreateUser = ({
                     secondName,
                     matriculation,
                     creator
-                  }
-                })
-                .then((response) => console.log(response))
-                .catch(() => {})*/
-
-              enqueueSnackbar("Usuário cadastrado", {
-                variant: "success",
-                autoHideDuration: 5000,
-                anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "right"
-                }
-              })
-
-              let responseUser = {}
-
-              try {
-                responseUser = await client.request(createUser, {
-                  params: {
-                    cpf: values.cpf,
-                    email: values.email,
-                    firstName: values.firstName,
-                    secondName: values.secondName,
-                    matriculation: values.matriculation,
-                    creator: authentication.userId
                   }
                 })
 
@@ -163,7 +150,7 @@ const CreateUser = ({
               } catch {
                 enqueueSnackbar("Erro ao criar usuário", {
                   variant: "error",
-                  autoHideDuration: 8000,
+                  autoHideDuration: 5000,
                   anchorOrigin: {
                     vertical: "bottom",
                     horizontal: "right"
@@ -171,22 +158,30 @@ const CreateUser = ({
                 })
               }
 
-              /*try {
+              try {
                 await client.request(createUserScope, {
-                  params: {
-                    scopesNames: values.scopes
-                    userId: 
-                  }
+                  scopesNames: values.scopes,
+                  userId: responseUser.createUser.id
                 })
 
-
+                enqueueSnackbar("Escopos associados ao usuário", {
+                  variant: "success",
+                  autoHideDuration: 5000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
+                })
               } catch {
-                console.error("error")
-              }*/
-
-              console.log(responseUser)
-
-              resetForm()
+                enqueueSnackbar("Erro ao associar escopos ao usuário", {
+                  variant: "error",
+                  autoHideDuration: 8000,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                  }
+                })
+              }
 
               setSubmitting(false)
             }}>
