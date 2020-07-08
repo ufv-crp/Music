@@ -24,8 +24,7 @@ import * as Yup from "yup"
 import {
   createUser,
   createUserScope,
-  listAllUsers,
-  removeUser
+  listAllUsers
 } from "../account/api"
 
 import scopesList from "./scopesList"
