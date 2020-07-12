@@ -367,7 +367,9 @@ const UsersRegistered = ({ client }) => {
 
   const [datesState, setDatesState] = useState([])
 
-  const startDate = moment().subtract(365, "days").calendar()
+  const momentLocal = moment().locale("en")
+
+  const startDate = momentLocal.subtract(365, "days").calendar()
 
   useEffect(() => {
     client
@@ -426,15 +428,7 @@ const UsersRegistered = ({ client }) => {
           "Nov",
           "Dez"
         ]}
-        weekdayLabels={[
-          "Seg",
-          "Ter",
-          "Qua",
-          "Qui",
-          "Sex",
-          "Sáb",
-          "Dom"
-        ]}
+        weekdayLabels={["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]}
         startDate={new Date(startDate)}
         values={datesState}
         classForValue={(value) => {
