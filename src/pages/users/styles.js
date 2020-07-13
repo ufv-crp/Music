@@ -19,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
   linearProgress: {
     margin: "16px"
+  },
+  removeUserAgree: {
+    color: theme.palette.success.main
+  },
+  removeUserDisagree: {
+    color: theme.palette.error.main
   }
 }))
 

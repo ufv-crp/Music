@@ -19,7 +19,12 @@ import {
   TableHead,
   TableRow,
   Typography,
-  LinearProgress
+  LinearProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core"
 
 import useStyles from "./styles"
@@ -36,7 +41,8 @@ import {
   listAddressById,
   listAllUsers,
   listContactById,
-  updateUserById
+  updateUserById,
+  removeUserById
 } from "../account/api"
 
 import { createAuthenticatedClient } from "../../authentication"
@@ -72,7 +78,7 @@ const _listAllUsers = ({ client, query, setUsers }) => {
       setUsers(response.listUsers)
     })
     .catch((error) => {
-      console.log(error.response)
+      console.error(error.response)
 
       setUsers([])
     })
@@ -301,7 +307,7 @@ const UpdateUser = ({
                     cpf: values.cpf,
                     firstName: values.firstName,
                     secondName: values.secondName,
-                    matriculation: values.matriculation 
+                    matriculation: values.matriculation
                   }
                 })
                 .then(() => {
@@ -334,7 +340,7 @@ const UpdateUser = ({
             {({ dirty, isValid, isSubmitting }) => (
               <Form>
                 <Grid container spacing={4} direction="column">
-                  <Grid item>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       name="email"
                       label="Email"
@@ -344,7 +350,7 @@ const UpdateUser = ({
                     />
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       name="firstName"
                       label="Nome"
@@ -353,7 +359,7 @@ const UpdateUser = ({
                     />
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       name="secondName"
                       label="Sobrenome"
@@ -362,7 +368,7 @@ const UpdateUser = ({
                     />
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       name="cpf"
                       label="CPF"
@@ -371,7 +377,7 @@ const UpdateUser = ({
                     />
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Field
                       name="matriculation"
                       label="Matrícula"
@@ -384,7 +390,7 @@ const UpdateUser = ({
                     <LinearProgress className={classes.linearProgress} />
                   )}
 
-                  <Grid item xs={12} sm={4} md={4} lg={4}>
+                  <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Button
                       type="submit"
                       variant="contained"
@@ -403,6 +409,100 @@ const UpdateUser = ({
   )
 }
 
+const _removeUserById = ({
+  client,
+  query,
+  id,
+  setUsers,
+  listAllUsers,
+  deleteUserState,
+  setDeleteUserState,
+  enqueueSnackbar
+}) => {
+  client
+    .request(query, { id })
+    .then(() => {
+      enqueueSnackbar("Usuário Removido", {
+        variant: "success",
+        autoHideDuration: 5000,
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right"
+        }
+      })
+
+      _listAllUsers({
+        client,
+        query: listAllUsers,
+        setUsers
+      })
+    })
+    .catch(() => {
+      enqueueSnackbar("Erro ao remover usuário", {
+        variant: "error",
+        autoHideDuration: 8000,
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right"
+        }
+      })
+    })
+
+  setDeleteUserState(!deleteUserState.state)
+}
+
+const RemoveUser = ({
+  classes,
+  client,
+  setUsers,
+  deleteUserState,
+  setDeleteUserState
+}) => {
+  const { enqueueSnackbar } = useSnackbar()
+
+  const handleDialogClick = () => {
+    setDeleteUserState(!deleteUserState.state)
+  }
+
+  return (
+    <Dialog open={deleteUserState.state} onClose={handleDialogClick}>
+      <DialogTitle>{`Remover Usuário`}</DialogTitle>
+
+      <DialogContent>
+        <DialogContentText>
+          Tem certeza que deseja remover este usuário?
+        </DialogContentText>
+      </DialogContent>
+
+      <DialogActions>
+        <Button
+          className={classes.removeUserDisagree}
+          onClick={handleDialogClick}>
+          Cancelar
+        </Button>
+
+        <Button
+          className={classes.removeUserAgree}
+          onClick={() => {
+            _removeUserById({
+              client,
+              query: removeUserById,
+              id: deleteUserState.user.id,
+              setUsers,
+              listAllUsers,
+              deleteUserState,
+              setDeleteUserState,
+              enqueueSnackbar
+            })
+          }}
+          autoFocus>
+          Remover
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
 const ListUsers = ({
   classes,
   client,
@@ -412,6 +512,8 @@ const ListUsers = ({
   setCreateUserState,
   updateUserState,
   setUpdateUserState,
+  deleteUserState,
+  setDeleteUserState,
   authentication
 }) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -428,9 +530,8 @@ const ListUsers = ({
       icon: icons.Delete,
       tooltip: "Excluir",
       disabled: authentication.userId === rowData.id ? true : false,
-      onClick: (event, rowData) => {
-        return alert("You want to delete " + rowData.firstName)
-      }
+      onClick: (event, rowData) =>
+        setDeleteUserState({ state: !deleteUserState.state, user: rowData })
     }),
     {
       icon: icons.Add,
@@ -516,6 +617,11 @@ const Users = () => {
     user: {}
   })
 
+  const [deleteUserState, setDeleteUserState] = useState({
+    state: false,
+    user: {}
+  })
+
   useEffect(() => {
     _listAllUsers({
       client,
@@ -538,6 +644,8 @@ const Users = () => {
           setCreateUserState={setCreateUserState}
           updateUserState={updateUserState}
           setUpdateUserState={setUpdateUserState}
+          deleteUserState={deleteUserState}
+          setDeleteUserState={setDeleteUserState}
           authentication={authentication}
         />
       )}
@@ -560,6 +668,16 @@ const Users = () => {
           setUsers={setUsers}
           updateUserState={updateUserState}
           setUpdateUserState={setUpdateUserState}
+        />
+      )}
+
+      {deleteUserState.state && (
+        <RemoveUser
+          classes={classes}
+          client={client}
+          setUsers={setUsers}
+          deleteUserState={deleteUserState}
+          setDeleteUserState={setDeleteUserState}
         />
       )}
     </Box>

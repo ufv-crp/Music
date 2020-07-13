@@ -25,7 +25,7 @@ const createUser = `
   	}
 `
 
-const removeUser = `
+const removeUserById = `
     mutation RemoveUser($id: Int!) {
         removeUser(id: $id)
   	}
@@ -119,7 +119,7 @@ export {
   createUser,
   createUserScope,
   searchUser,
-  removeUser,
+  removeUserById,
   updateUserById,
   listAddressById,
   updateAddressById,
